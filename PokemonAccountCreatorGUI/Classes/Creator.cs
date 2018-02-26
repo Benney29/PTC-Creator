@@ -306,7 +306,7 @@ namespace PokemonAccountCreatorGUI
                     {
                         Thread.CurrentThread.Abort();
                     }
-                    string response = client.PostAsync("http://api.shuffletanker.com/api/v1/Captcha/GetResponse", sendContent).Result.Content.ReadAsStringAsync().Result;
+                    string response = client.PostAsync("https://api.shuffletanker.com/api/v1/Captcha/GetResponse", sendContent).Result.Content.ReadAsStringAsync().Result;
                     CaptchaReturn cr = JsonConvert.DeserializeObject<CaptchaReturn>(response);
                     if (cr.status)
                     {
@@ -336,31 +336,7 @@ namespace PokemonAccountCreatorGUI
                 goto retry;
             }
         }
-
-        private void PostBadCaptcha(string serverIndex, string captchaID)
-        {
-            try
-            {
-                List<KeyValuePair<string, string>> content = new List<KeyValuePair<string, string>>();
-                content.Add(new KeyValuePair<string, string>("API", StaticVars.CaptchaAPI));
-                content.Add(new KeyValuePair<string, string>("WebsiteUrl", "https://club.pokemon.com/us/pokemon-trainer-club/parents/sign-up"));
-                content.Add(new KeyValuePair<string, string>("WebsiteKey", "6LdpuiYTAAAAAL6y9JNUZzJ7cF3F8MQGGKko1bCy"));
-                content.Add(new KeyValuePair<string, string>("ServerIndex", serverIndex.ToString()));
-                content.Add(new KeyValuePair<string, string>("CaptchaId", captchaID.ToString()));
-                FormUrlEncodedContent sendContent = new FormUrlEncodedContent(content);
-                using (HttpClient client = new HttpClient())
-                {
-                    string response = client.PostAsync("http://captcha.shuffletanker.com/api/Captcha/BadCaptcha", sendContent).Result.Content.ReadAsStringAsync().Result;
-                    //string response = client.PostAsync("http://localhost:39663/api/Captcha/BadCaptcha", sendContent).Result.Content.ReadAsStringAsync().Result;
-                    Debug.WriteLine("Bad Captcha Submitted");
-                }
-            }
-            catch (Exception e)
-            {
-                Debug.WriteLine(e);
-            }
-        }
-
+        
         private void writeToFile()
         {
             lock (this)
@@ -421,7 +397,7 @@ namespace PokemonAccountCreatorGUI
                 FormUrlEncodedContent sendContent = new FormUrlEncodedContent(content);
                 using (HttpClient client = new HttpClient())
                 {
-                    string response = client.PostAsync("http://api.shuffletanker.com/api/v1/Account/AddAccount/" + StaticVars.CaptchaAPI, sendContent).Result.Content.ReadAsStringAsync().Result;
+                    string response = client.PostAsync("https://api.shuffletanker.com/api/v1/Account/AddAccount/" + StaticVars.CaptchaAPI, sendContent).Result.Content.ReadAsStringAsync().Result;
                 }
             }
             catch (Exception e)
