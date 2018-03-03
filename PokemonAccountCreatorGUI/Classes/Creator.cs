@@ -306,7 +306,7 @@ namespace PokemonAccountCreatorGUI
                     {
                         Thread.CurrentThread.Abort();
                     }
-                    string response = client.PostAsync("https://api.shuffletanker.com/api/v1/Captcha/GetResponse", sendContent).Result.Content.ReadAsStringAsync().Result;
+                    string response = client.PostAsync("https://api.shuffletanker.com/api/v2/Captcha/GetResponse", sendContent).Result.Content.ReadAsStringAsync().Result;
                     CaptchaReturn cr = JsonConvert.DeserializeObject<CaptchaReturn>(response);
                     if (cr.status)
                     {
@@ -391,13 +391,15 @@ namespace PokemonAccountCreatorGUI
             try
             {
                 List<KeyValuePair<string, string>> content = new List<KeyValuePair<string, string>>();
+                content.Add(new KeyValuePair<string, string>("api", StaticVars.CaptchaAPI));
+                content.Add(new KeyValuePair<string, string>("type", "1"));//Pokemon accounts
                 content.Add(new KeyValuePair<string, string>("account", string.Format("{0}:{1}", m.Username, m.Password)));
                 content.Add(new KeyValuePair<string, string>("account_level", "0"));
                 content.Add(new KeyValuePair<string, string>("email", string.Format("{0}@{1}", m.Username, StaticVars.domain)));
                 FormUrlEncodedContent sendContent = new FormUrlEncodedContent(content);
                 using (HttpClient client = new HttpClient())
                 {
-                    string response = client.PostAsync("https://api.shuffletanker.com/api/v1/Account/AddAccount/" + StaticVars.CaptchaAPI, sendContent).Result.Content.ReadAsStringAsync().Result;
+                    string response = client.PostAsync("https://api.shuffletanker.com/api/v2/Account/AddAccount/", sendContent).Result.Content.ReadAsStringAsync().Result;
                 }
             }
             catch (Exception e)
