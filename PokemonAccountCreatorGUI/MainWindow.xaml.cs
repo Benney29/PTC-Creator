@@ -26,6 +26,7 @@ namespace PokemonAccountCreatorGUI
             main = this;
             ShuffleAPI.Text = app.Default.ShuffleAPI;
             AntiCaptchaAPI.Text = app.Default.AntiCaptchaAPI;
+            TwoCaptchaAPI.Text = app.Default.TwoCaptchaAPI;
             domainTextBox.Text = app.Default.Domain;
             usernamePrefixTextBox.Text = app.Default.UsernamePrefix;
             passwordTextBox.Text = app.Default.Password;
@@ -156,6 +157,7 @@ namespace PokemonAccountCreatorGUI
                     LogText = "Starting..." + Environment.NewLine;
                     StaticVars.threadA = int.Parse(threadAmount.Text.Trim());
                     StaticVars.AntiAPI = AntiCaptchaAPI.Text.Trim();
+                    StaticVars.TwoCaptchaAPI = TwoCaptchaAPI.Text.Trim();
                     StaticVars.ShuffleAPI = ShuffleAPI.Text.Trim();
                     StaticVars.domain = domainTextBox.Text.Trim();
                     StaticVars.proxyAPI = ProxyExtractionAPI.Text.Trim();
@@ -191,7 +193,7 @@ namespace PokemonAccountCreatorGUI
             try
             {
                 int checkThreadAmount;
-                if (AntiCaptchaAPI.Text.Trim() == "")
+                if (AntiCaptchaAPI.Text.Trim() == "" && TwoCaptchaAPI.Text.Trim() == "")
                 {
                     MessageBox.Show("Please enter captcha service API key...");
                     return false;
@@ -221,6 +223,14 @@ namespace PokemonAccountCreatorGUI
                 {
                     MessageBox.Show("Create Amount Error");
                     return false;
+                }
+                else if ((bool)addToDB.IsChecked)
+                {
+                    if (ShuffleAPI.Text.Trim() == "")
+                    {
+                        MessageBox.Show("Please fill Shuffle API to use Shuffle database");
+                        return false;
+                    }
                 }
                 return true;
             }
@@ -254,6 +264,7 @@ namespace PokemonAccountCreatorGUI
             catch { }
             app.Default.ShuffleAPI = ShuffleAPI.Text.Trim();
             app.Default.AntiCaptchaAPI = AntiCaptchaAPI.Text.Trim();
+            app.Default.TwoCaptchaAPI = TwoCaptchaAPI.Text.Trim();
             app.Default.Domain = domainTextBox.Text.Trim();
             app.Default.UsernamePrefix = usernamePrefixTextBox.Text.Trim();
             app.Default.Password = passwordTextBox.Text.Trim();

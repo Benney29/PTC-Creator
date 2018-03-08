@@ -109,10 +109,10 @@ namespace PokemonAccountCreatorGUI
                     }
                     //get new captcha
 
-                    string captcha = GetCaptcha();
-                    if (captcha == "")
+                    string captcha = "";
+                    while (captcha == "" && !StaticVars.stop)
                     {
-                        return false;
+                        captcha = GetCaptcha();
                     }
                     //Post registration to server
                     FormUrlEncodedContent createForm = AccountContent(csrf, captcha);
@@ -290,12 +290,32 @@ namespace PokemonAccountCreatorGUI
 
         private string GetCaptcha()
         {
+            string response = "";
+
+            if (StaticVars.AntiAPI != null && StaticVars.AntiAPI != "")
+            {
+                response = AntiCaptcha();
+                if (response != "") return response;
+            }
+
+            if (StaticVars.TwoCaptchaAPI != null && StaticVars.TwoCaptchaAPI != "")
+            {
+                response = TwoCaptcha();
+                if (response != "") return response;
+            }
+
+            return response;
+
+        }
+
+        private string AntiCaptcha()
+        {
             var api = new NoCaptchaProxyless
             {
                 ClientKey = StaticVars.AntiAPI,
                 WebsiteUrl = new Uri("https://club.pokemon.com/us/pokemon-trainer-club/parents/sign-up"),
                 WebsiteKey = "6LdpuiYTAAAAAL6y9JNUZzJ7cF3F8MQGGKko1bCy",
-                
+
             };
             if (!api.CreateTask() || !api.WaitForResult())
             {
@@ -305,6 +325,66 @@ namespace PokemonAccountCreatorGUI
             else
             {
                 return api.GetTaskSolution();
+            }
+        }
+
+        private string TwoCaptcha()
+        {
+            string response = "";
+            string post_end_point = "http://2captcha.com/in.php?" + 
+                "key=" + StaticVars.TwoCaptchaAPI + "&" +
+                "method=userrecaptcha&" +
+                "googlekey=6LdpuiYTAAAAAL6y9JNUZzJ7cF3F8MQGGKko1bCy&" +
+                "pageurl=https://club.pokemon.com/us/pokemon-trainer-club/parents/sign-up&" + 
+                "here=now&" + 
+                "soft_id=0";
+            using (HttpClient client = new HttpClient())
+            {
+                string captcha_id = client.GetAsync(post_end_point).Result.Content.ReadAsStringAsync().Result.Replace("\"", "");
+                if (captcha_id.Contains("OK"))
+                {
+                    captcha_id = captcha_id.Replace("OK|", "");
+                }
+                else if (captcha_id.Contains("ERROR_WRONG_USER_KEY") ||
+                    captcha_id.Contains("ERROR_KEY_DOES_NOT_EXIST") ||
+                    captcha_id.Contains("ERROR_ZERO_BALANCE") ||
+                    captcha_id.Contains("ERROR_IP_NOT_ALLOWED") ||
+                    captcha_id.Contains("IP_BANNED")
+                    )
+                {
+                    StaticVars.LogText += captcha_id + Environment.NewLine;
+                    StaticVars.stop = true;
+                    return "";
+                }
+                else
+                {
+                    StaticVars.LogText += captcha_id + Environment.NewLine;
+                    return "";
+                }
+
+                string get_end_point = "http://2captcha.com/res.php?" +
+                    "key=" + StaticVars.TwoCaptchaAPI + " & " +
+                    "action=get&" + 
+                    "id=" + captcha_id;
+                int count = 0;
+                while (count < 8)
+                {
+                    Thread.Sleep(15000);
+                    response = client.GetAsync(get_end_point).Result.Content.ReadAsStringAsync().Result;
+                    if (response.Contains("OK|"))
+                    {
+                        return response.Replace("OK|", "").Replace("\"", "");
+                    }
+                    else if (response.Contains("ERROR_WRONG_USER_KEY") ||
+                        response.Contains("ERROR_KEY_DOES_NOT_EXIST")
+                        )
+                    {
+                        StaticVars.LogText += captcha_id + Environment.NewLine;
+                        StaticVars.stop = true;
+                        break;
+                    }
+                }
+                return "";
             }
         }
         

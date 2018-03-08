@@ -9,6 +9,7 @@ namespace PokemonAccountCreatorGUI
     {
         public static string ShuffleAPI;
         public static string AntiAPI;
+        public static string TwoCaptchaAPI;
 
         public static string proxyAPI = "";
         public static string fileProxy = "";

@@ -17,6 +17,9 @@
                 <MenuItem Header="AntiCaptcha">
                     <TextBox Width="200" Name="AntiCaptchaAPI"></TextBox>
                 </MenuItem>
+                <MenuItem Header="2Captcha">
+                    <TextBox Width="200" Name="TwoCaptchaAPI"></TextBox>
+                </MenuItem>
             </MenuItem>
             <MenuItem Header="|" IsEnabled="False"></MenuItem>
             <MenuItem Header="Proxy API">
