@@ -319,7 +319,15 @@ namespace PokemonAccountCreatorGUI
             };
             if (!api.CreateTask() || !api.WaitForResult())
             {
-                StaticVars.LogText += api.ErrorMessage + Environment.NewLine;
+                if (api.ErrorMessage.Contains("ERROR_KEY_DOES_NOT_EXIST") ||
+                    api.ErrorMessage.Contains("ERROR_ZERO_BALANCE") ||
+                    api.ErrorMessage.Contains("ERROR_IP_NOT_ALLOWED") ||
+                    api.ErrorMessage.Contains("ERROR_IP_BLOCKED")
+                    )
+                {
+                    StaticVars.stop = true;
+                }
+                    StaticVars.LogText += api.ErrorMessage + Environment.NewLine;
                 return "";
             }
             else
@@ -383,6 +391,7 @@ namespace PokemonAccountCreatorGUI
                         StaticVars.stop = true;
                         break;
                     }
+                    count += 1;
                 }
                 return "";
             }
