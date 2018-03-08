@@ -336,8 +336,8 @@ namespace PokemonAccountCreatorGUI
                 "method=userrecaptcha&" +
                 "googlekey=6LdpuiYTAAAAAL6y9JNUZzJ7cF3F8MQGGKko1bCy&" +
                 "pageurl=https://club.pokemon.com/us/pokemon-trainer-club/parents/sign-up&" + 
-                "here=now&" + 
-                "soft_id=0";
+                "here=now&" +
+                "soft_id=2099"; //Do not change without Shuffle Permission
             using (HttpClient client = new HttpClient())
             {
                 string captcha_id = client.GetAsync(post_end_point).Result.Content.ReadAsStringAsync().Result.Replace("\"", "");
