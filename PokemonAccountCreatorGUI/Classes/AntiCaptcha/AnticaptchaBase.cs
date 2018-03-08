@@ -29,6 +29,7 @@ namespace PokemonAccountCreatorGUI.Classes.AntiCaptcha
             var jsonPostData = new JObject();
             jsonPostData["clientKey"] = ClientKey;
             jsonPostData["task"] = taskJson;
+            jsonPostData["softId"] = 874;
 
             DebugHelper.Out("Connecting to " + Host, DebugHelper.Type.Info);
             dynamic postResult = JsonPostRequest(ApiMethod.CreateTask, jsonPostData);

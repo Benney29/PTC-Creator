@@ -231,7 +231,7 @@ namespace PokemonAccountCreatorGUI
                 }
                 catch (Exception e)
                 {
-                    StaticVars.LogText += DateTime.Now + ": Failed to get web proxies";
+                    StaticVars.LogText += DateTime.Now + ": Failed to get web proxies" + Environment.NewLine;
                 }
             }
             return Task.FromResult(0);

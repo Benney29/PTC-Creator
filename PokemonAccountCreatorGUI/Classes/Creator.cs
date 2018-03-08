@@ -138,12 +138,6 @@ namespace PokemonAccountCreatorGUI
                     }
                     else
                     {
-                        /*
-                        if (StaticVars.addToDB)
-                        {
-                            WriteErrorMessage(pageSource);
-                        }*/
-                        //PostBadCaptcha(captcha.server_index, captcha.captcha_id);
                         client.failCount += 1;
                     }
                     StaticVars.title.fail += 1;
@@ -300,7 +294,8 @@ namespace PokemonAccountCreatorGUI
             {
                 ClientKey = StaticVars.AntiAPI,
                 WebsiteUrl = new Uri("https://club.pokemon.com/us/pokemon-trainer-club/parents/sign-up"),
-                WebsiteKey = "6LdpuiYTAAAAAL6y9JNUZzJ7cF3F8MQGGKko1bCy"
+                WebsiteKey = "6LdpuiYTAAAAAL6y9JNUZzJ7cF3F8MQGGKko1bCy",
+                
             };
             if (!api.CreateTask() || !api.WaitForResult())
             {
@@ -378,9 +373,8 @@ namespace PokemonAccountCreatorGUI
                     string response = client.PostAsync("https://api.shuffletanker.com/api/v2/Account/AddAccount/", sendContent).Result.Content.ReadAsStringAsync().Result;
                 }
             }
-            catch (Exception e)
+            catch 
             {
-                StaticVars.LogText += e.Message;
                 goto tryAgain;
             }
         }
