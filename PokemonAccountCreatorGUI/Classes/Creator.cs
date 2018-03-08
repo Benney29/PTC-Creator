@@ -392,40 +392,7 @@ namespace PokemonAccountCreatorGUI
             client.lastUseTime = DateTime.Now;
             Thread.CurrentThread.Abort(message);
         }
-
-        private void WriteErrorMessage(string pageSource)
-        {
-            string path = Directory.GetCurrentDirectory() + @"ErrorHttpRequest - " + client.proxy + ".txt";
-            if (!File.Exists(path))
-            {
-                StreamWriter sw = File.CreateText(path);
-                sw.Close();
-            }
-            try
-            {
-                File.WriteAllText(path, pageSource + Environment.NewLine);
-            }
-            catch { }
-        }
-
-        private void WriteFailLog(string message)
-        {
-            string path = Directory.GetCurrentDirectory() + @"\FailLog.txt";
-            if (!File.Exists(path))
-            {
-                StreamWriter sw = File.CreateText(path);
-                sw.Close();
-            }
-            while (true)
-            {
-                try
-                {
-                    File.AppendAllText(path, DateTime.Now.ToString() + ": " + message + Environment.NewLine);
-                    return;
-                }
-                catch { Thread.Sleep(1000); }
-            }
-        }
+        
 
     }
 }
