@@ -7,7 +7,8 @@ namespace PokemonAccountCreatorGUI
 {
     class StaticVars
     {
-        public static string CaptchaAPI;
+        public static string ShuffleAPI;
+        public static string AntiAPI;
 
         public static string proxyAPI = "";
         public static string fileProxy = "";

@@ -26,12 +26,12 @@ namespace PokemonAccountCreatorGUI {
         [global::System.Configuration.UserScopedSettingAttribute()]
         [global::System.Diagnostics.DebuggerNonUserCodeAttribute()]
         [global::System.Configuration.DefaultSettingValueAttribute("")]
-        public string CaptchaAPI {
+        public string ShuffleAPI {
             get {
-                return ((string)(this["CaptchaAPI"]));
+                return ((string)(this["ShuffleAPI"]));
             }
             set {
-                this["CaptchaAPI"] = value;
+                this["ShuffleAPI"] = value;
             }
         }
         
@@ -128,6 +128,18 @@ namespace PokemonAccountCreatorGUI {
             }
             set {
                 this["addToDB"] = value;
+            }
+        }
+        
+        [global::System.Configuration.UserScopedSettingAttribute()]
+        [global::System.Diagnostics.DebuggerNonUserCodeAttribute()]
+        [global::System.Configuration.DefaultSettingValueAttribute("")]
+        public string AntiCaptchaAPI {
+            get {
+                return ((string)(this["AntiCaptchaAPI"]));
+            }
+            set {
+                this["AntiCaptchaAPI"] = value;
             }
         }
     }

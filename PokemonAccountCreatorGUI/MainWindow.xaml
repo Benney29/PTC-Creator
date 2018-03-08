@@ -8,10 +8,14 @@
         Title="Pokemon Account Creator" Height="522.83" Width="685.993" FontSize="16" Icon="logo.ico" ResizeMode="CanMinimize">
     <Grid Name="mainGrid" Margin="0,0,2,0">
         <Menu HorizontalAlignment="Left" Height="27" VerticalAlignment="Top" Width="{Binding ElementName=mainGrid,Path=ActualWidth}" IsMainMenu="True" Name="mainMenu" Grid.ColumnSpan="2" FontSize="16">
+            <MenuItem Header="Shuffle API">
+                <TextBox Width="200" Name="ShuffleAPI"></TextBox>
+                <MenuItem Name="PurchaseAPI" Header="Purchase Shuffle API" Click="PurchaseAPI_Click"></MenuItem>
+            </MenuItem>
+            <MenuItem Header="|" IsEnabled="False"></MenuItem>
             <MenuItem Header="Captcha API">
-                <MenuItem Header="Shuffle Captcha">
-                    <TextBox Width="200" Name="CaptchaAPI"></TextBox>
-                    <MenuItem Name="PurchaseAPI" Header="Purchase Shuffle API" Click="PurchaseAPI_Click"></MenuItem>
+                <MenuItem Header="AntiCaptcha">
+                    <TextBox Width="200" Name="AntiCaptchaAPI"></TextBox>
                 </MenuItem>
             </MenuItem>
             <MenuItem Header="|" IsEnabled="False"></MenuItem>

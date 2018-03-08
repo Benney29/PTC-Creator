@@ -24,7 +24,8 @@ namespace PokemonAccountCreatorGUI
 
             // Loading saved application setting
             main = this;
-            CaptchaAPI.Text = app.Default.CaptchaAPI;
+            ShuffleAPI.Text = app.Default.ShuffleAPI;
+            AntiCaptchaAPI.Text = app.Default.AntiCaptchaAPI;
             domainTextBox.Text = app.Default.Domain;
             usernamePrefixTextBox.Text = app.Default.UsernamePrefix;
             passwordTextBox.Text = app.Default.Password;
@@ -154,7 +155,8 @@ namespace PokemonAccountCreatorGUI
                 {
                     LogText = "Starting..." + Environment.NewLine;
                     StaticVars.threadA = int.Parse(threadAmount.Text.Trim());
-                    StaticVars.CaptchaAPI = CaptchaAPI.Text.Trim();
+                    StaticVars.AntiAPI = AntiCaptchaAPI.Text.Trim();
+                    StaticVars.ShuffleAPI = ShuffleAPI.Text.Trim();
                     StaticVars.domain = domainTextBox.Text.Trim();
                     StaticVars.proxyAPI = ProxyExtractionAPI.Text.Trim();
                     StaticVars.fileProxy = FileProxyExtraction.Text.Trim();
@@ -189,7 +191,7 @@ namespace PokemonAccountCreatorGUI
             try
             {
                 int checkThreadAmount;
-                if (CaptchaAPI.Text.Trim() == "")
+                if (AntiCaptchaAPI.Text.Trim() == "")
                 {
                     MessageBox.Show("Please enter captcha service API key...");
                     return false;
@@ -250,7 +252,8 @@ namespace PokemonAccountCreatorGUI
                 }
             }
             catch { }
-            app.Default.CaptchaAPI = CaptchaAPI.Text.Trim();
+            app.Default.ShuffleAPI = ShuffleAPI.Text.Trim();
+            app.Default.AntiCaptchaAPI = AntiCaptchaAPI.Text.Trim();
             app.Default.Domain = domainTextBox.Text.Trim();
             app.Default.UsernamePrefix = usernamePrefixTextBox.Text.Trim();
             app.Default.Password = passwordTextBox.Text.Trim();

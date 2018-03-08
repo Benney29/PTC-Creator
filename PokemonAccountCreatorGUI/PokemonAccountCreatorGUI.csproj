@@ -97,6 +97,14 @@
       <DesignTimeSharedInput>True</DesignTimeSharedInput>
       <DependentUpon>app.settings</DependentUpon>
     </Compile>
+    <Compile Include="Classes\AntiCaptcha\AnticaptchaBase.cs" />
+    <Compile Include="Classes\AntiCaptcha\BalanceResponse.cs" />
+    <Compile Include="Classes\AntiCaptcha\CreateTaskResponse.cs" />
+    <Compile Include="Classes\AntiCaptcha\DebugHelper.cs" />
+    <Compile Include="Classes\AntiCaptcha\HttpHelper.cs" />
+    <Compile Include="Classes\AntiCaptcha\JsonHelper.cs" />
+    <Compile Include="Classes\AntiCaptcha\NoCaptcha.cs" />
+    <Compile Include="Classes\AntiCaptcha\TaskResultResponse.cs" />
     <Compile Include="Classes\HttpClientItem.cs" />
     <Compile Include="Classes\PasswordChange.cs" />
     <Compile Include="Controller.cs" />

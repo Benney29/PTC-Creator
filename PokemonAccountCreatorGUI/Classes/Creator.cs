@@ -9,6 +9,7 @@ using System.Text.RegularExpressions;
 using System.IO;
 using PokemonAccountCreatorGUI.Classes;
 using Newtonsoft.Json;
+using PokemonAccountCreatorGUI.Classes.AntiCaptcha;
 
 namespace PokemonAccountCreatorGUI
 {
@@ -108,9 +109,13 @@ namespace PokemonAccountCreatorGUI
                     }
                     //get new captcha
 
-                    CaptchaReturn captcha = GetCaptcha();
+                    string captcha = GetCaptcha();
+                    if (captcha == "")
+                    {
+                        return false;
+                    }
                     //Post registration to server
-                    FormUrlEncodedContent createForm = AccountContent(csrf, captcha.captcha_response);
+                    FormUrlEncodedContent createForm = AccountContent(csrf, captcha);
                     pageSource = client.PostAsync("/us/pokemon-trainer-club/parents/sign-up", createForm).Result;
                     //Check registration successful or not
                     if (pageSource.Contains("Hello! Thank you for creating an account!"))
@@ -289,51 +294,22 @@ namespace PokemonAccountCreatorGUI
             return new FormUrlEncodedContent(pair);
         }
 
-        private CaptchaReturn GetCaptcha()
+        private string GetCaptcha()
         {
-            using (HttpClient client = new HttpClient())
+            var api = new NoCaptchaProxyless
             {
-                client.Timeout = new TimeSpan(0, 10, 0);
-                retry:
-                List<KeyValuePair<string, string>> content = new List<KeyValuePair<string, string>>();
-                content.Add(new KeyValuePair<string, string>("API", StaticVars.CaptchaAPI));
-                content.Add(new KeyValuePair<string, string>("WebsiteUrl", "https://club.pokemon.com/us/pokemon-trainer-club/parents/sign-up"));
-                content.Add(new KeyValuePair<string, string>("WebsiteKey", "6LdpuiYTAAAAAL6y9JNUZzJ7cF3F8MQGGKko1bCy"));
-                FormUrlEncodedContent sendContent = new FormUrlEncodedContent(content);
-                try
-                {
-                    if (StaticVars.stop)
-                    {
-                        Thread.CurrentThread.Abort();
-                    }
-                    string response = client.PostAsync("https://api.shuffletanker.com/api/v2/Captcha/GetResponse", sendContent).Result.Content.ReadAsStringAsync().Result;
-                    CaptchaReturn cr = JsonConvert.DeserializeObject<CaptchaReturn>(response);
-                    if (cr.status)
-                    {
-                        cr.tryCount = 0;
-                        return cr;
-                    }
-                    else
-                    {
-                        if (cr.captcha_response.Contains("Zero Balance"))
-                        {
-                            StaticVars.stop = true;
-                            StaticVars.LogText += "No Balance" + Environment.NewLine;
-                            Thread.CurrentThread.Abort();
-                        }
-                        else if (cr.captcha_response.Contains("Please use your referral account"))
-                        {
-                            StaticVars.stop = true;
-                            StaticVars.LogText += "Please use your 2Captcha referral account" + Environment.NewLine;
-                            Thread.CurrentThread.Abort();
-                        }
-                    }
-                }
-                catch (Exception e)
-                {
-                    Debug.WriteLine(e.Message);
-                }
-                goto retry;
+                ClientKey = StaticVars.AntiAPI,
+                WebsiteUrl = new Uri("https://club.pokemon.com/us/pokemon-trainer-club/parents/sign-up"),
+                WebsiteKey = "6LdpuiYTAAAAAL6y9JNUZzJ7cF3F8MQGGKko1bCy"
+            };
+            if (!api.CreateTask() || !api.WaitForResult())
+            {
+                StaticVars.LogText += api.ErrorMessage + Environment.NewLine;
+                return "";
+            }
+            else
+            {
+                return api.GetTaskSolution();
             }
         }
         
@@ -391,7 +367,7 @@ namespace PokemonAccountCreatorGUI
             try
             {
                 List<KeyValuePair<string, string>> content = new List<KeyValuePair<string, string>>();
-                content.Add(new KeyValuePair<string, string>("api", StaticVars.CaptchaAPI));
+                content.Add(new KeyValuePair<string, string>("api", StaticVars.ShuffleAPI));
                 content.Add(new KeyValuePair<string, string>("type", "1"));//Pokemon accounts
                 content.Add(new KeyValuePair<string, string>("account", string.Format("{0}:{1}", m.Username, m.Password)));
                 content.Add(new KeyValuePair<string, string>("account_level", "0"));

@@ -2,7 +2,7 @@
 <SettingsFile xmlns="http://schemas.microsoft.com/VisualStudio/2004/01/settings" CurrentProfile="(Default)" GeneratedClassNamespace="PokemonAccountCreatorGUI" GeneratedClassName="app">
   <Profiles />
   <Settings>
-    <Setting Name="CaptchaAPI" Type="System.String" Scope="User">
+    <Setting Name="ShuffleAPI" Type="System.String" Scope="User">
       <Value Profile="(Default)" />
     </Setting>
     <Setting Name="Domain" Type="System.String" Scope="User">
@@ -28,6 +28,9 @@
     </Setting>
     <Setting Name="addToDB" Type="System.Boolean" Scope="User">
       <Value Profile="(Default)">False</Value>
+    </Setting>
+    <Setting Name="AntiCaptchaAPI" Type="System.String" Scope="User">
+      <Value Profile="(Default)" />
     </Setting>
   </Settings>
 </SettingsFile>
