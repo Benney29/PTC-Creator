@@ -371,7 +371,7 @@ namespace PokemonAccountCreatorGUI
                 }
 
                 string get_end_point = "http://2captcha.com/res.php?" +
-                    "key=" + StaticVars.TwoCaptchaAPI + " & " +
+                    "key=" + StaticVars.TwoCaptchaAPI + "&" +
                     "action=get&" + 
                     "id=" + captcha_id;
                 int count = 0;
@@ -389,6 +389,10 @@ namespace PokemonAccountCreatorGUI
                     {
                         StaticVars.LogText += captcha_id + Environment.NewLine;
                         StaticVars.stop = true;
+                        break;
+                    }
+                    else if (response.Contains("ERROR_CAPTCHA_UNSOLVABLE"))
+                    {
                         break;
                     }
                     count += 1;
