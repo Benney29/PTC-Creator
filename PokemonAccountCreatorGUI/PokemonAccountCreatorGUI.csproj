@@ -106,6 +106,7 @@
     <Compile Include="Classes\AntiCaptcha\NoCaptcha.cs" />
     <Compile Include="Classes\AntiCaptcha\TaskResultResponse.cs" />
     <Compile Include="Classes\HttpClientItem.cs" />
+    <Compile Include="Classes\ImageTyperzAPI.cs" />
     <Compile Include="Classes\PasswordChange.cs" />
     <Compile Include="Controller.cs" />
     <Compile Include="Classes\Creator.cs" />

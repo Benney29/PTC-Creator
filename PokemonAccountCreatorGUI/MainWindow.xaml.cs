@@ -26,6 +26,7 @@ namespace PokemonAccountCreatorGUI
             main = this;
             ShuffleAPI.Text = app.Default.ShuffleAPI;
             AntiCaptchaAPI.Text = app.Default.AntiCaptchaAPI;
+            ImageTyperzAPI.Text = app.Default.ImageTyperzAPI;
             TwoCaptchaAPI.Text = app.Default.TwoCaptchaAPI;
             domainTextBox.Text = app.Default.Domain;
             usernamePrefixTextBox.Text = app.Default.UsernamePrefix;
@@ -158,6 +159,7 @@ namespace PokemonAccountCreatorGUI
                     StaticVars.threadA = int.Parse(threadAmount.Text.Trim());
                     StaticVars.AntiAPI = AntiCaptchaAPI.Text.Trim();
                     StaticVars.TwoCaptchaAPI = TwoCaptchaAPI.Text.Trim();
+                    StaticVars.ImageTyperzAPI = ImageTyperzAPI.Text.Trim();
                     StaticVars.ShuffleAPI = ShuffleAPI.Text.Trim();
                     StaticVars.domain = domainTextBox.Text.Trim();
                     StaticVars.proxyAPI = ProxyExtractionAPI.Text.Trim();
@@ -193,7 +195,7 @@ namespace PokemonAccountCreatorGUI
             try
             {
                 int checkThreadAmount;
-                if (AntiCaptchaAPI.Text.Trim() == "" && TwoCaptchaAPI.Text.Trim() == "")
+                if (AntiCaptchaAPI.Text.Trim() == "" && TwoCaptchaAPI.Text.Trim() == "" && ImageTyperzAPI.Text.Trim() == "")
                 {
                     MessageBox.Show("Please enter captcha service API key...");
                     return false;
@@ -264,6 +266,7 @@ namespace PokemonAccountCreatorGUI
             catch { }
             app.Default.ShuffleAPI = ShuffleAPI.Text.Trim();
             app.Default.AntiCaptchaAPI = AntiCaptchaAPI.Text.Trim();
+            app.Default.ImageTyperzAPI = ImageTyperzAPI.Text.Trim();
             app.Default.TwoCaptchaAPI = TwoCaptchaAPI.Text.Trim();
             app.Default.Domain = domainTextBox.Text.Trim();
             app.Default.UsernamePrefix = usernamePrefixTextBox.Text.Trim();

@@ -17,6 +17,7 @@ namespace PokemonAccountCreatorGUI
     {
         HttpClientItem client;
         private bool proxyDead = false;
+        private bool captcha_stop = false;
 
         UserInputModel m;
 
@@ -291,18 +292,36 @@ namespace PokemonAccountCreatorGUI
         private string GetCaptcha()
         {
             string response = "";
-
             if (StaticVars.AntiAPI != null && StaticVars.AntiAPI != "")
             {
                 response = AntiCaptcha();
-                if (response != "") return response;
+                if (response != "")
+                {
+                    captcha_stop = false;
+                    return response;
+                }
+            }
+
+            if (StaticVars.ImageTyperzAPI != "" && StaticVars.ImageTyperzAPI != "")
+            {
+                response = ImageTyperz();
+                if (response != "")
+                {
+                    captcha_stop = false;
+                    return response;
+                }
             }
 
             if (StaticVars.TwoCaptchaAPI != null && StaticVars.TwoCaptchaAPI != "")
             {
                 response = TwoCaptcha();
-                if (response != "") return response;
+                if (response != "")
+                {
+                    captcha_stop = false;
+                    return response;
+                }
             }
+
 
             return response;
 
@@ -325,7 +344,7 @@ namespace PokemonAccountCreatorGUI
                     api.ErrorMessage.Contains("ERROR_IP_BLOCKED")
                     )
                 {
-                    StaticVars.stop = true;
+                    captcha_stop = true;
                 }
                     StaticVars.LogText += api.ErrorMessage + Environment.NewLine;
                 return "";
@@ -361,7 +380,7 @@ namespace PokemonAccountCreatorGUI
                     )
                 {
                     StaticVars.LogText += captcha_id + Environment.NewLine;
-                    StaticVars.stop = true;
+                    captcha_stop = true;
                     return "";
                 }
                 else
@@ -388,7 +407,7 @@ namespace PokemonAccountCreatorGUI
                         )
                     {
                         StaticVars.LogText += captcha_id + Environment.NewLine;
-                        StaticVars.stop = true;
+                        captcha_stop = true;
                         break;
                     }
                     else if (response.Contains("ERROR_CAPTCHA_UNSOLVABLE"))
@@ -399,6 +418,30 @@ namespace PokemonAccountCreatorGUI
                 }
                 return "";
             }
+        }
+
+        private string ImageTyperz()
+        {
+            ImagetyperzAPI i = new ImagetyperzAPI(StaticVars.ImageTyperzAPI);
+            try
+            {
+                string id = i.submit_recaptcha("https://club.pokemon.com/us/pokemon-trainer-club/parents/sign-up", "6LdpuiYTAAAAAL6y9JNUZzJ7cF3F8MQGGKko1bCy");
+                while (i.in_progress(id))
+                {
+                    Thread.Sleep(10000);
+                }
+                return i.retrieve_captcha(id);
+            }
+            catch (Exception e)
+            {
+                if (e.Message.Contains("AUTHENTICATION_FAILED"))
+                {
+                    StaticVars.LogText += e.Message + Environment.NewLine;
+                    captcha_stop = true;
+                }
+                return "";
+            }
+
         }
         
         private void writeToFile()

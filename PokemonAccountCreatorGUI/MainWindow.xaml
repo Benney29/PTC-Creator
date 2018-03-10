@@ -17,6 +17,9 @@
                 <MenuItem Header="AntiCaptcha">
                     <TextBox Width="200" Name="AntiCaptchaAPI"></TextBox>
                 </MenuItem>
+                <MenuItem Header="ImageTyperz">
+                    <TextBox Width="200" Name="ImageTyperzAPI"></TextBox>
+                </MenuItem>
                 <MenuItem Header="2Captcha">
                     <TextBox Width="200" Name="TwoCaptchaAPI"></TextBox>
                 </MenuItem>

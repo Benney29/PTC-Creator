@@ -154,5 +154,17 @@ namespace PokemonAccountCreatorGUI {
                 this["TwoCaptchaAPI"] = value;
             }
         }
+        
+        [global::System.Configuration.UserScopedSettingAttribute()]
+        [global::System.Diagnostics.DebuggerNonUserCodeAttribute()]
+        [global::System.Configuration.DefaultSettingValueAttribute("")]
+        public string ImageTyperzAPI {
+            get {
+                return ((string)(this["ImageTyperzAPI"]));
+            }
+            set {
+                this["ImageTyperzAPI"] = value;
+            }
+        }
     }
 }
