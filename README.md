@@ -11,8 +11,8 @@ The format becomes:`IP:PORT:{amount}:{rest time}`
 
 Each row will only contain one proxy. For example:
 ```
-1:2:3:4:1234:1:900
-2:3:4:5:2345:1:900
+1.2.3.4:1234:1:900
+2.3.4.5:2345:1:900
 ```
 
 If you are using static proxies, this is the format you should use `IP:PORT:1:900`. Otherwise, add an issue in the repo
