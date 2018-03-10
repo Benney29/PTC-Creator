@@ -72,7 +72,7 @@
                             <StackPanel Orientation="Horizontal" Margin="5, 10">
                                 <Label Content="Threads:" HorizontalAlignment="Left" Height="35" Width="79"/>
                                 <StackPanel  Orientation="Horizontal">
-                                    <Slider Name="threadSlider" Value="10" Maximum="500" TickPlacement="BottomRight" TickFrequency="10" IsSnapToTickEnabled="True" Margin="0,3,0,0" Width="191" />
+                                    <Slider Name="threadSlider" Value="10" Maximum="1000" TickPlacement="BottomRight" TickFrequency="10" IsSnapToTickEnabled="True" Margin="0,3,0,0" Width="191" />
                                     <TextBox Name ="threadAmount" Text="{Binding Value, ElementName=threadSlider, UpdateSourceTrigger=PropertyChanged}" Width="55" Margin="0,3,0,7" RenderTransformOrigin="0.897,0.442" TextChanged="threadAmount_TextChanged"  />
                                 </StackPanel>
                             </StackPanel>
