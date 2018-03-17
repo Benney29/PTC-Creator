@@ -1,4 +1,5 @@
-﻿using PTC_Creator.Models;
+﻿using PTC_Creator.Forms.ProxyForms;
+using PTC_Creator.Models;
 using System;
 using System.Collections.Generic;
 using System.ComponentModel;
@@ -102,11 +103,13 @@ namespace PTC_Creator.Forms
 
         private void setThreadToolStripMenuItem_Click(object sender, EventArgs e)
         {
-
+            Proxy_SetThread m = new Proxy_SetThread(this);
+            m.Show();
         }
         private void setDelayToolStripMenuItem_Click(object sender, EventArgs e)
         {
-
+            Proxy_SetDelay m = new Proxy_SetDelay(this);
+            m.Show();
         }
 
         private void resetToolStripMenuItem_Click(object sender, EventArgs e)

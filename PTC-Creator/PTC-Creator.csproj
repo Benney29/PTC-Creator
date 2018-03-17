@@ -72,6 +72,18 @@
     <Compile Include="Forms\ProxyForms\Proxy_Add.Designer.cs">
       <DependentUpon>Proxy_Add.cs</DependentUpon>
     </Compile>
+    <Compile Include="Forms\ProxyForms\Proxy_SetDelay.cs">
+      <SubType>Form</SubType>
+    </Compile>
+    <Compile Include="Forms\ProxyForms\Proxy_SetDelay.Designer.cs">
+      <DependentUpon>Proxy_SetDelay.cs</DependentUpon>
+    </Compile>
+    <Compile Include="Forms\ProxyForms\Proxy_SetThread.cs">
+      <SubType>Form</SubType>
+    </Compile>
+    <Compile Include="Forms\ProxyForms\Proxy_SetThread.Designer.cs">
+      <DependentUpon>Proxy_SetThread.cs</DependentUpon>
+    </Compile>
     <Compile Include="MainForm.cs">
       <SubType>Form</SubType>
     </Compile>
@@ -94,6 +106,12 @@
     </EmbeddedResource>
     <EmbeddedResource Include="Forms\ProxyForms\Proxy_Add.resx">
       <DependentUpon>Proxy_Add.cs</DependentUpon>
+    </EmbeddedResource>
+    <EmbeddedResource Include="Forms\ProxyForms\Proxy_SetDelay.resx">
+      <DependentUpon>Proxy_SetDelay.cs</DependentUpon>
+    </EmbeddedResource>
+    <EmbeddedResource Include="Forms\ProxyForms\Proxy_SetThread.resx">
+      <DependentUpon>Proxy_SetThread.cs</DependentUpon>
     </EmbeddedResource>
     <EmbeddedResource Include="MainForm.resx">
       <DependentUpon>MainForm.cs</DependentUpon>
