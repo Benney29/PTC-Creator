@@ -56,7 +56,7 @@ namespace PTC_Creator.Forms
                 }
             }
             MessageBox.Show("New Proxy Added");
-            pf.DataGrid.Update();
+            pf.ProxyDataGrid.DataSource = new BindingSource(GlobalSettings.proxyList, null);
             this.Close();
         }
 

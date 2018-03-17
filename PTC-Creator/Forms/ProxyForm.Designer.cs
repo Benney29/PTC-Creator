@@ -42,10 +42,11 @@
             this.setDelayToolStripMenuItem = new System.Windows.Forms.ToolStripMenuItem();
             this.resetStatsToolStripMenuItem = new System.Windows.Forms.ToolStripMenuItem();
             this.deleteToolStripMenuItem = new System.Windows.Forms.ToolStripMenuItem();
-            this.DataGrid = new System.Windows.Forms.DataGridView();
+            this.ProxyDataGrid = new System.Windows.Forms.DataGridView();
+            this.openFileDialog = new System.Windows.Forms.OpenFileDialog();
             this.gridMenu.SuspendLayout();
             this.cellMenu.SuspendLayout();
-            ((System.ComponentModel.ISupportInitialize)(this.DataGrid)).BeginInit();
+            ((System.ComponentModel.ISupportInitialize)(this.ProxyDataGrid)).BeginInit();
             this.SuspendLayout();
             // 
             // gridMenu
@@ -145,25 +146,30 @@
             this.deleteToolStripMenuItem.Text = "Delete";
             this.deleteToolStripMenuItem.Click += new System.EventHandler(this.deleteToolStripMenuItem_Click);
             // 
-            // DataGrid
+            // ProxyDataGrid
             // 
-            this.DataGrid.AllowUserToAddRows = false;
-            this.DataGrid.AllowUserToDeleteRows = false;
-            this.DataGrid.AllowUserToOrderColumns = true;
-            this.DataGrid.AutoSizeColumnsMode = System.Windows.Forms.DataGridViewAutoSizeColumnsMode.AllCells;
-            this.DataGrid.BackgroundColor = System.Drawing.Color.FromArgb(((int)(((byte)(41)))), ((int)(((byte)(44)))), ((int)(((byte)(51)))));
-            this.DataGrid.BorderStyle = System.Windows.Forms.BorderStyle.None;
-            this.DataGrid.ColumnHeadersHeightSizeMode = System.Windows.Forms.DataGridViewColumnHeadersHeightSizeMode.AutoSize;
-            this.DataGrid.Dock = System.Windows.Forms.DockStyle.Fill;
-            this.DataGrid.EditMode = System.Windows.Forms.DataGridViewEditMode.EditProgrammatically;
-            this.DataGrid.GridColor = System.Drawing.Color.FromArgb(((int)(((byte)(62)))), ((int)(((byte)(120)))), ((int)(((byte)(138)))));
-            this.DataGrid.Location = new System.Drawing.Point(0, 0);
-            this.DataGrid.Name = "DataGrid";
-            this.DataGrid.Size = new System.Drawing.Size(716, 435);
-            this.DataGrid.TabIndex = 0;
-            this.DataGrid.CellContentClick += new System.Windows.Forms.DataGridViewCellEventHandler(this.DataGrid_CellContentClick_1);
-            this.DataGrid.CellMouseDown += new System.Windows.Forms.DataGridViewCellMouseEventHandler(this.DataGrid_CellMouseDown);
-            this.DataGrid.MouseDown += new System.Windows.Forms.MouseEventHandler(this.DataGrid_MouseDown);
+            this.ProxyDataGrid.AllowUserToAddRows = false;
+            this.ProxyDataGrid.AllowUserToDeleteRows = false;
+            this.ProxyDataGrid.AllowUserToOrderColumns = true;
+            this.ProxyDataGrid.AutoSizeColumnsMode = System.Windows.Forms.DataGridViewAutoSizeColumnsMode.AllCells;
+            this.ProxyDataGrid.BackgroundColor = System.Drawing.Color.FromArgb(((int)(((byte)(41)))), ((int)(((byte)(44)))), ((int)(((byte)(51)))));
+            this.ProxyDataGrid.BorderStyle = System.Windows.Forms.BorderStyle.None;
+            this.ProxyDataGrid.CellBorderStyle = System.Windows.Forms.DataGridViewCellBorderStyle.Sunken;
+            this.ProxyDataGrid.ColumnHeadersHeightSizeMode = System.Windows.Forms.DataGridViewColumnHeadersHeightSizeMode.AutoSize;
+            this.ProxyDataGrid.Dock = System.Windows.Forms.DockStyle.Fill;
+            this.ProxyDataGrid.EditMode = System.Windows.Forms.DataGridViewEditMode.EditProgrammatically;
+            this.ProxyDataGrid.GridColor = System.Drawing.Color.FromArgb(((int)(((byte)(62)))), ((int)(((byte)(120)))), ((int)(((byte)(138)))));
+            this.ProxyDataGrid.Location = new System.Drawing.Point(0, 0);
+            this.ProxyDataGrid.Name = "ProxyDataGrid";
+            this.ProxyDataGrid.Size = new System.Drawing.Size(716, 435);
+            this.ProxyDataGrid.TabIndex = 0;
+            this.ProxyDataGrid.CellMouseDown += new System.Windows.Forms.DataGridViewCellMouseEventHandler(this.DataGrid_CellMouseDown);
+            this.ProxyDataGrid.MouseDown += new System.Windows.Forms.MouseEventHandler(this.DataGrid_MouseDown);
+            // 
+            // openFileDialog
+            // 
+            this.openFileDialog.Filter = "Text|*.txt|All|*.*";
+            this.openFileDialog.Title = "Select Proxy File";
             // 
             // ProxyForm
             // 
@@ -171,7 +177,7 @@
             this.AutoScaleMode = System.Windows.Forms.AutoScaleMode.Font;
             this.BackColor = System.Drawing.Color.FromArgb(((int)(((byte)(41)))), ((int)(((byte)(44)))), ((int)(((byte)(51)))));
             this.ClientSize = new System.Drawing.Size(716, 435);
-            this.Controls.Add(this.DataGrid);
+            this.Controls.Add(this.ProxyDataGrid);
             this.Font = new System.Drawing.Font("Century Gothic", 12F, System.Drawing.FontStyle.Regular, System.Drawing.GraphicsUnit.Point, ((byte)(0)));
             this.ForeColor = System.Drawing.Color.FromArgb(((int)(((byte)(62)))), ((int)(((byte)(120)))), ((int)(((byte)(138)))));
             this.FormBorderStyle = System.Windows.Forms.FormBorderStyle.None;
@@ -181,7 +187,7 @@
             this.Load += new System.EventHandler(this.ProxyForm_Load);
             this.gridMenu.ResumeLayout(false);
             this.cellMenu.ResumeLayout(false);
-            ((System.ComponentModel.ISupportInitialize)(this.DataGrid)).EndInit();
+            ((System.ComponentModel.ISupportInitialize)(this.ProxyDataGrid)).EndInit();
             this.ResumeLayout(false);
 
         }
@@ -200,6 +206,7 @@
         private System.Windows.Forms.ToolStripMenuItem setDelayToolStripMenuItem;
         private System.Windows.Forms.ToolStripMenuItem resetStatsToolStripMenuItem;
         private System.Windows.Forms.ToolStripMenuItem deleteToolStripMenuItem;
-        internal System.Windows.Forms.DataGridView DataGrid;
+        internal System.Windows.Forms.DataGridView ProxyDataGrid;
+        private System.Windows.Forms.OpenFileDialog openFileDialog;
     }
 }

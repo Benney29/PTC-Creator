@@ -26,54 +26,6 @@ namespace PTC_Creator.Properties {
         [global::System.Configuration.UserScopedSettingAttribute()]
         [global::System.Diagnostics.DebuggerNonUserCodeAttribute()]
         [global::System.Configuration.DefaultSettingValueAttribute("")]
-        public string Domain {
-            get {
-                return ((string)(this["Domain"]));
-            }
-            set {
-                this["Domain"] = value;
-            }
-        }
-        
-        [global::System.Configuration.UserScopedSettingAttribute()]
-        [global::System.Diagnostics.DebuggerNonUserCodeAttribute()]
-        [global::System.Configuration.DefaultSettingValueAttribute("")]
-        public string Username {
-            get {
-                return ((string)(this["Username"]));
-            }
-            set {
-                this["Username"] = value;
-            }
-        }
-        
-        [global::System.Configuration.UserScopedSettingAttribute()]
-        [global::System.Diagnostics.DebuggerNonUserCodeAttribute()]
-        [global::System.Configuration.DefaultSettingValueAttribute("")]
-        public string Password {
-            get {
-                return ((string)(this["Password"]));
-            }
-            set {
-                this["Password"] = value;
-            }
-        }
-        
-        [global::System.Configuration.UserScopedSettingAttribute()]
-        [global::System.Diagnostics.DebuggerNonUserCodeAttribute()]
-        [global::System.Configuration.DefaultSettingValueAttribute("")]
-        public string CreateAmount {
-            get {
-                return ((string)(this["CreateAmount"]));
-            }
-            set {
-                this["CreateAmount"] = value;
-            }
-        }
-        
-        [global::System.Configuration.UserScopedSettingAttribute()]
-        [global::System.Diagnostics.DebuggerNonUserCodeAttribute()]
-        [global::System.Configuration.DefaultSettingValueAttribute("")]
         public string ProxyList {
             get {
                 return ((string)(this["ProxyList"]));
@@ -86,24 +38,24 @@ namespace PTC_Creator.Properties {
         [global::System.Configuration.UserScopedSettingAttribute()]
         [global::System.Diagnostics.DebuggerNonUserCodeAttribute()]
         [global::System.Configuration.DefaultSettingValueAttribute("")]
-        public string CaptchaAPIList {
+        public string CaptchaSettings {
             get {
-                return ((string)(this["CaptchaAPIList"]));
+                return ((string)(this["CaptchaSettings"]));
             }
             set {
-                this["CaptchaAPIList"] = value;
+                this["CaptchaSettings"] = value;
             }
         }
         
         [global::System.Configuration.UserScopedSettingAttribute()]
         [global::System.Diagnostics.DebuggerNonUserCodeAttribute()]
         [global::System.Configuration.DefaultSettingValueAttribute("")]
-        public string ShuffleSettings {
+        public string CreatorSettings {
             get {
-                return ((string)(this["ShuffleSettings"]));
+                return ((string)(this["CreatorSettings"]));
             }
             set {
-                this["ShuffleSettings"] = value;
+                this["CreatorSettings"] = value;
             }
         }
     }
