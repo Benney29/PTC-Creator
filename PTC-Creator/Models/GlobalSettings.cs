@@ -11,9 +11,12 @@ namespace PTC_Creator.Models
 {
     public class GlobalSettings
     {
-        public static List<CaptchaAPI> captchaSettings = new List<CaptchaAPI>();
-        public static List<Proxy> proxyList = new List<Proxy>();
+        public static ObservableCollection<CaptchaAPI> captchaSettings = new ObservableCollection<CaptchaAPI>();
+        public static ObservableCollection<Proxy> proxyList = new ObservableCollection<Proxy>();
         public static CreatorSettings creatorSettings = new CreatorSettings();
+
+        public static ObservableCollection<StatusModel> creationStatus = new ObservableCollection<StatusModel>();
+        
     }
 
     #region Captcha Settings
@@ -26,25 +29,71 @@ namespace PTC_Creator.Models
 
     public class CaptchaAPI
     {
+        public event PropertyChangedEventHandler PropertyChanged;
 
+        private CaptchaProvider _provider;
         [DisplayName("Captcha Provider")]
-        public CaptchaProvider provider { get; set; }
+        public CaptchaProvider provider {
+            get { return _provider; }
+            set { _provider = value; this.NotifyPropertyChanged("provider"); }
+        }
 
+        private string _api;
         [DisplayName("API")]
-        public string api { get; set; }
+        public string api {
+            get { return _api; }
+            set { _api = value; this.NotifyPropertyChanged("api"); }
+        }
 
+        private int _success_count;
         [DisplayName("Success Count")]
-        public int success_count { get; set; }
+        public int success_count {
+            get { return _success_count; }
+            set { _success_count = value; this.NotifyPropertyChanged("success_count"); }
+        }
 
+        private int _fail_count;
         [DisplayName("Failure Count")]
-        public int fail_count { get; set; }
+        public int fail_count {
+            get { return _fail_count; }
+            set { _fail_count = value; this.NotifyPropertyChanged("fail_count"); }
+        }
 
-        public CaptchaAPI(CaptchaProvider _provider, string _api)
+        private bool _enabled;
+        [DisplayName("Enable")]
+        public bool enabled
+        {
+            get { return _enabled; }
+            set { _enabled = value; this.NotifyPropertyChanged("disabled"); }
+        }
+
+        private int _order;
+        [DisplayName("Order")]
+        public int order {
+            get { return _order; }
+            set { _order = value; this.NotifyPropertyChanged("order"); }
+        }
+
+
+        public CaptchaAPI(CaptchaProvider _provider, string _api, int _order)
         {
             provider = _provider;
             api = _api;
             success_count = 0;
             fail_count = 0;
+            enabled = false;
+            order = _order;
+        }
+
+        //Use for Deserialize
+        public CaptchaAPI()
+        { }
+
+
+        private void NotifyPropertyChanged(string name)
+        {
+            if (PropertyChanged != null)
+                PropertyChanged(this, new PropertyChangedEventArgs(name));
         }
     }
     #endregion
@@ -121,7 +170,7 @@ namespace PTC_Creator.Models
 
         private DateTime _last_used_time;
         [DisplayName("Last Used")]
-        public DateTime last_used_time { 
+        public DateTime last_used_time {
             get { return _last_used_time; }
             set { _last_used_time = value; this.NotifyPropertyChanged("last_used_time"); }
         }
@@ -165,7 +214,7 @@ namespace PTC_Creator.Models
             username = _username;
             password = _password;
         }
-        
+
         private void NotifyPropertyChanged(string name)
         {
             if (PropertyChanged != null)
@@ -193,8 +242,64 @@ namespace PTC_Creator.Models
         public string username { get; set; }
         public string password { get; set; }
         public int createAmount { get; set; }
+        public int threadAmount { get; set; }
+        public bool rocketMapFormat { get; set; }
         public bool saveDB { get; set; }
 
+    }
+    #endregion
+
+    #region Creation Status
+    public class StatusModel
+    {
+        public event PropertyChangedEventHandler PropertyChanged;
+
+        private int _index;
+        [DisplayName("Index")]
+        public int index {
+            get { return _index; }
+            set { _index = value;  this.NotifyPropertyChanged("index"); } }
+
+        private string _username;
+        [DisplayName("Username")]
+        public string username {
+            get { return _username; }
+            set { _username = value; this.NotifyPropertyChanged("username"); }
+        }
+
+        private string _password;
+        [DisplayName("Password")]
+        public string password {
+            get { return _password; }
+            set { _password = value; this.NotifyPropertyChanged("passwored"); }
+        }
+
+
+        private CreationStatus _status;
+        [DisplayName("Status")]
+        public CreationStatus status
+        {
+            get { return _status; }
+            set { _status = value; this.NotifyPropertyChanged("status"); }
+        }
+
+        [Browsable(false)]
+        public List<string> log = new List<string>();
+
+        private void NotifyPropertyChanged(string name)
+        {
+            if (PropertyChanged != null)
+                PropertyChanged(this, new PropertyChangedEventArgs(name));
+        }
+        
+    }
+
+    public enum CreationStatus
+    {
+        Waiting,
+        Processing,
+        Created,
+        Failed
     }
     #endregion
 }

@@ -19,17 +19,24 @@ namespace PTC_Creator
         public MainForm()
         {
             GlobalSettings.captchaSettings = 
-                JsonConvert.DeserializeObject<List<CaptchaAPI>>(Properties.Settings.Default.CaptchaSettings) == null ?
-                new List<CaptchaAPI>() : JsonConvert.DeserializeObject<List<CaptchaAPI>>(Properties.Settings.Default.CaptchaSettings);
+                JsonConvert.DeserializeObject<ObservableCollection<CaptchaAPI>>(Properties.Settings.Default.CaptchaSettings) == null ?
+                new ObservableCollection<CaptchaAPI>() : JsonConvert.DeserializeObject<ObservableCollection<CaptchaAPI>>(Properties.Settings.Default.CaptchaSettings);
 
             GlobalSettings.proxyList = 
-                JsonConvert.DeserializeObject<List<Proxy>>(Properties.Settings.Default.ProxyList) == null ? 
-                new List<Proxy>() : JsonConvert.DeserializeObject<List<Proxy>>(Properties.Settings.Default.ProxyList);
+                JsonConvert.DeserializeObject<ObservableCollection<Proxy>>(Properties.Settings.Default.ProxyList) == null ? 
+                new ObservableCollection<Proxy>() : JsonConvert.DeserializeObject<ObservableCollection<Proxy>>(Properties.Settings.Default.ProxyList);
             GlobalSettings.creatorSettings = 
                 JsonConvert.DeserializeObject<CreatorSettings>(Properties.Settings.Default.CreatorSettings) == null ? 
                 new CreatorSettings() : JsonConvert.DeserializeObject<CreatorSettings>(Properties.Settings.Default.CreatorSettings);
 
             InitializeComponent();
+            CreateForm m = new CreateForm();
+            m.TopLevel = false;
+            m.AutoScroll = true;
+            ContentPanel.Controls.Clear();
+            ContentPanel.Controls.Add(m);
+            m.Dock = DockStyle.Fill;
+            m.Show();
             this.MaximizedBounds = Screen.FromHandle(this.Handle).WorkingArea;
         }
 

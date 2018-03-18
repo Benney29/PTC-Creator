@@ -63,7 +63,7 @@
             // CancelButton
             // 
             this.CancelButton.FlatStyle = System.Windows.Forms.FlatStyle.Flat;
-            this.CancelButton.Location = new System.Drawing.Point(147, 109);
+            this.CancelButton.Location = new System.Drawing.Point(153, 92);
             this.CancelButton.Name = "CancelButton";
             this.CancelButton.Size = new System.Drawing.Size(94, 41);
             this.CancelButton.TabIndex = 9;
@@ -74,7 +74,7 @@
             // AddButton
             // 
             this.AddButton.FlatStyle = System.Windows.Forms.FlatStyle.Flat;
-            this.AddButton.Location = new System.Drawing.Point(38, 109);
+            this.AddButton.Location = new System.Drawing.Point(44, 92);
             this.AddButton.Name = "AddButton";
             this.AddButton.Size = new System.Drawing.Size(94, 41);
             this.AddButton.TabIndex = 8;
@@ -84,7 +84,7 @@
             // 
             // ThreadAmountTextBox
             // 
-            this.ThreadAmountTextBox.Location = new System.Drawing.Point(169, 56);
+            this.ThreadAmountTextBox.Location = new System.Drawing.Point(175, 39);
             this.ThreadAmountTextBox.Name = "ThreadAmountTextBox";
             this.ThreadAmountTextBox.Size = new System.Drawing.Size(63, 27);
             this.ThreadAmountTextBox.TabIndex = 7;
@@ -93,7 +93,7 @@
             // ThreadAmountLabel
             // 
             this.ThreadAmountLabel.AutoSize = true;
-            this.ThreadAmountLabel.Location = new System.Drawing.Point(25, 59);
+            this.ThreadAmountLabel.Location = new System.Drawing.Point(31, 42);
             this.ThreadAmountLabel.Name = "ThreadAmountLabel";
             this.ThreadAmountLabel.Size = new System.Drawing.Size(138, 21);
             this.ThreadAmountLabel.TabIndex = 6;
@@ -116,7 +116,7 @@
             this.AutoScaleDimensions = new System.Drawing.SizeF(10F, 21F);
             this.AutoScaleMode = System.Windows.Forms.AutoScaleMode.Font;
             this.BackColor = System.Drawing.Color.MidnightBlue;
-            this.ClientSize = new System.Drawing.Size(278, 172);
+            this.ClientSize = new System.Drawing.Size(278, 157);
             this.Controls.Add(this.CancelButton);
             this.Controls.Add(this.AddButton);
             this.Controls.Add(this.ThreadAmountTextBox);

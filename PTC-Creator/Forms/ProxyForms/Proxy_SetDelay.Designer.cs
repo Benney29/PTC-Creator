@@ -63,7 +63,7 @@
             // CancelButton
             // 
             this.CancelButton.FlatStyle = System.Windows.Forms.FlatStyle.Flat;
-            this.CancelButton.Location = new System.Drawing.Point(147, 120);
+            this.CancelButton.Location = new System.Drawing.Point(153, 92);
             this.CancelButton.Name = "CancelButton";
             this.CancelButton.Size = new System.Drawing.Size(94, 41);
             this.CancelButton.TabIndex = 14;
@@ -74,7 +74,7 @@
             // AddButton
             // 
             this.AddButton.FlatStyle = System.Windows.Forms.FlatStyle.Flat;
-            this.AddButton.Location = new System.Drawing.Point(38, 120);
+            this.AddButton.Location = new System.Drawing.Point(44, 92);
             this.AddButton.Name = "AddButton";
             this.AddButton.Size = new System.Drawing.Size(94, 41);
             this.AddButton.TabIndex = 13;
@@ -84,7 +84,7 @@
             // 
             // DelayTextBox
             // 
-            this.DelayTextBox.Location = new System.Drawing.Point(169, 67);
+            this.DelayTextBox.Location = new System.Drawing.Point(175, 39);
             this.DelayTextBox.Name = "DelayTextBox";
             this.DelayTextBox.Size = new System.Drawing.Size(63, 27);
             this.DelayTextBox.TabIndex = 12;
@@ -93,7 +93,7 @@
             // DelayLabel
             // 
             this.DelayLabel.AutoSize = true;
-            this.DelayLabel.Location = new System.Drawing.Point(25, 70);
+            this.DelayLabel.Location = new System.Drawing.Point(31, 42);
             this.DelayLabel.Name = "DelayLabel";
             this.DelayLabel.Size = new System.Drawing.Size(129, 21);
             this.DelayLabel.TabIndex = 11;
@@ -116,7 +116,7 @@
             this.AutoScaleDimensions = new System.Drawing.SizeF(10F, 21F);
             this.AutoScaleMode = System.Windows.Forms.AutoScaleMode.Font;
             this.BackColor = System.Drawing.Color.MidnightBlue;
-            this.ClientSize = new System.Drawing.Size(278, 172);
+            this.ClientSize = new System.Drawing.Size(278, 157);
             this.Controls.Add(this.CancelButton);
             this.Controls.Add(this.AddButton);
             this.Controls.Add(this.DelayTextBox);
@@ -126,8 +126,9 @@
             this.ForeColor = System.Drawing.Color.White;
             this.FormBorderStyle = System.Windows.Forms.FormBorderStyle.None;
             this.Icon = ((System.Drawing.Icon)(resources.GetObject("$this.Icon")));
-            this.Margin = new System.Windows.Forms.Padding(5, 5, 5, 5);
+            this.Margin = new System.Windows.Forms.Padding(5);
             this.Name = "Proxy_SetDelay";
+            this.StartPosition = System.Windows.Forms.FormStartPosition.CenterScreen;
             this.Text = "Proxy_SetDelay";
             ((System.ComponentModel.ISupportInitialize)(this.pictureBox1)).EndInit();
             this.WindowPanel.ResumeLayout(false);
