@@ -43,7 +43,6 @@ namespace PTC_Creator.Forms
             CaptchaDataGrid.Columns["success_count"].ReadOnly = true;
             CaptchaDataGrid.Columns["fail_count"].ReadOnly = true;
             CaptchaDataGrid.Columns["order"].ReadOnly = true;
-
         }
 
 

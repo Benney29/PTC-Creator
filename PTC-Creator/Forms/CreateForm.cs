@@ -69,6 +69,16 @@ namespace PTC_Creator.Forms
         {
             if (Validate_Config())
             {
+                GlobalSettings.creatorSettings.api = ShuffleAPITextBox.Text.Trim();
+                GlobalSettings.creatorSettings.domain = DomainTextBox.Text.Trim();
+                GlobalSettings.creatorSettings.username = UsernameTextBox.Text.Trim();
+                GlobalSettings.creatorSettings.password = PasswordTextBox.Text.Trim();
+                GlobalSettings.creatorSettings.threadAmount = int.Parse(ThreadAmountTextBox.Text.Trim());
+                GlobalSettings.creatorSettings.createAmount = int.Parse(CreateAmountTextBox.Text.Trim());
+                GlobalSettings.creatorSettings.rocketMapFormat = RocketMapCheckBox.Checked;
+                GlobalSettings.creatorSettings.saveDB = SaveInDBCheckBox.Checked;
+
+
             }
         }
 
@@ -83,6 +93,9 @@ namespace PTC_Creator.Forms
             GlobalSettings.creatorSettings.rocketMapFormat = RocketMapCheckBox.Checked;
             GlobalSettings.creatorSettings.saveDB = SaveInDBCheckBox.Checked;
             Properties.Settings.Default.CreatorSettings = JsonConvert.SerializeObject(GlobalSettings.creatorSettings);
+            Properties.Settings.Default.CaptchaSettings = JsonConvert.SerializeObject(GlobalSettings.captchaSettings);
+            Properties.Settings.Default.ProxyList = JsonConvert.SerializeObject(GlobalSettings.proxyList);
+            Properties.Settings.Default.WebProxyList = JsonConvert.SerializeObject(GlobalSettings.webProxy);
             Properties.Settings.Default.Save();
         }
 
@@ -136,7 +149,7 @@ namespace PTC_Creator.Forms
             #endregion
 
             #region ProxySettings
-            if (GlobalSettings.proxyList.Count == 0)
+            if (GlobalSettings.proxyList.Count == 0 && GlobalSettings.webProxy.url == "")
             {
                 MessageBox.Show("Please import proxies");
                 return false;

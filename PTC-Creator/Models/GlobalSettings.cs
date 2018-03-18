@@ -1,4 +1,5 @@
-﻿using System;
+﻿using PTC_Creator.Forms;
+using System;
 using System.Collections.Generic;
 using System.Collections.ObjectModel;
 using System.ComponentModel;
@@ -11,13 +12,22 @@ namespace PTC_Creator.Models
 {
     public class GlobalSettings
     {
-        public static ObservableCollection<CaptchaAPI> captchaSettings = new ObservableCollection<CaptchaAPI>();
-        public static ObservableCollection<Proxy> proxyList = new ObservableCollection<Proxy>();
-        public static CreatorSettings creatorSettings = new CreatorSettings();
+        #region forms
+        internal static CreateForm createForm = new CreateForm();
+        internal static CaptchaForm captchaFrom = new CaptchaForm();
+        internal static ProxyForm proxyForm = new ProxyForm();
+        #endregion
 
-        public static ObservableCollection<StatusModel> creationStatus = new ObservableCollection<StatusModel>();
+        internal static ObservableCollection<CaptchaAPI> captchaSettings = new ObservableCollection<CaptchaAPI>();
+        internal static ObservableCollection<Proxy> proxyList = new ObservableCollection<Proxy>();
+        internal static WebProxyItem webProxy = new WebProxyItem();
+        internal static CreatorSettings creatorSettings = new CreatorSettings();
 
-        public static List<HttpClient> workers = new List<HttpClient>();
+        internal static ObservableCollection<StatusModel> creationStatus = new ObservableCollection<StatusModel>();
+
+        internal static List<HttpClient> workers = new List<HttpClient>();
+
+        
 
     }
 
@@ -225,11 +235,17 @@ namespace PTC_Creator.Models
 
     }
 
+    public class WebProxyItem
+    {
+        public string url { get; set; }
+        public ProxyType type { get; set; }
+    }
+
+
     public enum ProxyType
     {
         HTTP,
         HTTPS,
-        HTTP_HTTPS,
         Socks4,
         Socks5
     }

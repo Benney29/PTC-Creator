@@ -58,5 +58,17 @@ namespace PTC_Creator.Properties {
                 this["CreatorSettings"] = value;
             }
         }
+        
+        [global::System.Configuration.UserScopedSettingAttribute()]
+        [global::System.Diagnostics.DebuggerNonUserCodeAttribute()]
+        [global::System.Configuration.DefaultSettingValueAttribute("")]
+        public string WebProxyList {
+            get {
+                return ((string)(this["WebProxyList"]));
+            }
+            set {
+                this["WebProxyList"] = value;
+            }
+        }
     }
 }

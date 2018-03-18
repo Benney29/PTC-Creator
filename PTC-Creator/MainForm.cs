@@ -18,59 +18,59 @@ namespace PTC_Creator
     {
         public MainForm()
         {
-            GlobalSettings.captchaSettings = 
-                JsonConvert.DeserializeObject<ObservableCollection<CaptchaAPI>>(Properties.Settings.Default.CaptchaSettings) == null ?
-                new ObservableCollection<CaptchaAPI>() : JsonConvert.DeserializeObject<ObservableCollection<CaptchaAPI>>(Properties.Settings.Default.CaptchaSettings);
-
-            GlobalSettings.proxyList = 
-                JsonConvert.DeserializeObject<ObservableCollection<Proxy>>(Properties.Settings.Default.ProxyList) == null ? 
-                new ObservableCollection<Proxy>() : JsonConvert.DeserializeObject<ObservableCollection<Proxy>>(Properties.Settings.Default.ProxyList);
-            GlobalSettings.creatorSettings = 
-                JsonConvert.DeserializeObject<CreatorSettings>(Properties.Settings.Default.CreatorSettings) == null ? 
-                new CreatorSettings() : JsonConvert.DeserializeObject<CreatorSettings>(Properties.Settings.Default.CreatorSettings);
 
             InitializeComponent();
-            CreateForm m = new CreateForm();
-            m.TopLevel = false;
-            m.AutoScroll = true;
-            ContentPanel.Controls.Clear();
-            ContentPanel.Controls.Add(m);
-            m.Dock = DockStyle.Fill;
-            m.Show();
+        }
+
+
+        private void MainForm_Load(object sender, EventArgs e)
+        {
+            GlobalSettings.captchaSettings =
+                JsonConvert.DeserializeObject<ObservableCollection<CaptchaAPI>>(Properties.Settings.Default.CaptchaSettings) == null ?
+                new ObservableCollection<CaptchaAPI>() : JsonConvert.DeserializeObject<ObservableCollection<CaptchaAPI>>(Properties.Settings.Default.CaptchaSettings);
+            GlobalSettings.proxyList =
+                JsonConvert.DeserializeObject<ObservableCollection<Proxy>>(Properties.Settings.Default.ProxyList) == null ?
+                new ObservableCollection<Proxy>() : JsonConvert.DeserializeObject<ObservableCollection<Proxy>>(Properties.Settings.Default.ProxyList);
+            GlobalSettings.creatorSettings =
+                JsonConvert.DeserializeObject<CreatorSettings>(Properties.Settings.Default.CreatorSettings) == null ?
+                new CreatorSettings() : JsonConvert.DeserializeObject<CreatorSettings>(Properties.Settings.Default.CreatorSettings);
+            GlobalSettings.webProxy =
+                JsonConvert.DeserializeObject<WebProxyItem>(Properties.Settings.Default.WebProxyList) == null ?
+                new WebProxyItem() : JsonConvert.DeserializeObject<WebProxyItem>(Properties.Settings.Default.WebProxyList);
+
             this.MaximizedBounds = Screen.FromHandle(this.Handle).WorkingArea;
+
+
+
+            GlobalSettings.createForm.TopLevel = GlobalSettings.captchaFrom.TopLevel = GlobalSettings.proxyForm.TopLevel = false;
+            GlobalSettings.createForm.AutoScroll = GlobalSettings.captchaFrom.AutoScroll = GlobalSettings.proxyForm.AutoScroll = true;
+            GlobalSettings.createForm.Dock = GlobalSettings.captchaFrom.Dock = GlobalSettings.proxyForm.Dock = DockStyle.Fill;
+            ContentPanel.Controls.Clear();
+            ContentPanel.Controls.Add(GlobalSettings.createForm);
+            GlobalSettings.createForm.Show();
+
+
         }
 
         private void CreateAccountButton_Click(object sender, EventArgs e)
         {
-            CreateForm m = new CreateForm();
-            m.TopLevel = false;
-            m.AutoScroll = true;
             ContentPanel.Controls.Clear();
-            ContentPanel.Controls.Add(m);
-            m.Dock = DockStyle.Fill;
-            m.Show();
+            ContentPanel.Controls.Add(GlobalSettings.createForm);
+            GlobalSettings.createForm.Show();
         }
 
         private void ProxyButton_Click(object sender, EventArgs e)
         {
-            ProxyForm m = new ProxyForm();
-            m.TopLevel = false;
-            m.AutoScroll = true;
             ContentPanel.Controls.Clear();
-            ContentPanel.Controls.Add(m);
-            m.Dock = DockStyle.Fill;
-            m.Show();
+            ContentPanel.Controls.Add(GlobalSettings.proxyForm);
+            GlobalSettings.proxyForm.Show();
         }
 
         private void CaptchaButton_Click(object sender, EventArgs e)
         {
-            CaptchaForm m = new CaptchaForm();
-            m.TopLevel = false;
-            m.AutoScroll = true;
             ContentPanel.Controls.Clear();
-            ContentPanel.Controls.Add(m);
-            m.Dock = DockStyle.Fill;
-            m.Show();
+            ContentPanel.Controls.Add(GlobalSettings.captchaFrom);
+            GlobalSettings.captchaFrom.Show();
         }
 
         #region Window Control Button
@@ -138,7 +138,9 @@ namespace PTC_Creator
             Properties.Settings.Default.CaptchaSettings= JsonConvert.SerializeObject(GlobalSettings.captchaSettings);
             Properties.Settings.Default.ProxyList = JsonConvert.SerializeObject(GlobalSettings.proxyList);
             Properties.Settings.Default.CreatorSettings = JsonConvert.SerializeObject(GlobalSettings.creatorSettings);
+            Properties.Settings.Default.WebProxyList = JsonConvert.SerializeObject(GlobalSettings.webProxy);
             Properties.Settings.Default.Save();
         }
+
     }
 }

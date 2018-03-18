@@ -4,6 +4,7 @@ using System;
 using System.Collections.Generic;
 using System.IO;
 using System.Linq;
+using System.Net.Http;
 using System.Text.RegularExpressions;
 using System.Windows.Forms;
 
@@ -20,13 +21,16 @@ namespace PTC_Creator.Forms
         private void ProxyForm_Load(object sender, EventArgs e)
         {
             ProxyDataGrid.DataSource = new BindingSource(GlobalSettings.proxyList, null);
+            ProxyTypeComboBox.DataSource = Enum.GetNames(typeof(ProxyType));
+            WebProxyUrlTextBox.Text = GlobalSettings.webProxy.url;
+            ProxyTypeComboBox.Text = GlobalSettings.webProxy.type.ToString();
         }
 
         private void DataGrid_MouseDown(object sender, MouseEventArgs e)
         {
             if (e.Button == MouseButtons.Right)
             {
-                gridMenu.Show(ProxyDataGrid, ProxyDataGrid.PointToClient(Cursor.Position));
+                ProxyGridMenu.Show(ProxyDataGrid, ProxyDataGrid.PointToClient(Cursor.Position));
             }
         }
         private void DataGrid_CellMouseDown(object sender, DataGridViewCellMouseEventArgs e)
@@ -40,7 +44,7 @@ namespace PTC_Creator.Forms
                 try
                 {
                     ProxyDataGrid.Rows[e.RowIndex].Selected = true;
-                    cellMenu.Show(ProxyDataGrid, ProxyDataGrid.PointToClient(Cursor.Position));
+                    ProxyCellMenu.Show(ProxyDataGrid, ProxyDataGrid.PointToClient(Cursor.Position));
                 }
                 catch { }
             }
@@ -126,6 +130,88 @@ namespace PTC_Creator.Forms
                 GlobalSettings.proxyList.Remove(p);
             }
             ProxyDataGrid.DataSource = new BindingSource(GlobalSettings.proxyList, null);
+        }
+
+        private void AddButton_Click(object sender, EventArgs e)
+        {
+            Uri test;
+            if (ProxyTypeComboBox.Text != "HTTP")
+            {
+                MessageBox.Show("Only HTTP supported currently");
+                return;
+            }
+            else if (!Uri.TryCreate(WebProxyUrlTextBox.Text.Trim(), UriKind.Absolute, out test))
+            {
+                MessageBox.Show("Please enter a valid proxy url");
+                return;
+            }
+            GlobalSettings.webProxy.url = WebProxyUrlTextBox.Text.Trim();
+            GlobalSettings.webProxy.type = (ProxyType)Enum.Parse(typeof(ProxyType), ProxyTypeComboBox.Text);
+
+            using (HttpClient client = new HttpClient())
+            {
+                string content = "";
+                try
+                {
+                    content = client.GetStringAsync(WebProxyUrlTextBox.Text.Trim()).Result;
+                }
+                catch { MessageBox.Show("Connection timeout"); return; }
+
+                Regex proxyAuth = new Regex(@"\d+.\d+.\d+.\d+:\d+:.+:.+");
+                Regex proxy = new Regex(@"\d+.\d+.\d+.\d+:\d+");
+                int previous_count = GlobalSettings.proxyList.Count; //Use to show how many unique proxies been added to queue
+                MatchCollection m_collection = proxy.Matches(content);
+
+                if (m_collection.Count > 0)
+                {
+                    foreach (Match m in m_collection)
+                    {
+                        if (m.Success && GlobalSettings.proxyList.FirstOrDefault(i => i.proxy == m.Value) == null)
+                        {
+                            GlobalSettings.proxyList.Add(new Proxy(m.Value));
+                        }
+                    }
+                }
+                else
+                {
+                    MessageBox.Show("No proxy found in url");
+                    return;
+                }
+                MessageBox.Show(GlobalSettings.proxyList.Count - previous_count + " unique proxies added to proxy list");
+                GlobalSettings.proxyForm.ProxyDataGrid.DataSource = GlobalSettings.proxyList;
+            }
+
+        }
+
+        private void TestButton_Click(object sender, EventArgs e)
+        {
+            Uri test;
+            if (ProxyTypeComboBox.Text != "HTTP")
+            {
+                MessageBox.Show("Only HTTP supported currently");
+                return;
+            }
+            else if (!Uri.TryCreate(WebProxyUrlTextBox.Text.Trim(), UriKind.Absolute, out test))
+            {
+                MessageBox.Show("Please enter a valid proxy url");
+                return;
+            }
+            using (HttpClient client = new HttpClient())
+            {
+                string content = "";
+                try
+                {
+                    content = client.GetStringAsync(WebProxyUrlTextBox.Text.Trim()).Result;
+                }
+                catch { MessageBox.Show("Connection timeout"); return; }
+
+                Regex proxyAuth = new Regex(@"\d+.\d+.\d+.\d+:\d+:.+:.+");
+                Regex proxy = new Regex(@"\d+.\d+.\d+.\d+:\d+");
+                int previous_count = GlobalSettings.proxyList.Count; //Use to show how many unique proxies been added to queue
+                MatchCollection m_collection = proxy.Matches(content);
+
+                MessageBox.Show(m_collection.Count.ToString() + " proxies found in url");
+            }
         }
     }
 }

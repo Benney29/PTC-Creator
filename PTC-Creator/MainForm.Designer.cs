@@ -60,7 +60,7 @@
             this.WindowPanel.ForeColor = System.Drawing.Color.Black;
             this.WindowPanel.Location = new System.Drawing.Point(0, 0);
             this.WindowPanel.Name = "WindowPanel";
-            this.WindowPanel.Size = new System.Drawing.Size(977, 32);
+            this.WindowPanel.Size = new System.Drawing.Size(1234, 32);
             this.WindowPanel.TabIndex = 0;
             this.WindowPanel.MouseDown += new System.Windows.Forms.MouseEventHandler(this.WindowPanel_MouseDown);
             this.WindowPanel.MouseMove += new System.Windows.Forms.MouseEventHandler(this.WindowPanel_MouseMove);
@@ -72,7 +72,7 @@
             this.MinimizeButton.FlatAppearance.BorderSize = 0;
             this.MinimizeButton.FlatStyle = System.Windows.Forms.FlatStyle.Flat;
             this.MinimizeButton.Font = new System.Drawing.Font("Century Gothic", 12F, System.Drawing.FontStyle.Bold, System.Drawing.GraphicsUnit.Point, ((byte)(0)));
-            this.MinimizeButton.Location = new System.Drawing.Point(881, 0);
+            this.MinimizeButton.Location = new System.Drawing.Point(1138, 0);
             this.MinimizeButton.Name = "MinimizeButton";
             this.MinimizeButton.Size = new System.Drawing.Size(32, 32);
             this.MinimizeButton.TabIndex = 3;
@@ -86,7 +86,7 @@
             this.MaximizeButton.FlatAppearance.BorderSize = 0;
             this.MaximizeButton.FlatStyle = System.Windows.Forms.FlatStyle.Flat;
             this.MaximizeButton.Font = new System.Drawing.Font("Century Gothic", 12F, System.Drawing.FontStyle.Bold, System.Drawing.GraphicsUnit.Point, ((byte)(0)));
-            this.MaximizeButton.Location = new System.Drawing.Point(913, 0);
+            this.MaximizeButton.Location = new System.Drawing.Point(1170, 0);
             this.MaximizeButton.Name = "MaximizeButton";
             this.MaximizeButton.Size = new System.Drawing.Size(32, 32);
             this.MaximizeButton.TabIndex = 2;
@@ -100,7 +100,7 @@
             this.ClostButton.FlatAppearance.BorderSize = 0;
             this.ClostButton.FlatStyle = System.Windows.Forms.FlatStyle.Flat;
             this.ClostButton.Font = new System.Drawing.Font("Century Gothic", 12F, System.Drawing.FontStyle.Bold, System.Drawing.GraphicsUnit.Point, ((byte)(0)));
-            this.ClostButton.Location = new System.Drawing.Point(945, 0);
+            this.ClostButton.Location = new System.Drawing.Point(1202, 0);
             this.ClostButton.Name = "ClostButton";
             this.ClostButton.Size = new System.Drawing.Size(32, 32);
             this.ClostButton.TabIndex = 1;
@@ -138,9 +138,9 @@
             // 
             this.StatusPanel.BackColor = System.Drawing.Color.SaddleBrown;
             this.StatusPanel.Dock = System.Windows.Forms.DockStyle.Bottom;
-            this.StatusPanel.Location = new System.Drawing.Point(0, 695);
+            this.StatusPanel.Location = new System.Drawing.Point(0, 668);
             this.StatusPanel.Name = "StatusPanel";
-            this.StatusPanel.Size = new System.Drawing.Size(977, 32);
+            this.StatusPanel.Size = new System.Drawing.Size(1234, 32);
             this.StatusPanel.TabIndex = 1;
             // 
             // MainPanel
@@ -150,7 +150,7 @@
             this.MainPanel.Dock = System.Windows.Forms.DockStyle.Fill;
             this.MainPanel.Location = new System.Drawing.Point(0, 32);
             this.MainPanel.Name = "MainPanel";
-            this.MainPanel.Size = new System.Drawing.Size(977, 663);
+            this.MainPanel.Size = new System.Drawing.Size(1234, 636);
             this.MainPanel.TabIndex = 2;
             // 
             // ContentPanel
@@ -158,7 +158,7 @@
             this.ContentPanel.Dock = System.Windows.Forms.DockStyle.Fill;
             this.ContentPanel.Location = new System.Drawing.Point(170, 0);
             this.ContentPanel.Name = "ContentPanel";
-            this.ContentPanel.Size = new System.Drawing.Size(807, 663);
+            this.ContentPanel.Size = new System.Drawing.Size(1064, 636);
             this.ContentPanel.TabIndex = 1;
             // 
             // ButtonPanel
@@ -169,7 +169,7 @@
             this.ButtonPanel.Dock = System.Windows.Forms.DockStyle.Left;
             this.ButtonPanel.Location = new System.Drawing.Point(0, 0);
             this.ButtonPanel.Name = "ButtonPanel";
-            this.ButtonPanel.Size = new System.Drawing.Size(170, 663);
+            this.ButtonPanel.Size = new System.Drawing.Size(170, 636);
             this.ButtonPanel.TabIndex = 0;
             // 
             // CaptchaButton
@@ -215,7 +215,7 @@
             // 
             this.AutoScaleMode = System.Windows.Forms.AutoScaleMode.None;
             this.BackColor = System.Drawing.Color.FromArgb(((int)(((byte)(41)))), ((int)(((byte)(44)))), ((int)(((byte)(51)))));
-            this.ClientSize = new System.Drawing.Size(977, 727);
+            this.ClientSize = new System.Drawing.Size(1234, 700);
             this.Controls.Add(this.MainPanel);
             this.Controls.Add(this.StatusPanel);
             this.Controls.Add(this.WindowPanel);
@@ -227,6 +227,7 @@
             this.StartPosition = System.Windows.Forms.FormStartPosition.CenterScreen;
             this.Text = "PTC Creator";
             this.FormClosing += new System.Windows.Forms.FormClosingEventHandler(this.MainForm_FormClosing);
+            this.Load += new System.EventHandler(this.MainForm_Load);
             this.WindowPanel.ResumeLayout(false);
             this.WindowPanel.PerformLayout();
             ((System.ComponentModel.ISupportInitialize)(this.pictureBox1)).EndInit();
