@@ -16,7 +16,9 @@ namespace PTC_Creator.Models
         public static CreatorSettings creatorSettings = new CreatorSettings();
 
         public static ObservableCollection<StatusModel> creationStatus = new ObservableCollection<StatusModel>();
-        
+
+        public static List<HttpClient> workers = new List<HttpClient>();
+
     }
 
     #region Captcha Settings

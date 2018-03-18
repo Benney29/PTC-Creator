@@ -1,4 +1,5 @@
-﻿using PTC_Creator.Models;
+﻿using Newtonsoft.Json;
+using PTC_Creator.Models;
 using System;
 using System.Linq;
 using System.Windows.Forms;
@@ -73,7 +74,16 @@ namespace PTC_Creator.Forms
 
         private void SaveSettingsButton_Click(object sender, EventArgs e)
         {
-
+            GlobalSettings.creatorSettings.api = ShuffleAPITextBox.Text.Trim();
+            GlobalSettings.creatorSettings.domain = DomainTextBox.Text.Trim();
+            GlobalSettings.creatorSettings.username = UsernameTextBox.Text.Trim();
+            GlobalSettings.creatorSettings.password = PasswordTextBox.Text.Trim();
+            try { GlobalSettings.creatorSettings.threadAmount = int.Parse(ThreadAmountTextBox.Text.Trim()); } catch { }
+            try { GlobalSettings.creatorSettings.createAmount = int.Parse(CreateAmountTextBox.Text.Trim()); } catch { }
+            GlobalSettings.creatorSettings.rocketMapFormat = RocketMapCheckBox.Checked;
+            GlobalSettings.creatorSettings.saveDB = SaveInDBCheckBox.Checked;
+            Properties.Settings.Default.CreatorSettings = JsonConvert.SerializeObject(GlobalSettings.creatorSettings);
+            Properties.Settings.Default.Save();
         }
 
         private bool Validate_Config()
