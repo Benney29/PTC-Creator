@@ -13,26 +13,11 @@ namespace PTC_Creator.Forms.ProxyForms
 {
     public partial class Proxy_SetThread : Form
     {
-        ProxyForm pf;
-        public Proxy_SetThread(ProxyForm _pf)
+        private List<Proxy> _proxies;
+        public Proxy_SetThread(List<Proxy> proxies)
         {
-            pf = _pf;
+            _proxies = proxies;
             InitializeComponent();
-        }
-
-        private void AddButton_Click(object sender, EventArgs e)
-        {
-            if (ThreadAmountTextBox.Text != "")
-            {
-                foreach (DataGridViewRow row in pf.ProxyDataGrid.SelectedRows)
-                {
-                    Proxy p = row.DataBoundItem as Proxy;
-                    p.thread_amount = int.Parse(ThreadAmountTextBox.Text);
-                }
-                MessageBox.Show(pf.ProxyDataGrid.SelectedRows.Count + " proxies has updated");
-                pf.ProxyDataGrid.Refresh();
-                this.Close();
-            }
         }
 
         private void CancelButton_Click(object sender, EventArgs e)
@@ -45,6 +30,17 @@ namespace PTC_Creator.Forms.ProxyForms
             if (!char.IsDigit(e.KeyChar) )
             {
                 e.Handled = true;
+            }
+        }
+
+        private void UpdateButton_Click(object sender, EventArgs e)
+        {
+            if (ThreadAmountTextBox.Text != "")
+            {
+                _proxies.ForEach(_ => _.delay_sec = int.Parse(ThreadAmountTextBox.Text));
+                GlobalSettings.proxyForm.UpdateProxy(_proxies);
+                MessageBox.Show(_proxies.Count + " proxies has updated");
+                this.Close();
             }
         }
     }

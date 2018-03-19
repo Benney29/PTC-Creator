@@ -32,7 +32,7 @@
             this.WindowTitleLabel = new System.Windows.Forms.Label();
             this.pictureBox1 = new System.Windows.Forms.PictureBox();
             this.CancelButton = new System.Windows.Forms.Button();
-            this.AddButton = new System.Windows.Forms.Button();
+            this.UpdateButton = new System.Windows.Forms.Button();
             this.DelayTextBox = new System.Windows.Forms.TextBox();
             this.DelayLabel = new System.Windows.Forms.Label();
             this.WindowPanel = new System.Windows.Forms.Panel();
@@ -71,20 +71,20 @@
             this.CancelButton.UseVisualStyleBackColor = true;
             this.CancelButton.Click += new System.EventHandler(this.CancelButton_Click);
             // 
-            // AddButton
+            // UpdateButton
             // 
-            this.AddButton.FlatStyle = System.Windows.Forms.FlatStyle.Flat;
-            this.AddButton.Location = new System.Drawing.Point(44, 92);
-            this.AddButton.Name = "AddButton";
-            this.AddButton.Size = new System.Drawing.Size(94, 41);
-            this.AddButton.TabIndex = 13;
-            this.AddButton.Text = "Update";
-            this.AddButton.UseVisualStyleBackColor = true;
-            this.AddButton.Click += new System.EventHandler(this.AddButton_Click);
+            this.UpdateButton.FlatStyle = System.Windows.Forms.FlatStyle.Flat;
+            this.UpdateButton.Location = new System.Drawing.Point(44, 92);
+            this.UpdateButton.Name = "UpdateButton";
+            this.UpdateButton.Size = new System.Drawing.Size(94, 41);
+            this.UpdateButton.TabIndex = 13;
+            this.UpdateButton.Text = "Update";
+            this.UpdateButton.UseVisualStyleBackColor = true;
+            this.UpdateButton.Click += new System.EventHandler(this.UpdateButton_Click);
             // 
             // DelayTextBox
             // 
-            this.DelayTextBox.Location = new System.Drawing.Point(175, 39);
+            this.DelayTextBox.Location = new System.Drawing.Point(166, 39);
             this.DelayTextBox.Name = "DelayTextBox";
             this.DelayTextBox.Size = new System.Drawing.Size(63, 27);
             this.DelayTextBox.TabIndex = 12;
@@ -118,7 +118,7 @@
             this.BackColor = System.Drawing.Color.MidnightBlue;
             this.ClientSize = new System.Drawing.Size(278, 157);
             this.Controls.Add(this.CancelButton);
-            this.Controls.Add(this.AddButton);
+            this.Controls.Add(this.UpdateButton);
             this.Controls.Add(this.DelayTextBox);
             this.Controls.Add(this.DelayLabel);
             this.Controls.Add(this.WindowPanel);
@@ -143,7 +143,7 @@
         private System.Windows.Forms.Label WindowTitleLabel;
         private System.Windows.Forms.PictureBox pictureBox1;
         private System.Windows.Forms.Button CancelButton;
-        private System.Windows.Forms.Button AddButton;
+        private System.Windows.Forms.Button UpdateButton;
         private System.Windows.Forms.TextBox DelayTextBox;
         private System.Windows.Forms.Label DelayLabel;
         private System.Windows.Forms.Panel WindowPanel;

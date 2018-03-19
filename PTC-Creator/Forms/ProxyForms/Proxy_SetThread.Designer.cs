@@ -32,7 +32,7 @@
             this.WindowTitleLabel = new System.Windows.Forms.Label();
             this.pictureBox1 = new System.Windows.Forms.PictureBox();
             this.CancelButton = new System.Windows.Forms.Button();
-            this.AddButton = new System.Windows.Forms.Button();
+            this.UpdateButton = new System.Windows.Forms.Button();
             this.ThreadAmountTextBox = new System.Windows.Forms.TextBox();
             this.ThreadAmountLabel = new System.Windows.Forms.Label();
             this.WindowPanel = new System.Windows.Forms.Panel();
@@ -71,16 +71,16 @@
             this.CancelButton.UseVisualStyleBackColor = true;
             this.CancelButton.Click += new System.EventHandler(this.CancelButton_Click);
             // 
-            // AddButton
+            // UpdateButton
             // 
-            this.AddButton.FlatStyle = System.Windows.Forms.FlatStyle.Flat;
-            this.AddButton.Location = new System.Drawing.Point(44, 92);
-            this.AddButton.Name = "AddButton";
-            this.AddButton.Size = new System.Drawing.Size(94, 41);
-            this.AddButton.TabIndex = 8;
-            this.AddButton.Text = "Update";
-            this.AddButton.UseVisualStyleBackColor = true;
-            this.AddButton.Click += new System.EventHandler(this.AddButton_Click);
+            this.UpdateButton.FlatStyle = System.Windows.Forms.FlatStyle.Flat;
+            this.UpdateButton.Location = new System.Drawing.Point(44, 92);
+            this.UpdateButton.Name = "UpdateButton";
+            this.UpdateButton.Size = new System.Drawing.Size(94, 41);
+            this.UpdateButton.TabIndex = 8;
+            this.UpdateButton.Text = "Update";
+            this.UpdateButton.UseVisualStyleBackColor = true;
+            this.UpdateButton.Click += new System.EventHandler(this.UpdateButton_Click);
             // 
             // ThreadAmountTextBox
             // 
@@ -118,7 +118,7 @@
             this.BackColor = System.Drawing.Color.MidnightBlue;
             this.ClientSize = new System.Drawing.Size(278, 157);
             this.Controls.Add(this.CancelButton);
-            this.Controls.Add(this.AddButton);
+            this.Controls.Add(this.UpdateButton);
             this.Controls.Add(this.ThreadAmountTextBox);
             this.Controls.Add(this.ThreadAmountLabel);
             this.Controls.Add(this.WindowPanel);
@@ -143,7 +143,7 @@
         private System.Windows.Forms.Label WindowTitleLabel;
         private System.Windows.Forms.PictureBox pictureBox1;
         private System.Windows.Forms.Button CancelButton;
-        private System.Windows.Forms.Button AddButton;
+        private System.Windows.Forms.Button UpdateButton;
         private System.Windows.Forms.TextBox ThreadAmountTextBox;
         private System.Windows.Forms.Label ThreadAmountLabel;
         private System.Windows.Forms.Panel WindowPanel;

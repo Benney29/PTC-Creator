@@ -18,7 +18,6 @@ namespace PTC_Creator
     {
         public MainForm()
         {
-
             InitializeComponent();
         }
 
@@ -40,11 +39,10 @@ namespace PTC_Creator
 
             this.MaximizedBounds = Screen.FromHandle(this.Handle).WorkingArea;
 
-
-
             GlobalSettings.createForm.TopLevel = GlobalSettings.captchaFrom.TopLevel = GlobalSettings.proxyForm.TopLevel = false;
             GlobalSettings.createForm.AutoScroll = GlobalSettings.captchaFrom.AutoScroll = GlobalSettings.proxyForm.AutoScroll = true;
             GlobalSettings.createForm.Dock = GlobalSettings.captchaFrom.Dock = GlobalSettings.proxyForm.Dock = DockStyle.Fill;
+
             ContentPanel.Controls.Clear();
             ContentPanel.Controls.Add(GlobalSettings.createForm);
             GlobalSettings.createForm.Show();

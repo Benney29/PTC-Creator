@@ -1,5 +1,7 @@
 ﻿using PTC_Creator.Forms;
+using RandomNameGeneratorLibrary;
 using System;
+using System.Collections.Concurrent;
 using System.Collections.Generic;
 using System.Collections.ObjectModel;
 using System.ComponentModel;
@@ -22,12 +24,17 @@ namespace PTC_Creator.Models
         internal static ObservableCollection<Proxy> proxyList = new ObservableCollection<Proxy>();
         internal static WebProxyItem webProxy = new WebProxyItem();
         internal static CreatorSettings creatorSettings = new CreatorSettings();
+        
+        internal static Random random = new Random();
+        internal static PersonNameGenerator nameGenObj = new PersonNameGenerator();
 
-        internal static ObservableCollection<StatusModel> creationStatus = new ObservableCollection<StatusModel>();
 
+        internal static ConcurrentBag<StatusModel> creationBag = new ConcurrentBag<StatusModel>();
         internal static List<HttpClient> workers = new List<HttpClient>();
 
-        
+
+        internal static List<StatusModel> creationStatus = new List<StatusModel>();
+
 
     }
 
@@ -114,88 +121,28 @@ namespace PTC_Creator.Models
 
     public class Proxy
     {
-        public event PropertyChangedEventHandler PropertyChanged;
 
-        private string _proxy;
-        [DisplayName("Proxy")]
-        public string proxy {
-            get { return _proxy; }
-            set { _proxy = value; this.NotifyPropertyChanged("proxy"); }
-        }
+        public string proxy { get; set; }
 
-        private ProxyType _type;
-        [DisplayName("ProxyType")]
-        public ProxyType type
-        {
-            get { return _type; }
-            set { _type = value; this.NotifyPropertyChanged("type"); }
-        }
+        public ProxyType type { get; set; }
 
-        private string _username;
-        [DisplayName("Username")]
-        public string username {
-            get { return _username; }
-            set { _username = value; this.NotifyPropertyChanged("username"); }
-        }
+        public string username { get; set; }
 
-        private string _password;
-        [DisplayName("Password")]
-        public string password {
-            get { return _password; }
-            set { _password = value; this.NotifyPropertyChanged("password"); }
-        }
+        public string password { get; set; }
 
-        private int _thread_amount;
-        [DisplayName("Thread Amount")]
-        public int thread_amount {
-            get { return _thread_amount; }
-            set { _thread_amount = value; this.NotifyPropertyChanged("thread_amount"); }
-        }
+        public int thread_amount { get; set; }
 
-        private int _delay_sec;
-        [DisplayName("Delay(Sec)")]
-        public int delay_sec {
-            get { return _delay_sec; }
-            set { _delay_sec = value; this.NotifyPropertyChanged("delay_sec"); }
-        }
+        public int delay_sec { get; set; }
 
-        private int _creat_count { get; set; }
-        [DisplayName("Creat Count")]
-        public int creat_count {
-            get { return _creat_count; }
-            set { _creat_count = value; this.NotifyPropertyChanged("creat_count"); }
-        }
+        public int create_count { get; set; }
 
-        private int _fail_count;
-        [DisplayName("Fail Count")]
-        public int fail_count {
-            get { return _fail_count; }
-            set { _fail_count = value; this.NotifyPropertyChanged("fail_count"); }
-        }
+        public int fail_count { get; set; }
 
-        private bool _usable;
-        [DisplayName("Usable")]
-        public bool usable {
-            get { return _usable; }
-            set { _usable = value; this.NotifyPropertyChanged("usable"); }
-        }
+        public bool usable { get; set; }
 
-        private DateTime _last_used_time;
-        [DisplayName("Last Used")]
-        public DateTime last_used_time {
-            get { return _last_used_time; }
-            set { _last_used_time = value; this.NotifyPropertyChanged("last_used_time"); }
-        }
+        public DateTime last_used_time { get; set; }
 
-        private bool _inUse;
-        [DisplayName("In Use")]
-        public bool inUse {
-            get { return _inUse; }
-            set { _inUse = value; this.NotifyPropertyChanged("inUse"); }
-        }
-
-        [Browsable(false)]
-        public List<HttpClient> clients { get; set; }
+        public bool inUse { get; set; }
 
         //This is used to deserialize object
         public Proxy()
@@ -206,7 +153,7 @@ namespace PTC_Creator.Models
             proxy = _proxy;
             type = proxy_type;
             delay_sec = 900;
-            creat_count = 0;
+            create_count = 0;
             fail_count = 0;
             usable = true;
             last_used_time = new DateTime(2000, 1, 1);
@@ -218,19 +165,13 @@ namespace PTC_Creator.Models
             proxy = _proxy;
             type = proxy_type;
             delay_sec = 900;
-            creat_count = 0;
+            create_count = 0;
             fail_count = 0;
             usable = true;
             last_used_time = new DateTime(2000, 1, 1);
             inUse = false;
             username = _username;
             password = _password;
-        }
-
-        private void NotifyPropertyChanged(string name)
-        {
-            if (PropertyChanged != null)
-                PropertyChanged(this, new PropertyChangedEventArgs(name));
         }
 
     }
@@ -271,27 +212,20 @@ namespace PTC_Creator.Models
     public class StatusModel
     {
         public event PropertyChangedEventHandler PropertyChanged;
-
-        private int _index;
-        [DisplayName("Index")]
-        public int index {
-            get { return _index; }
-            set { _index = value;  this.NotifyPropertyChanged("index"); } }
-
-        private string _username;
+        
+        private string _username = "";
         [DisplayName("Username")]
         public string username {
             get { return _username; }
             set { _username = value; this.NotifyPropertyChanged("username"); }
         }
 
-        private string _password;
+        private string _password = "";
         [DisplayName("Password")]
         public string password {
             get { return _password; }
             set { _password = value; this.NotifyPropertyChanged("passwored"); }
         }
-
 
         private CreationStatus _status;
         [DisplayName("Status")]
@@ -301,8 +235,19 @@ namespace PTC_Creator.Models
             set { _status = value; this.NotifyPropertyChanged("status"); }
         }
 
+        public string _log
+        {
+            get { try { return log[0]; } catch { return ""; } }
+        }
+
         [Browsable(false)]
         public List<string> log = new List<string>();
+
+        [Browsable(false)]
+        public string dob { get; set; }
+
+        [Browsable(false)]
+        public string email { get; set; }
 
         private void NotifyPropertyChanged(string name)
         {
@@ -311,7 +256,7 @@ namespace PTC_Creator.Models
         }
         
     }
-
+    
     public enum CreationStatus
     {
         Waiting,

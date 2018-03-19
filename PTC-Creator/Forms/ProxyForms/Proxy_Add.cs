@@ -11,11 +11,9 @@ namespace PTC_Creator.Forms
     {
         private Regex proxyAuth = new Regex(@"\d+.\d+.\d+.\d+:\d+:.+:.+");
         private Regex proxy = new Regex(@"\d+.\d+.\d+.\d+:\d+");
-
-        private ProxyForm pf;
-        public Proxy_Add(ProxyForm _pf)
+        
+        public Proxy_Add()
         {
-            pf = _pf;
             InitializeComponent();
         }
 
@@ -51,7 +49,7 @@ namespace PTC_Creator.Forms
                 }
             }
             MessageBox.Show("New Proxy Added");
-            pf.ProxyDataGrid.DataSource = new BindingSource(GlobalSettings.proxyList, null);
+            GlobalSettings.proxyForm.UpdateProxy();
             this.Close();
         }
 

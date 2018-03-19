@@ -94,7 +94,7 @@
             this.StartButton.TabIndex = 0;
             this.StartButton.Text = "Start";
             this.StartButton.UseVisualStyleBackColor = false;
-            this.StartButton.Click += new System.EventHandler(this.StartButton_Click);
+            this.StartButton.Click += new System.EventHandler(this.StartButton_ClickAsync);
             // 
             // ConfigPanel
             // 
@@ -298,6 +298,7 @@
             this.StatusDataGrid.Name = "StatusDataGrid";
             this.StatusDataGrid.Size = new System.Drawing.Size(739, 623);
             this.StatusDataGrid.TabIndex = 2;
+            this.StatusDataGrid.VirtualMode = true;
             // 
             // CreateForm
             // 
@@ -345,7 +346,7 @@
         private System.Windows.Forms.Label DomainLabel;
         private System.Windows.Forms.Button StartButton;
         private System.Windows.Forms.Panel panel1;
-        internal System.Windows.Forms.DataGridView StatusDataGrid;
         private System.Windows.Forms.Button SaveSettingsButton;
+        public System.Windows.Forms.DataGridView StatusDataGrid;
     }
 }

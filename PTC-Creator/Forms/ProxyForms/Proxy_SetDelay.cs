@@ -1,31 +1,17 @@
 ﻿using PTC_Creator.Models;
 using System;
+using System.Collections.Generic;
 using System.Windows.Forms;
 
 namespace PTC_Creator.Forms.ProxyForms
 {
     public partial class Proxy_SetDelay : Form
     {
-        ProxyForm pf;
-        public Proxy_SetDelay(ProxyForm _pf)
+        List<Proxy> _proxies = new List<Proxy>();
+        public Proxy_SetDelay(List<Proxy> proxies)
         {
-            pf = _pf;
+            _proxies = proxies;
             InitializeComponent();
-        }
-
-        private void AddButton_Click(object sender, EventArgs e)
-        {
-            if (DelayTextBox.Text != "")
-            {
-                foreach (DataGridViewRow row in pf.ProxyDataGrid.SelectedRows)
-                {
-                    Proxy p = row.DataBoundItem as Proxy;
-                    p.delay_sec = int.Parse(DelayTextBox.Text);
-                }
-                MessageBox.Show(pf.ProxyDataGrid.SelectedRows.Count + " proxies has updated");
-                pf.ProxyDataGrid.Refresh();
-                this.Close();
-            }
         }
 
         private void CancelButton_Click(object sender, EventArgs e)
@@ -38,6 +24,17 @@ namespace PTC_Creator.Forms.ProxyForms
             if (!char.IsDigit(e.KeyChar))
             {
                 e.Handled = true;
+            }
+        }
+
+        private void UpdateButton_Click(object sender, EventArgs e)
+        {
+            if (DelayTextBox.Text != "")
+            {
+                _proxies.ForEach(_ => _.delay_sec = int.Parse(DelayTextBox.Text));
+                MessageBox.Show(_proxies.Count + " proxies has updated");
+                GlobalSettings.proxyForm.UpdateProxy(_proxies);
+                this.Close();
             }
         }
     }

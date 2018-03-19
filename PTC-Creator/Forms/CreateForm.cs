@@ -2,6 +2,7 @@
 using PTC_Creator.Models;
 using System;
 using System.Linq;
+using System.Threading.Tasks;
 using System.Windows.Forms;
 
 namespace PTC_Creator.Forms
@@ -11,7 +12,11 @@ namespace PTC_Creator.Forms
         public CreateForm()
         {
             InitializeComponent();
+        }
 
+        internal void StatusGridRedraw()
+        {
+            this.StatusDataGrid.Refresh();
         }
 
         private void CreateForm_Load(object sender, EventArgs e)
@@ -65,7 +70,7 @@ namespace PTC_Creator.Forms
             }
         }
 
-        private void StartButton_Click(object sender, EventArgs e)
+        private async void StartButton_ClickAsync(object sender, EventArgs e)
         {
             if (Validate_Config())
             {
@@ -78,7 +83,7 @@ namespace PTC_Creator.Forms
                 GlobalSettings.creatorSettings.rocketMapFormat = RocketMapCheckBox.Checked;
                 GlobalSettings.creatorSettings.saveDB = SaveInDBCheckBox.Checked;
 
-
+                await Task.Run(() => new Controller().Start());
             }
         }
 
