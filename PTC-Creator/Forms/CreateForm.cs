@@ -170,7 +170,7 @@ namespace PTC_Creator.Forms
             #endregion
 
             #region ProxySettings
-            if (GlobalSettings.proxyList.Count == 0 && GlobalSettings.webProxy.url == "")
+            if (GlobalSettings.proxyList.Count == 0 && GlobalSettings.webProxy.Count == 0)
             {
                 MessageBox.Show("Please import proxies");
                 return false;

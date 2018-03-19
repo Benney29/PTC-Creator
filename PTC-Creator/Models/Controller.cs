@@ -24,7 +24,7 @@ namespace PTC_Creator.Models
         {
             Initiate_accounts(GlobalSettings.creatorSettings.createAmount);
 
-            if (GlobalSettings.webProxy.url != null || GlobalSettings.webProxy.url != "")
+            if (GlobalSettings.webProxy.Count > 0)
             {
                 new Thread(WebProxyThread).Start();
             }
@@ -58,16 +58,23 @@ namespace PTC_Creator.Models
                     {
                         lock (lockObj)
                         {
-                            worker = GlobalSettings.workers.FirstOrDefault(__ => !__.inUse && DateTime.Now.Subtract(__.last_used_time).TotalSeconds > __.proxyItem.delay_sec);
+                            worker = GlobalSettings.workers.FirstOrDefault(__ => __.IsUsable());
+                            if (worker != null)
+                            {
+                                worker.inUse = true;
+                            }
                         }
                         if (worker == null)
                         {
                             Thread.Sleep(10000);
                         }
                     }
+                    _.ChangeStatus(CreationStatus.Processing);
                     Task t = Task.Run(() => new Creator(worker, _).Start());
                     taskList.Add(t);
                 }
+
+                Task.WaitAll(taskList.ToArray());
 
                 //Check failed count and add new slots
                 Initiate_accounts(GlobalSettings.creatorSettings.createAmount - GlobalSettings.creationStatus.Count(_ => _.status == CreationStatus.Failed));
@@ -148,8 +155,8 @@ namespace PTC_Creator.Models
         #region proxy
         private void Initiate_worker()
         {
-            GlobalSettings.proxyList.ToList().ForEach(_ =>
-            {
+            GlobalSettings.proxyList.Where(_ => _.usable).ToList().ForEach(_ =>
+            {                
                 for (int i = 0; i < _.thread_amount; i++)
                 {
                     CookieContainer cookieJar = new CookieContainer();
@@ -178,11 +185,14 @@ namespace PTC_Creator.Models
             {
                 using (HttpClient client = new HttpClient())
                 {
-                    string content = client.GetStringAsync(GlobalSettings.webProxy.url).Result;
-
-                    lock (lockObj)
+                    foreach (WebProxyItem _ in GlobalSettings.webProxy)
                     {
-                        GlobalSettings.proxyForm.GetProxies(content, true);
+                        string content = client.GetStringAsync(_.url).Result;
+
+                        lock (lockObj)
+                        {
+                            GlobalSettings.webProxyForm.GetProxies(content, true);
+                        }
                     }
                 }
                 Thread.Sleep(900000);

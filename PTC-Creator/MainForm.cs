@@ -24,30 +24,83 @@ namespace PTC_Creator
 
         private void MainForm_Load(object sender, EventArgs e)
         {
-            GlobalSettings.captchaSettings =
-                JsonConvert.DeserializeObject<List<CaptchaAPI>>(Properties.Settings.Default.CaptchaSettings) == null ?
-                new List<CaptchaAPI>() : JsonConvert.DeserializeObject<List<CaptchaAPI>>(Properties.Settings.Default.CaptchaSettings);
-            GlobalSettings.proxyList =
-                JsonConvert.DeserializeObject<List<Proxy>>(Properties.Settings.Default.ProxyList) == null ?
-                new List<Proxy>() : JsonConvert.DeserializeObject<List<Proxy>>(Properties.Settings.Default.ProxyList);
-            GlobalSettings.creatorSettings =
-                JsonConvert.DeserializeObject<CreatorSettings>(Properties.Settings.Default.CreatorSettings) == null ?
-                new CreatorSettings() : JsonConvert.DeserializeObject<CreatorSettings>(Properties.Settings.Default.CreatorSettings);
-            GlobalSettings.webProxy =
-                JsonConvert.DeserializeObject<WebProxyItem>(Properties.Settings.Default.WebProxyList) == null ?
-                new WebProxyItem() : JsonConvert.DeserializeObject<WebProxyItem>(Properties.Settings.Default.WebProxyList);
+            #region Load saved settings
+            try
+            {
+                GlobalSettings.proxyList =
+                    JsonConvert.DeserializeObject<List<Proxy>>(Properties.Settings.Default.ProxyList) == null ?
+                    new List<Proxy>() : JsonConvert.DeserializeObject<List<Proxy>>(Properties.Settings.Default.ProxyList);
+            }
+            catch { MessageBox.Show("ProxyList load failed."); GlobalSettings.proxyList = new List<Proxy>(); }
+
+            try
+            {
+                GlobalSettings.creatorSettings =
+                    JsonConvert.DeserializeObject<CreatorSettings>(Properties.Settings.Default.CreatorSettings) == null ?
+                    new CreatorSettings() : JsonConvert.DeserializeObject<CreatorSettings>(Properties.Settings.Default.CreatorSettings);
+            }
+            catch { MessageBox.Show("Creator settings load failed."); GlobalSettings.creatorSettings = new CreatorSettings(); }
+
+            try
+            {
+                GlobalSettings.webProxy =
+                    JsonConvert.DeserializeObject<List<WebProxyItem>>(Properties.Settings.Default.WebProxyList) == null ?
+                    new List<WebProxyItem>() : JsonConvert.DeserializeObject<List<WebProxyItem>>(Properties.Settings.Default.WebProxyList);
+            }
+            catch { MessageBox.Show("WebProxyList load failed."); GlobalSettings.webProxy = new List<WebProxyItem>(); }
+
+
+            try
+            {
+                GlobalSettings.captchaSettings =
+                    JsonConvert.DeserializeObject<List<CaptchaAPI>>(Properties.Settings.Default.CaptchaSettings) == null ?
+                    new List<CaptchaAPI>() : JsonConvert.DeserializeObject<List<CaptchaAPI>>(Properties.Settings.Default.CaptchaSettings);
+            }
+            catch { MessageBox.Show("Captcha settings load failed."); GlobalSettings.captchaSettings = new List<CaptchaAPI>(); }
+
+            if (GlobalSettings.captchaSettings.Count == 0)
+            {
+                int index = 1;
+                foreach (CaptchaProvider _ in Enum.GetValues(typeof(CaptchaProvider)))
+                {
+                    GlobalSettings.captchaSettings.Add(new CaptchaAPI(_, "", index));
+                    index++;
+                }
+            }
+            else if (GlobalSettings.captchaSettings.Count < Enum.GetValues(typeof(CaptchaProvider)).Length)
+            {
+                int index = GlobalSettings.captchaSettings.Count + 1;
+                foreach (CaptchaProvider _ in Enum.GetValues(typeof(CaptchaProvider)))
+                {
+                    if (GlobalSettings.captchaSettings.FirstOrDefault(__ => __.provider == _) == null)
+                    {
+                        GlobalSettings.captchaSettings.Add(new CaptchaAPI(_, "", index));
+                        index++;
+                    }
+                }
+            }
+            #endregion
 
             this.MaximizedBounds = Screen.FromHandle(this.Handle).WorkingArea;
 
-            GlobalSettings.createForm.TopLevel = GlobalSettings.captchaFrom.TopLevel = GlobalSettings.proxyForm.TopLevel = false;
-            GlobalSettings.createForm.AutoScroll = GlobalSettings.captchaFrom.AutoScroll = GlobalSettings.proxyForm.AutoScroll = true;
-            GlobalSettings.createForm.Dock = GlobalSettings.captchaFrom.Dock = GlobalSettings.proxyForm.Dock = DockStyle.Fill;
+            GlobalSettings.webProxyForm.TopLevel = 
+                GlobalSettings.createForm.TopLevel = 
+                GlobalSettings.captchaFrom.TopLevel = 
+                GlobalSettings.proxyForm.TopLevel = false;
+
+            GlobalSettings.webProxyForm.AutoScroll = 
+                GlobalSettings.createForm.AutoScroll = 
+                GlobalSettings.captchaFrom.AutoScroll = 
+                GlobalSettings.proxyForm.AutoScroll = true;
+
+            GlobalSettings.webProxyForm.Dock = 
+                GlobalSettings.createForm.Dock = 
+                GlobalSettings.captchaFrom.Dock = 
+                GlobalSettings.proxyForm.Dock = DockStyle.Fill;
 
             ContentPanel.Controls.Clear();
             ContentPanel.Controls.Add(GlobalSettings.createForm);
             GlobalSettings.createForm.Show();
-
-
         }
 
         private void CreateAccountButton_Click(object sender, EventArgs e)
@@ -62,6 +115,13 @@ namespace PTC_Creator
             ContentPanel.Controls.Clear();
             ContentPanel.Controls.Add(GlobalSettings.proxyForm);
             GlobalSettings.proxyForm.Show();
+        }
+
+        private void WebProxyButton_Click(object sender, EventArgs e)
+        {
+            ContentPanel.Controls.Clear();
+            ContentPanel.Controls.Add(GlobalSettings.webProxyForm);
+            GlobalSettings.webProxyForm.Show();
         }
 
         private void CaptchaButton_Click(object sender, EventArgs e)
@@ -139,6 +199,5 @@ namespace PTC_Creator
             Properties.Settings.Default.WebProxyList = JsonConvert.SerializeObject(GlobalSettings.webProxy);
             Properties.Settings.Default.Save();
         }
-
     }
 }

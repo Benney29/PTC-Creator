@@ -90,6 +90,18 @@
     <Compile Include="Forms\ProxyForms\Proxy_SetThread.Designer.cs">
       <DependentUpon>Proxy_SetThread.cs</DependentUpon>
     </Compile>
+    <Compile Include="Forms\ProxyForms\WebProxy_Add.cs">
+      <SubType>Form</SubType>
+    </Compile>
+    <Compile Include="Forms\ProxyForms\WebProxy_Add.Designer.cs">
+      <DependentUpon>WebProxy_Add.cs</DependentUpon>
+    </Compile>
+    <Compile Include="Forms\WebProxyForm.cs">
+      <SubType>Form</SubType>
+    </Compile>
+    <Compile Include="Forms\WebProxyForm.Designer.cs">
+      <DependentUpon>WebProxyForm.cs</DependentUpon>
+    </Compile>
     <Compile Include="MainForm.cs">
       <SubType>Form</SubType>
     </Compile>
@@ -124,6 +136,12 @@
     </EmbeddedResource>
     <EmbeddedResource Include="Forms\ProxyForms\Proxy_SetThread.resx">
       <DependentUpon>Proxy_SetThread.cs</DependentUpon>
+    </EmbeddedResource>
+    <EmbeddedResource Include="Forms\ProxyForms\WebProxy_Add.resx">
+      <DependentUpon>WebProxy_Add.cs</DependentUpon>
+    </EmbeddedResource>
+    <EmbeddedResource Include="Forms\WebProxyForm.resx">
+      <DependentUpon>WebProxyForm.cs</DependentUpon>
     </EmbeddedResource>
     <EmbeddedResource Include="MainForm.resx">
       <DependentUpon>MainForm.cs</DependentUpon>

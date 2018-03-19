@@ -10,29 +10,7 @@ namespace PTC_Creator.Forms
     public partial class CaptchaForm : Form
     {
         public CaptchaForm()
-        {
-            GlobalSettings.captchaSettings = new List<CaptchaAPI>();
-            if (GlobalSettings.captchaSettings.Count == 0)
-            {
-                int index = 1;
-                foreach (CaptchaProvider _ in Enum.GetValues(typeof(CaptchaProvider)))
-                {
-                    GlobalSettings.captchaSettings.Add(new CaptchaAPI(_, "", index));
-                    index++;
-                }
-            }
-            else if (GlobalSettings.captchaSettings.Count < Enum.GetValues(typeof(CaptchaProvider)).Length)
-            {
-                int index = GlobalSettings.captchaSettings.Count + 1;
-                foreach (CaptchaProvider _ in Enum.GetValues(typeof(CaptchaProvider)))
-                {
-                    if (GlobalSettings.captchaSettings.FirstOrDefault(__ => __.provider == _) == null)
-                    {
-                        GlobalSettings.captchaSettings.Add(new CaptchaAPI(_, "", index));
-                        index++;
-                    }
-                }
-            }
+        {            
             InitializeComponent();
         }
 

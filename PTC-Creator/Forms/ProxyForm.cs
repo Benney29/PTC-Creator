@@ -24,12 +24,7 @@ namespace PTC_Creator.Forms
         }
         private void ProxyForm_Load(object sender, EventArgs e)
         {
-            WebProxyPanel.Height = ProxyUrlTextBox.Height;
-            ProxyTypePanel.Width = int.Parse((0.1 * InfoPanel.Width).ToString());
             proxyOlv.SetObjects(GlobalSettings.proxyList);
-            ProxyTypeComboBox.DataSource = Enum.GetNames(typeof(ProxyType));
-            ProxyUrlTextBox.Text = GlobalSettings.webProxy.url;
-            ProxyTypeComboBox.Text = GlobalSettings.webProxy.type.ToString();
         }
 
         internal void UpdateProxy(Proxy p)
@@ -130,100 +125,6 @@ namespace PTC_Creator.Forms
                 GlobalSettings.proxyList.Remove(_);
             });
             UpdateProxy();
-        }
-
-        private void AddButton_Click(object sender, EventArgs e)
-        {
-            Uri test;
-            if (ProxyTypeComboBox.Text != "HTTP")
-            {
-                MessageBox.Show("Only HTTP supported currently");
-                return;
-            }
-            else if (!Uri.TryCreate(ProxyUrlTextBox.Text.Trim(), UriKind.Absolute, out test))
-            {
-                MessageBox.Show("Please enter a valid proxy url");
-                return;
-            }
-            GlobalSettings.webProxy.url = ProxyUrlTextBox.Text.Trim();
-            GlobalSettings.webProxy.type = (ProxyType)Enum.Parse(typeof(ProxyType), ProxyTypeComboBox.Text);
-
-            using (HttpClient client = new HttpClient())
-            {
-                string content = "";
-                try
-                {
-                    content = client.GetStringAsync(ProxyUrlTextBox.Text.Trim()).Result;
-                }
-                catch { MessageBox.Show("Connection timeout"); return; }
-
-                int response = GetProxies(content, true);
-
-                if (response == 0)
-                {
-                    MessageBox.Show("No proxy found in url");
-                    return;
-                }
-                MessageBox.Show(response + " unique proxies added to proxy list");
-                UpdateProxy();
-            }
-        }
-
-
-        private void TestButton_Click(object sender, EventArgs e)
-        {
-            Uri test;
-            if (ProxyTypeComboBox.Text != "HTTP")
-            {
-                MessageBox.Show("Only HTTP supported currently");
-                return;
-            }
-            else if (!Uri.TryCreate(ProxyUrlTextBox.Text.Trim(), UriKind.Absolute, out test))
-            {
-                MessageBox.Show("Please enter a valid proxy url");
-                return;
-            }
-            using (HttpClient client = new HttpClient())
-            {
-                string content = "";
-                try
-                {
-                    content = client.GetStringAsync(ProxyUrlTextBox.Text.Trim()).Result;
-                }
-                catch { MessageBox.Show("Connection timeout"); return; }
-                int response = GetProxies(content, false);
-
-                if (response == 0)
-                {
-                    MessageBox.Show("No proxy found in url");
-                    return;
-                }
-                MessageBox.Show(response + " unique proxies added to proxy list");
-            }
-        }
-
-
-        internal int GetProxies(string content, bool addToList)
-        {
-            int ret = 0;
-            Regex proxy = new Regex(@"\d+.\d+.\d+.\d+:\d+");
-            MatchCollection m_collection = proxy.Matches(content);
-
-            if (m_collection.Count > 0)
-            {
-                foreach (Match m in m_collection)
-                {
-                    if (m.Success && GlobalSettings.proxyList.FirstOrDefault(i => i.proxy == m.Value) == null)
-                    {
-                        ret += 1;
-                        if (addToList)
-                        {
-                            GlobalSettings.proxyList.Add(new Proxy(m.Value));
-                        }
-                    }
-                }
-            }
-            return ret;
         }
     }
 }

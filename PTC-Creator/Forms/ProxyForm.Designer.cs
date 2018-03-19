@@ -41,7 +41,6 @@
             this.resetStatsToolStripMenuItem = new System.Windows.Forms.ToolStripMenuItem();
             this.deleteToolStripMenuItem = new System.Windows.Forms.ToolStripMenuItem();
             this.openFileDialog = new System.Windows.Forms.OpenFileDialog();
-            this.WebProxyPanel = new System.Windows.Forms.Panel();
             this.ContentPanel = new System.Windows.Forms.Panel();
             this.proxyOlv = new BrightIdeasSoftware.FastObjectListView();
             this.proxy = ((BrightIdeasSoftware.OLVColumn)(new BrightIdeasSoftware.OLVColumn()));
@@ -53,23 +52,10 @@
             this.create_count = ((BrightIdeasSoftware.OLVColumn)(new BrightIdeasSoftware.OLVColumn()));
             this.fail_count = ((BrightIdeasSoftware.OLVColumn)(new BrightIdeasSoftware.OLVColumn()));
             this.usable = ((BrightIdeasSoftware.OLVColumn)(new BrightIdeasSoftware.OLVColumn()));
-            this.AddPanel = new System.Windows.Forms.Panel();
-            this.AddButton = new System.Windows.Forms.Button();
-            this.TestPanel = new System.Windows.Forms.Panel();
-            this.TestButton = new System.Windows.Forms.Button();
-            this.InfoPanel = new System.Windows.Forms.Panel();
-            this.ProxyUrlTextBox = new System.Windows.Forms.TextBox();
-            this.ProxyTypePanel = new System.Windows.Forms.Panel();
-            this.ProxyTypeComboBox = new System.Windows.Forms.ComboBox();
             this.gridMenu.SuspendLayout();
             this.cellMenu.SuspendLayout();
-            this.WebProxyPanel.SuspendLayout();
             this.ContentPanel.SuspendLayout();
             ((System.ComponentModel.ISupportInitialize)(this.proxyOlv)).BeginInit();
-            this.AddPanel.SuspendLayout();
-            this.TestPanel.SuspendLayout();
-            this.InfoPanel.SuspendLayout();
-            this.ProxyTypePanel.SuspendLayout();
             this.SuspendLayout();
             // 
             // gridMenu
@@ -160,27 +146,13 @@
             // 
             this.openFileDialog.FileName = "openFileDialog1";
             // 
-            // WebProxyPanel
-            // 
-            this.WebProxyPanel.BackColor = System.Drawing.Color.FromArgb(((int)(((byte)(41)))), ((int)(((byte)(44)))), ((int)(((byte)(51)))));
-            this.WebProxyPanel.Controls.Add(this.InfoPanel);
-            this.WebProxyPanel.Controls.Add(this.TestPanel);
-            this.WebProxyPanel.Controls.Add(this.AddPanel);
-            this.WebProxyPanel.Dock = System.Windows.Forms.DockStyle.Bottom;
-            this.WebProxyPanel.Font = new System.Drawing.Font("Century Gothic", 12F, System.Drawing.FontStyle.Regular, System.Drawing.GraphicsUnit.Point, ((byte)(0)));
-            this.WebProxyPanel.ForeColor = System.Drawing.Color.FromArgb(((int)(((byte)(224)))), ((int)(((byte)(224)))), ((int)(((byte)(224)))));
-            this.WebProxyPanel.Location = new System.Drawing.Point(0, 691);
-            this.WebProxyPanel.Name = "WebProxyPanel";
-            this.WebProxyPanel.Size = new System.Drawing.Size(1080, 29);
-            this.WebProxyPanel.TabIndex = 2;
-            // 
             // ContentPanel
             // 
             this.ContentPanel.Controls.Add(this.proxyOlv);
             this.ContentPanel.Dock = System.Windows.Forms.DockStyle.Fill;
             this.ContentPanel.Location = new System.Drawing.Point(0, 0);
             this.ContentPanel.Name = "ContentPanel";
-            this.ContentPanel.Size = new System.Drawing.Size(1080, 691);
+            this.ContentPanel.Size = new System.Drawing.Size(1080, 720);
             this.ContentPanel.TabIndex = 3;
             // 
             // proxyOlv
@@ -214,11 +186,12 @@
             this.proxyOlv.Location = new System.Drawing.Point(0, 0);
             this.proxyOlv.Name = "proxyOlv";
             this.proxyOlv.ShowGroups = false;
-            this.proxyOlv.Size = new System.Drawing.Size(1080, 691);
+            this.proxyOlv.Size = new System.Drawing.Size(1080, 720);
             this.proxyOlv.TabIndex = 1;
             this.proxyOlv.UseCompatibleStateImageBehavior = false;
             this.proxyOlv.View = System.Windows.Forms.View.Details;
             this.proxyOlv.VirtualMode = true;
+            this.proxyOlv.CellRightClick += new System.EventHandler<BrightIdeasSoftware.CellRightClickEventArgs>(this.proxyOlv_CellRightClick);
             // 
             // proxy
             // 
@@ -272,106 +245,20 @@
             this.usable.AspectName = "usable";
             this.usable.Text = "Usable";
             // 
-            // AddPanel
-            // 
-            this.AddPanel.Controls.Add(this.AddButton);
-            this.AddPanel.Dock = System.Windows.Forms.DockStyle.Right;
-            this.AddPanel.Location = new System.Drawing.Point(930, 0);
-            this.AddPanel.Name = "AddPanel";
-            this.AddPanel.Size = new System.Drawing.Size(150, 29);
-            this.AddPanel.TabIndex = 0;
-            // 
-            // AddButton
-            // 
-            this.AddButton.Dock = System.Windows.Forms.DockStyle.Fill;
-            this.AddButton.FlatStyle = System.Windows.Forms.FlatStyle.Flat;
-            this.AddButton.Location = new System.Drawing.Point(0, 0);
-            this.AddButton.Name = "AddButton";
-            this.AddButton.Size = new System.Drawing.Size(150, 29);
-            this.AddButton.TabIndex = 0;
-            this.AddButton.Text = "Add";
-            this.AddButton.UseVisualStyleBackColor = true;
-            this.AddButton.Click += new System.EventHandler(this.AddButton_Click);
-            // 
-            // TestPanel
-            // 
-            this.TestPanel.Controls.Add(this.TestButton);
-            this.TestPanel.Dock = System.Windows.Forms.DockStyle.Left;
-            this.TestPanel.Location = new System.Drawing.Point(0, 0);
-            this.TestPanel.Name = "TestPanel";
-            this.TestPanel.Size = new System.Drawing.Size(150, 29);
-            this.TestPanel.TabIndex = 1;
-            // 
-            // TestButton
-            // 
-            this.TestButton.Dock = System.Windows.Forms.DockStyle.Fill;
-            this.TestButton.FlatStyle = System.Windows.Forms.FlatStyle.Flat;
-            this.TestButton.Location = new System.Drawing.Point(0, 0);
-            this.TestButton.Name = "TestButton";
-            this.TestButton.Size = new System.Drawing.Size(150, 29);
-            this.TestButton.TabIndex = 0;
-            this.TestButton.Text = "Test";
-            this.TestButton.UseVisualStyleBackColor = true;
-            this.TestButton.Click += new System.EventHandler(this.TestButton_Click);
-            // 
-            // InfoPanel
-            // 
-            this.InfoPanel.Controls.Add(this.ProxyUrlTextBox);
-            this.InfoPanel.Controls.Add(this.ProxyTypePanel);
-            this.InfoPanel.Dock = System.Windows.Forms.DockStyle.Fill;
-            this.InfoPanel.Location = new System.Drawing.Point(150, 0);
-            this.InfoPanel.Name = "InfoPanel";
-            this.InfoPanel.Size = new System.Drawing.Size(780, 29);
-            this.InfoPanel.TabIndex = 2;
-            // 
-            // ProxyUrlTextBox
-            // 
-            this.ProxyUrlTextBox.Dock = System.Windows.Forms.DockStyle.Fill;
-            this.ProxyUrlTextBox.Location = new System.Drawing.Point(200, 0);
-            this.ProxyUrlTextBox.Name = "ProxyUrlTextBox";
-            this.ProxyUrlTextBox.Size = new System.Drawing.Size(580, 27);
-            this.ProxyUrlTextBox.TabIndex = 1;
-            // 
-            // ProxyTypePanel
-            // 
-            this.ProxyTypePanel.Controls.Add(this.ProxyTypeComboBox);
-            this.ProxyTypePanel.Dock = System.Windows.Forms.DockStyle.Left;
-            this.ProxyTypePanel.Location = new System.Drawing.Point(0, 0);
-            this.ProxyTypePanel.Name = "ProxyTypePanel";
-            this.ProxyTypePanel.Size = new System.Drawing.Size(200, 29);
-            this.ProxyTypePanel.TabIndex = 0;
-            // 
-            // ProxyTypeComboBox
-            // 
-            this.ProxyTypeComboBox.Dock = System.Windows.Forms.DockStyle.Fill;
-            this.ProxyTypeComboBox.FlatStyle = System.Windows.Forms.FlatStyle.Flat;
-            this.ProxyTypeComboBox.FormattingEnabled = true;
-            this.ProxyTypeComboBox.Location = new System.Drawing.Point(0, 0);
-            this.ProxyTypeComboBox.Name = "ProxyTypeComboBox";
-            this.ProxyTypeComboBox.Size = new System.Drawing.Size(200, 29);
-            this.ProxyTypeComboBox.TabIndex = 0;
-            // 
             // ProxyForm
             // 
             this.AutoScaleDimensions = new System.Drawing.SizeF(6F, 13F);
             this.AutoScaleMode = System.Windows.Forms.AutoScaleMode.Font;
             this.ClientSize = new System.Drawing.Size(1080, 720);
             this.Controls.Add(this.ContentPanel);
-            this.Controls.Add(this.WebProxyPanel);
             this.FormBorderStyle = System.Windows.Forms.FormBorderStyle.None;
             this.Name = "ProxyForm";
             this.Text = "ProxyForm";
             this.Load += new System.EventHandler(this.ProxyForm_Load);
             this.gridMenu.ResumeLayout(false);
             this.cellMenu.ResumeLayout(false);
-            this.WebProxyPanel.ResumeLayout(false);
             this.ContentPanel.ResumeLayout(false);
             ((System.ComponentModel.ISupportInitialize)(this.proxyOlv)).EndInit();
-            this.AddPanel.ResumeLayout(false);
-            this.TestPanel.ResumeLayout(false);
-            this.InfoPanel.ResumeLayout(false);
-            this.InfoPanel.PerformLayout();
-            this.ProxyTypePanel.ResumeLayout(false);
             this.ResumeLayout(false);
 
         }
@@ -389,7 +276,6 @@
         private System.Windows.Forms.ToolStripMenuItem resetStatsToolStripMenuItem;
         private System.Windows.Forms.ToolStripMenuItem deleteToolStripMenuItem;
         private System.Windows.Forms.OpenFileDialog openFileDialog;
-        private System.Windows.Forms.Panel WebProxyPanel;
         private System.Windows.Forms.Panel ContentPanel;
         internal BrightIdeasSoftware.FastObjectListView proxyOlv;
         private BrightIdeasSoftware.OLVColumn proxy;
@@ -401,13 +287,5 @@
         private BrightIdeasSoftware.OLVColumn create_count;
         private BrightIdeasSoftware.OLVColumn fail_count;
         private BrightIdeasSoftware.OLVColumn usable;
-        private System.Windows.Forms.Panel AddPanel;
-        private System.Windows.Forms.Button AddButton;
-        private System.Windows.Forms.Panel InfoPanel;
-        private System.Windows.Forms.Panel TestPanel;
-        private System.Windows.Forms.Button TestButton;
-        private System.Windows.Forms.TextBox ProxyUrlTextBox;
-        private System.Windows.Forms.Panel ProxyTypePanel;
-        private System.Windows.Forms.ComboBox ProxyTypeComboBox;
     }
 }

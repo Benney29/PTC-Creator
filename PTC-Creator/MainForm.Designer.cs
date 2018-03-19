@@ -42,6 +42,7 @@
             this.CaptchaButton = new System.Windows.Forms.Button();
             this.ProxyButton = new System.Windows.Forms.Button();
             this.CreateAccountButton = new System.Windows.Forms.Button();
+            this.WebProxyButton = new System.Windows.Forms.Button();
             this.WindowPanel.SuspendLayout();
             ((System.ComponentModel.ISupportInitialize)(this.pictureBox1)).BeginInit();
             this.MainPanel.SuspendLayout();
@@ -163,6 +164,7 @@
             // 
             // ButtonPanel
             // 
+            this.ButtonPanel.Controls.Add(this.WebProxyButton);
             this.ButtonPanel.Controls.Add(this.CaptchaButton);
             this.ButtonPanel.Controls.Add(this.ProxyButton);
             this.ButtonPanel.Controls.Add(this.CreateAccountButton);
@@ -177,7 +179,7 @@
             this.CaptchaButton.Anchor = ((System.Windows.Forms.AnchorStyles)(((System.Windows.Forms.AnchorStyles.Top | System.Windows.Forms.AnchorStyles.Left) 
             | System.Windows.Forms.AnchorStyles.Right)));
             this.CaptchaButton.FlatStyle = System.Windows.Forms.FlatStyle.Flat;
-            this.CaptchaButton.Location = new System.Drawing.Point(0, 94);
+            this.CaptchaButton.Location = new System.Drawing.Point(0, 138);
             this.CaptchaButton.Name = "CaptchaButton";
             this.CaptchaButton.Size = new System.Drawing.Size(170, 38);
             this.CaptchaButton.TabIndex = 2;
@@ -210,6 +212,19 @@
             this.CreateAccountButton.Text = "Create";
             this.CreateAccountButton.UseVisualStyleBackColor = true;
             this.CreateAccountButton.Click += new System.EventHandler(this.CreateAccountButton_Click);
+            // 
+            // WebProxyButton
+            // 
+            this.WebProxyButton.Anchor = ((System.Windows.Forms.AnchorStyles)(((System.Windows.Forms.AnchorStyles.Top | System.Windows.Forms.AnchorStyles.Left) 
+            | System.Windows.Forms.AnchorStyles.Right)));
+            this.WebProxyButton.FlatStyle = System.Windows.Forms.FlatStyle.Flat;
+            this.WebProxyButton.Location = new System.Drawing.Point(0, 94);
+            this.WebProxyButton.Name = "WebProxyButton";
+            this.WebProxyButton.Size = new System.Drawing.Size(170, 38);
+            this.WebProxyButton.TabIndex = 3;
+            this.WebProxyButton.Text = "Web Proxy";
+            this.WebProxyButton.UseVisualStyleBackColor = true;
+            this.WebProxyButton.Click += new System.EventHandler(this.WebProxyButton_Click);
             // 
             // MainForm
             // 
@@ -252,6 +267,7 @@
         private System.Windows.Forms.Button CaptchaButton;
         private System.Windows.Forms.Button ProxyButton;
         private System.Windows.Forms.Button CreateAccountButton;
+        private System.Windows.Forms.Button WebProxyButton;
     }
 }
 

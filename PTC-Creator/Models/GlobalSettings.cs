@@ -17,11 +17,12 @@ namespace PTC_Creator.Models
         internal static CreateForm createForm = new CreateForm();
         internal static CaptchaForm captchaFrom = new CaptchaForm();
         internal static ProxyForm proxyForm = new ProxyForm();
+        internal static WebProxyForm webProxyForm = new WebProxyForm();
         #endregion
 
         internal static List<CaptchaAPI> captchaSettings = new List<CaptchaAPI>();
         internal static List<Proxy> proxyList = new List<Proxy>();
-        internal static WebProxyItem webProxy = new WebProxyItem();
+        internal static List<WebProxyItem> webProxy = new List<WebProxyItem>();
         internal static CreatorSettings creatorSettings = new CreatorSettings();
 
         private static Random random = new Random();
@@ -161,6 +162,7 @@ namespace PTC_Creator.Models
             delay_sec = 900;
             create_count = 0;
             fail_count = 0;
+            thread_amount = 1;
             usable = true;
         }
 
@@ -172,16 +174,51 @@ namespace PTC_Creator.Models
             create_count = 0;
             fail_count = 0;
             usable = true;
+            thread_amount = 1;
             username = _username;
             password = _password;
         }
 
+        public void IncrementSuccess()
+        {
+            create_count += 1;
+            GlobalSettings.proxyForm.UpdateProxy(this);
+        }
+
+        public void IncrementFail()
+        {
+            fail_count += 1;
+            GlobalSettings.proxyForm.UpdateProxy(this);
+        }
     }
 
     public class WebProxyItem
     {
         public string url { get; set; }
+
         public ProxyType type { get; set; }
+
+        public int total { get; set; }
+
+        public int amount { get; set; }
+
+        public Nullable<DateTime> last_check_date { get; set; }
+
+        public WebProxyItem(string _url, ProxyType _type)
+        {
+            url = _url;
+            type = _type;
+            last_check_date = null;
+            total = 0;
+            amount = 0;
+        }
+
+        public void AddAmount(int _amount)
+        {
+            amount = _amount;
+            total += amount;
+            GlobalSettings.webProxyForm.UpdateWebProxy(this);
+        }
     }
 
 
@@ -216,7 +253,7 @@ namespace PTC_Creator.Models
         public string username { get; set; }
         public string password { get; set; }
         public CreationStatus status { get; set; }
-        public List<string> log = new List<string>();
+        private List<string> log = new List<string>();
         public string dob { get; set; }
         public string email { get; set; }
 
@@ -226,11 +263,28 @@ namespace PTC_Creator.Models
             {
                 if (log.Count > 0)
                 {
-                    return log[0];
+                    return log[log.Count - 1];
                 }
                 return "";
             }
         }
+        public List<string> GetLog()
+        {
+            return log;
+        }
+
+        public void AddLog(string message)
+        {
+            log.Add(message);
+            GlobalSettings.createForm.UpdateStatus(this);
+        }
+
+        public void ChangeStatus(CreationStatus s)
+        {
+            status = s;
+            GlobalSettings.createForm.UpdateStatus(this);
+        }
+
 
     }
     
@@ -250,13 +304,58 @@ namespace PTC_Creator.Models
         public bool inUse;
         public DateTime last_used_time;
         public Proxy proxyItem;
+        public int create_amount;
+        public int failed_amount;
 
         public WorkerModel(HttpClient _client, Proxy _proxyItem)
         {
+            _client.DefaultRequestHeaders.Add("User-Agent", "Mozilla/5.0 (Windows NT 10.0; WOW64) AppleWebKit/537.36 (KHTML, like Gecko) Chrome/64.0.3282.186 Safari/537.36");
+            _client.DefaultRequestHeaders.Add("Origin", "https://club.pokemon.com");
+            _client.DefaultRequestHeaders.Add("Upgrade-Insecure-Requests", "1");
+            _client.DefaultRequestHeaders.Add("Referer", "https://club.pokemon.com/us/pokemon-trainer-club/parents/sign-up");
+            _client.DefaultRequestHeaders.Add("DNT", "1");
+            _client.DefaultRequestHeaders.Add("Accept", "*/*");
+            _client.DefaultRequestHeaders.Add("Accept-Language", "en-US,en;q=0.5");
+            _client.DefaultRequestHeaders.Add("Cache-Control", "no-cache");
+            _client.MaxResponseContentBufferSize = 524288;
+            _client.Timeout = new TimeSpan(0, 0, 30);
+            _client.BaseAddress = new Uri("https://club.pokemon.com/");
+
             client = _client;
             inUse = false;
             last_used_time = new DateTime(2000, 1, 1);
             proxyItem = _proxyItem;
+        }
+
+        public void Reset()
+        {
+            last_used_time = DateTime.Now;
+            create_amount = 0;
+            failed_amount = 0;
+        }
+
+        public bool IsUsable()
+        {
+            if (inUse)
+            {
+                return false;
+            }
+            else if (create_amount == 5)
+            {
+                Reset();
+                return false;
+            }
+            else if (failed_amount > 5)
+            {
+                Reset();
+                last_used_time = DateTime.Now.AddHours(2);
+                return false;
+            }
+            else if (DateTime.Now.Subtract(last_used_time).TotalSeconds < proxyItem.delay_sec)
+            {
+                return false;
+            }
+            return true;
         }
     }
     #endregion
