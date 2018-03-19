@@ -1,7 +1,10 @@
 ﻿using RandomNameGeneratorLibrary;
 using System;
+using System.Collections.Concurrent;
 using System.Collections.Generic;
 using System.Linq;
+using System.Net;
+using System.Net.Http;
 using System.Text;
 using System.Threading;
 using System.Threading.Tasks;
@@ -14,24 +17,74 @@ namespace PTC_Creator.Models
         const string PASSWORD_CHARS_UCASE = "ABCDEFGHJKLMNPQRSTWXYZ";
         const string PASSWORD_CHARS_NUMERIC = "23456789";
         const string PASSWORD_CHARS_SPECIAL = "*$-+?_&=!%{}/";
+        ConcurrentBag<HttpClient> worker = new ConcurrentBag<HttpClient>();
+        Object lockObj = new object();
 
         public void Start()
         {
-            Initiate();
+            Initiate_accounts(GlobalSettings.creatorSettings.createAmount);
+
+            if (GlobalSettings.webProxy.url != null || GlobalSettings.webProxy.url != "")
+            {
+                new Thread(WebProxyThread).Start();
+            }
+
+            Initiate_worker();
+
+            StartWorkers();
         }
 
-        public void Initiate()
+        private void StartWorkers()
+        {
+            List<Task> taskList = new List<Task>();
+
+            while (GlobalSettings.creationStatus.Count(_ => _.status == CreationStatus.Created) < GlobalSettings.creatorSettings.createAmount)
+            {
+                foreach (StatusModel _ in GlobalSettings.creationStatus)
+                {
+                    if (_.status != CreationStatus.Waiting)
+                    {
+                        continue;
+                    }
+
+                    while (taskList.Count > GlobalSettings.creatorSettings.threadAmount)
+                    {
+                        Thread.Sleep(5000);
+                        taskList = taskList.Where(__ => __.Status == TaskStatus.Running).ToList();
+                    }
+
+                    WorkerModel worker = null;
+                    while (worker == null)
+                    {
+                        lock (lockObj)
+                        {
+                            worker = GlobalSettings.workers.FirstOrDefault(__ => !__.inUse && DateTime.Now.Subtract(__.last_used_time).TotalSeconds > __.proxyItem.delay_sec);
+                        }
+                        if (worker == null)
+                        {
+                            Thread.Sleep(10000);
+                        }
+                    }
+                    Task t = Task.Run(() => new Creator(worker, _).Start());
+                    taskList.Add(t);
+                }
+
+                //Check failed count and add new slots
+                Initiate_accounts(GlobalSettings.creatorSettings.createAmount - GlobalSettings.creationStatus.Count(_ => _.status == CreationStatus.Failed));
+            }
+
+        }
+
+        #region account
+
+        public void Initiate_accounts(int amount)
         {
             List<Task> taskList = new List<Task>();
             Random random = new Random();
             PersonNameGenerator nameGenObj = new PersonNameGenerator();
-            for (int i = 0; i < GlobalSettings.creatorSettings.createAmount; i++)
+            for (int i = 0; i < amount; i++)
             {
                 GetRandomAccount(random, nameGenObj);
-            }
-            foreach (StatusModel _ in GlobalSettings.creationBag)
-            {
-                GlobalSettings.creationStatus.Add(_);
             }
             GlobalSettings.createForm.UpdateStatus();
         }
@@ -47,7 +100,7 @@ namespace PTC_Creator.Models
             _.dob = dob;
             _.email = username + "@" + GlobalSettings.creatorSettings.domain;
             _.status = CreationStatus.Waiting;
-            GlobalSettings.creationBag.Add(_);
+            GlobalSettings.creationStatus.Add(_);
         }
 
         private string GetUsername(Random random, PersonNameGenerator nameGenObj)
@@ -89,5 +142,52 @@ namespace PTC_Creator.Models
             int range = (DateTime.Parse("1995-1-1") - start).Days;
             return start.AddDays(random.Next(range));
         }
+
+        #endregion
+
+        #region proxy
+        private void Initiate_worker()
+        {
+            GlobalSettings.proxyList.ToList().ForEach(_ =>
+            {
+                for (int i = 0; i < _.thread_amount; i++)
+                {
+                    CookieContainer cookieJar = new CookieContainer();
+                    if (_.type == ProxyType.HTTP)
+                    {
+                        HttpClientHandler handler = new HttpClientHandler
+                        {
+                            UseCookies = true,
+                            CookieContainer = cookieJar,
+                            UseProxy = true,
+                            Proxy = new WebProxy(_.proxy, false)
+                            {
+                                UseDefaultCredentials = false,
+                                Credentials = new NetworkCredential(_.username, _.password)
+                            }
+                        };
+                        GlobalSettings.workers.Add(new WorkerModel(new HttpClient(handler), _));
+                    }                  
+                }
+            });
+        }
+
+        private void WebProxyThread()
+        {
+            while (!GlobalSettings.worker_stop)
+            {
+                using (HttpClient client = new HttpClient())
+                {
+                    string content = client.GetStringAsync(GlobalSettings.webProxy.url).Result;
+
+                    lock (lockObj)
+                    {
+                        GlobalSettings.proxyForm.GetProxies(content, true);
+                    }
+                }
+                Thread.Sleep(900000);
+            }
+        }
+        #endregion
     }
 }

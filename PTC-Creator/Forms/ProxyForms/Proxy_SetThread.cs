@@ -37,7 +37,7 @@ namespace PTC_Creator.Forms.ProxyForms
         {
             if (ThreadAmountTextBox.Text != "")
             {
-                _proxies.ForEach(_ => _.delay_sec = int.Parse(ThreadAmountTextBox.Text));
+                _proxies.ForEach(_ => _.thread_amount = int.Parse(ThreadAmountTextBox.Text));
                 GlobalSettings.proxyForm.UpdateProxy(_proxies);
                 MessageBox.Show(_proxies.Count + " proxies has updated");
                 this.Close();

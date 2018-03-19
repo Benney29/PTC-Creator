@@ -25,11 +25,11 @@ namespace PTC_Creator
         private void MainForm_Load(object sender, EventArgs e)
         {
             GlobalSettings.captchaSettings =
-                JsonConvert.DeserializeObject<ObservableCollection<CaptchaAPI>>(Properties.Settings.Default.CaptchaSettings) == null ?
-                new ObservableCollection<CaptchaAPI>() : JsonConvert.DeserializeObject<ObservableCollection<CaptchaAPI>>(Properties.Settings.Default.CaptchaSettings);
+                JsonConvert.DeserializeObject<List<CaptchaAPI>>(Properties.Settings.Default.CaptchaSettings) == null ?
+                new List<CaptchaAPI>() : JsonConvert.DeserializeObject<List<CaptchaAPI>>(Properties.Settings.Default.CaptchaSettings);
             GlobalSettings.proxyList =
-                JsonConvert.DeserializeObject<ObservableCollection<Proxy>>(Properties.Settings.Default.ProxyList) == null ?
-                new ObservableCollection<Proxy>() : JsonConvert.DeserializeObject<ObservableCollection<Proxy>>(Properties.Settings.Default.ProxyList);
+                JsonConvert.DeserializeObject<List<Proxy>>(Properties.Settings.Default.ProxyList) == null ?
+                new List<Proxy>() : JsonConvert.DeserializeObject<List<Proxy>>(Properties.Settings.Default.ProxyList);
             GlobalSettings.creatorSettings =
                 JsonConvert.DeserializeObject<CreatorSettings>(Properties.Settings.Default.CreatorSettings) == null ?
                 new CreatorSettings() : JsonConvert.DeserializeObject<CreatorSettings>(Properties.Settings.Default.CreatorSettings);

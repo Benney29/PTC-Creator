@@ -11,7 +11,7 @@ namespace PTC_Creator.Forms
     {
         public CaptchaForm()
         {
-            GlobalSettings.captchaSettings = new ObservableCollection<CaptchaAPI>();
+            GlobalSettings.captchaSettings = new List<CaptchaAPI>();
             if (GlobalSettings.captchaSettings.Count == 0)
             {
                 int index = 1;

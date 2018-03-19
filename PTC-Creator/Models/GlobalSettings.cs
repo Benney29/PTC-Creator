@@ -1,7 +1,6 @@
 ﻿using PTC_Creator.Forms;
 using RandomNameGeneratorLibrary;
 using System;
-using System.Collections.Concurrent;
 using System.Collections.Generic;
 using System.Collections.ObjectModel;
 using System.ComponentModel;
@@ -20,17 +19,16 @@ namespace PTC_Creator.Models
         internal static ProxyForm proxyForm = new ProxyForm();
         #endregion
 
-        internal static ObservableCollection<CaptchaAPI> captchaSettings = new ObservableCollection<CaptchaAPI>();
-        internal static ObservableCollection<Proxy> proxyList = new ObservableCollection<Proxy>();
+        internal static List<CaptchaAPI> captchaSettings = new List<CaptchaAPI>();
+        internal static List<Proxy> proxyList = new List<Proxy>();
         internal static WebProxyItem webProxy = new WebProxyItem();
         internal static CreatorSettings creatorSettings = new CreatorSettings();
 
         private static Random random = new Random();
         private static PersonNameGenerator nameGenObj = new PersonNameGenerator();
 
-
-        internal static ConcurrentBag<StatusModel> creationBag = new ConcurrentBag<StatusModel>();
-        internal static List<HttpClient> workers = new List<HttpClient>();
+        internal static bool worker_stop = false;
+        internal static List<WorkerModel> workers = new List<WorkerModel>();
 
         internal static List<StatusModel> creationStatus = new List<StatusModel>();
 
@@ -152,10 +150,6 @@ namespace PTC_Creator.Models
 
         public bool usable { get; set; }
 
-        public DateTime last_used_time { get; set; }
-
-        public bool inUse { get; set; }
-
         //This is used to deserialize object
         public Proxy()
         { }
@@ -168,8 +162,6 @@ namespace PTC_Creator.Models
             create_count = 0;
             fail_count = 0;
             usable = true;
-            last_used_time = new DateTime(2000, 1, 1);
-            inUse = false;
         }
 
         public Proxy(string _proxy, string _username, string _password, ProxyType proxy_type = ProxyType.HTTP)
@@ -180,8 +172,6 @@ namespace PTC_Creator.Models
             create_count = 0;
             fail_count = 0;
             usable = true;
-            last_used_time = new DateTime(2000, 1, 1);
-            inUse = false;
             username = _username;
             password = _password;
         }
@@ -250,6 +240,24 @@ namespace PTC_Creator.Models
         Processing,
         Created,
         Failed
+    }
+    #endregion
+
+    #region Worker Settings
+    public class WorkerModel
+    {
+        public HttpClient client;
+        public bool inUse;
+        public DateTime last_used_time;
+        public Proxy proxyItem;
+
+        public WorkerModel(HttpClient _client, Proxy _proxyItem)
+        {
+            client = _client;
+            inUse = false;
+            last_used_time = new DateTime(2000, 1, 1);
+            proxyItem = _proxyItem;
+        }
     }
     #endregion
 }
