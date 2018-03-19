@@ -60,7 +60,7 @@
             this.WindowPanel.ForeColor = System.Drawing.Color.Black;
             this.WindowPanel.Location = new System.Drawing.Point(0, 0);
             this.WindowPanel.Name = "WindowPanel";
-            this.WindowPanel.Size = new System.Drawing.Size(1366, 32);
+            this.WindowPanel.Size = new System.Drawing.Size(1250, 32);
             this.WindowPanel.TabIndex = 0;
             this.WindowPanel.MouseDown += new System.Windows.Forms.MouseEventHandler(this.WindowPanel_MouseDown);
             this.WindowPanel.MouseMove += new System.Windows.Forms.MouseEventHandler(this.WindowPanel_MouseMove);
@@ -72,7 +72,7 @@
             this.MinimizeButton.FlatAppearance.BorderSize = 0;
             this.MinimizeButton.FlatStyle = System.Windows.Forms.FlatStyle.Flat;
             this.MinimizeButton.Font = new System.Drawing.Font("Century Gothic", 12F, System.Drawing.FontStyle.Bold, System.Drawing.GraphicsUnit.Point, ((byte)(0)));
-            this.MinimizeButton.Location = new System.Drawing.Point(1270, 0);
+            this.MinimizeButton.Location = new System.Drawing.Point(1154, 0);
             this.MinimizeButton.Name = "MinimizeButton";
             this.MinimizeButton.Size = new System.Drawing.Size(32, 32);
             this.MinimizeButton.TabIndex = 3;
@@ -86,7 +86,7 @@
             this.MaximizeButton.FlatAppearance.BorderSize = 0;
             this.MaximizeButton.FlatStyle = System.Windows.Forms.FlatStyle.Flat;
             this.MaximizeButton.Font = new System.Drawing.Font("Century Gothic", 12F, System.Drawing.FontStyle.Bold, System.Drawing.GraphicsUnit.Point, ((byte)(0)));
-            this.MaximizeButton.Location = new System.Drawing.Point(1302, 0);
+            this.MaximizeButton.Location = new System.Drawing.Point(1186, 0);
             this.MaximizeButton.Name = "MaximizeButton";
             this.MaximizeButton.Size = new System.Drawing.Size(32, 32);
             this.MaximizeButton.TabIndex = 2;
@@ -100,7 +100,7 @@
             this.ClostButton.FlatAppearance.BorderSize = 0;
             this.ClostButton.FlatStyle = System.Windows.Forms.FlatStyle.Flat;
             this.ClostButton.Font = new System.Drawing.Font("Century Gothic", 12F, System.Drawing.FontStyle.Bold, System.Drawing.GraphicsUnit.Point, ((byte)(0)));
-            this.ClostButton.Location = new System.Drawing.Point(1334, 0);
+            this.ClostButton.Location = new System.Drawing.Point(1218, 0);
             this.ClostButton.Name = "ClostButton";
             this.ClostButton.Size = new System.Drawing.Size(32, 32);
             this.ClostButton.TabIndex = 1;
@@ -140,7 +140,7 @@
             this.StatusPanel.Dock = System.Windows.Forms.DockStyle.Bottom;
             this.StatusPanel.Location = new System.Drawing.Point(0, 752);
             this.StatusPanel.Name = "StatusPanel";
-            this.StatusPanel.Size = new System.Drawing.Size(1366, 32);
+            this.StatusPanel.Size = new System.Drawing.Size(1250, 32);
             this.StatusPanel.TabIndex = 1;
             // 
             // MainPanel
@@ -150,7 +150,7 @@
             this.MainPanel.Dock = System.Windows.Forms.DockStyle.Fill;
             this.MainPanel.Location = new System.Drawing.Point(0, 32);
             this.MainPanel.Name = "MainPanel";
-            this.MainPanel.Size = new System.Drawing.Size(1366, 720);
+            this.MainPanel.Size = new System.Drawing.Size(1250, 720);
             this.MainPanel.TabIndex = 2;
             // 
             // ContentPanel
@@ -158,7 +158,7 @@
             this.ContentPanel.Dock = System.Windows.Forms.DockStyle.Fill;
             this.ContentPanel.Location = new System.Drawing.Point(170, 0);
             this.ContentPanel.Name = "ContentPanel";
-            this.ContentPanel.Size = new System.Drawing.Size(1196, 720);
+            this.ContentPanel.Size = new System.Drawing.Size(1080, 720);
             this.ContentPanel.TabIndex = 1;
             // 
             // ButtonPanel
@@ -215,7 +215,7 @@
             // 
             this.AutoScaleMode = System.Windows.Forms.AutoScaleMode.None;
             this.BackColor = System.Drawing.Color.FromArgb(((int)(((byte)(41)))), ((int)(((byte)(44)))), ((int)(((byte)(51)))));
-            this.ClientSize = new System.Drawing.Size(1366, 784);
+            this.ClientSize = new System.Drawing.Size(1250, 784);
             this.Controls.Add(this.MainPanel);
             this.Controls.Add(this.StatusPanel);
             this.Controls.Add(this.WindowPanel);

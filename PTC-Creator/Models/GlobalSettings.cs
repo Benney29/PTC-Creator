@@ -24,18 +24,30 @@ namespace PTC_Creator.Models
         internal static ObservableCollection<Proxy> proxyList = new ObservableCollection<Proxy>();
         internal static WebProxyItem webProxy = new WebProxyItem();
         internal static CreatorSettings creatorSettings = new CreatorSettings();
-        
-        internal static Random random = new Random();
-        internal static PersonNameGenerator nameGenObj = new PersonNameGenerator();
+
+        private static Random random = new Random();
+        private static PersonNameGenerator nameGenObj = new PersonNameGenerator();
 
 
         internal static ConcurrentBag<StatusModel> creationBag = new ConcurrentBag<StatusModel>();
         internal static List<HttpClient> workers = new List<HttpClient>();
 
-
         internal static List<StatusModel> creationStatus = new List<StatusModel>();
 
+        public static int GetRandom(int length)
+        {
+            return random.Next(length);
+        }
 
+        public static int GetRandom()
+        {
+            return random.Next();
+        }
+
+        public static string GetFirstName()
+        {
+            return nameGenObj.GenerateRandomFirstName();
+        }
     }
 
     #region Captcha Settings
@@ -211,50 +223,25 @@ namespace PTC_Creator.Models
     #region Creation Status
     public class StatusModel
     {
-        public event PropertyChangedEventHandler PropertyChanged;
-        
-        private string _username = "";
-        [DisplayName("Username")]
-        public string username {
-            get { return _username; }
-            set { _username = value; this.NotifyPropertyChanged("username"); }
-        }
-
-        private string _password = "";
-        [DisplayName("Password")]
-        public string password {
-            get { return _password; }
-            set { _password = value; this.NotifyPropertyChanged("passwored"); }
-        }
-
-        private CreationStatus _status;
-        [DisplayName("Status")]
-        public CreationStatus status
-        {
-            get { return _status; }
-            set { _status = value; this.NotifyPropertyChanged("status"); }
-        }
+        public string username { get; set; }
+        public string password { get; set; }
+        public CreationStatus status { get; set; }
+        public List<string> log = new List<string>();
+        public string dob { get; set; }
+        public string email { get; set; }
 
         public string _log
         {
-            get { try { return log[0]; } catch { return ""; } }
+            get
+            {
+                if (log.Count > 0)
+                {
+                    return log[0];
+                }
+                return "";
+            }
         }
 
-        [Browsable(false)]
-        public List<string> log = new List<string>();
-
-        [Browsable(false)]
-        public string dob { get; set; }
-
-        [Browsable(false)]
-        public string email { get; set; }
-
-        private void NotifyPropertyChanged(string name)
-        {
-            if (PropertyChanged != null)
-                PropertyChanged(this, new PropertyChangedEventArgs(name));
-        }
-        
     }
     
     public enum CreationStatus

@@ -29,7 +29,6 @@
         private void InitializeComponent()
         {
             this.components = new System.ComponentModel.Container();
-            this.CaptchaDataGrid = new System.Windows.Forms.DataGridView();
             this.gridMenu = new System.Windows.Forms.ContextMenuStrip(this.components);
             this.selectAllToolStripMenuItem = new System.Windows.Forms.ToolStripMenuItem();
             this.cellMenu = new System.Windows.Forms.ContextMenuStrip(this.components);
@@ -39,30 +38,11 @@
             this.moveDownToolStripMenuItem = new System.Windows.Forms.ToolStripMenuItem();
             this.moveToLastToolStripMenuItem = new System.Windows.Forms.ToolStripMenuItem();
             this.resetStatsToolStripMenuItem = new System.Windows.Forms.ToolStripMenuItem();
-            ((System.ComponentModel.ISupportInitialize)(this.CaptchaDataGrid)).BeginInit();
+            this.CaptchaDataGrid = new System.Windows.Forms.DataGridView();
             this.gridMenu.SuspendLayout();
             this.cellMenu.SuspendLayout();
+            ((System.ComponentModel.ISupportInitialize)(this.CaptchaDataGrid)).BeginInit();
             this.SuspendLayout();
-            // 
-            // CaptchaDataGrid
-            // 
-            this.CaptchaDataGrid.AllowUserToAddRows = false;
-            this.CaptchaDataGrid.AllowUserToDeleteRows = false;
-            this.CaptchaDataGrid.AllowUserToOrderColumns = true;
-            this.CaptchaDataGrid.AutoSizeColumnsMode = System.Windows.Forms.DataGridViewAutoSizeColumnsMode.AllCells;
-            this.CaptchaDataGrid.BackgroundColor = System.Drawing.Color.FromArgb(((int)(((byte)(41)))), ((int)(((byte)(44)))), ((int)(((byte)(51)))));
-            this.CaptchaDataGrid.BorderStyle = System.Windows.Forms.BorderStyle.None;
-            this.CaptchaDataGrid.CellBorderStyle = System.Windows.Forms.DataGridViewCellBorderStyle.Sunken;
-            this.CaptchaDataGrid.ColumnHeadersHeightSizeMode = System.Windows.Forms.DataGridViewColumnHeadersHeightSizeMode.AutoSize;
-            this.CaptchaDataGrid.Dock = System.Windows.Forms.DockStyle.Fill;
-            this.CaptchaDataGrid.EditMode = System.Windows.Forms.DataGridViewEditMode.EditOnEnter;
-            this.CaptchaDataGrid.GridColor = System.Drawing.Color.FromArgb(((int)(((byte)(62)))), ((int)(((byte)(120)))), ((int)(((byte)(138)))));
-            this.CaptchaDataGrid.Location = new System.Drawing.Point(0, 0);
-            this.CaptchaDataGrid.Name = "CaptchaDataGrid";
-            this.CaptchaDataGrid.Size = new System.Drawing.Size(700, 396);
-            this.CaptchaDataGrid.TabIndex = 1;
-            this.CaptchaDataGrid.CellMouseDown += new System.Windows.Forms.DataGridViewCellMouseEventHandler(this.DataGrid_CellMouseDown);
-            this.CaptchaDataGrid.MouseDown += new System.Windows.Forms.MouseEventHandler(this.DataGrid_MouseDown);
             // 
             // gridMenu
             // 
@@ -132,6 +112,26 @@
             this.resetStatsToolStripMenuItem.Text = "Reset Stats";
             this.resetStatsToolStripMenuItem.Click += new System.EventHandler(this.resetStatsToolStripMenuItem_Click);
             // 
+            // CaptchaDataGrid
+            // 
+            this.CaptchaDataGrid.AllowUserToAddRows = false;
+            this.CaptchaDataGrid.AllowUserToDeleteRows = false;
+            this.CaptchaDataGrid.AllowUserToOrderColumns = true;
+            this.CaptchaDataGrid.AutoSizeColumnsMode = System.Windows.Forms.DataGridViewAutoSizeColumnsMode.AllCells;
+            this.CaptchaDataGrid.BackgroundColor = System.Drawing.Color.FromArgb(((int)(((byte)(41)))), ((int)(((byte)(44)))), ((int)(((byte)(51)))));
+            this.CaptchaDataGrid.BorderStyle = System.Windows.Forms.BorderStyle.None;
+            this.CaptchaDataGrid.CellBorderStyle = System.Windows.Forms.DataGridViewCellBorderStyle.Sunken;
+            this.CaptchaDataGrid.ColumnHeadersHeightSizeMode = System.Windows.Forms.DataGridViewColumnHeadersHeightSizeMode.AutoSize;
+            this.CaptchaDataGrid.Dock = System.Windows.Forms.DockStyle.Fill;
+            this.CaptchaDataGrid.EditMode = System.Windows.Forms.DataGridViewEditMode.EditOnEnter;
+            this.CaptchaDataGrid.GridColor = System.Drawing.Color.FromArgb(((int)(((byte)(62)))), ((int)(((byte)(120)))), ((int)(((byte)(138)))));
+            this.CaptchaDataGrid.Location = new System.Drawing.Point(0, 0);
+            this.CaptchaDataGrid.Name = "CaptchaDataGrid";
+            this.CaptchaDataGrid.Size = new System.Drawing.Size(700, 396);
+            this.CaptchaDataGrid.TabIndex = 1;
+            this.CaptchaDataGrid.CellMouseDown += new System.Windows.Forms.DataGridViewCellMouseEventHandler(this.DataGrid_CellMouseDown);
+            this.CaptchaDataGrid.MouseDown += new System.Windows.Forms.MouseEventHandler(this.DataGrid_MouseDown);
+            // 
             // CaptchaForm
             // 
             this.AutoScaleDimensions = new System.Drawing.SizeF(10F, 21F);
@@ -146,16 +146,14 @@
             this.Name = "CaptchaForm";
             this.Text = "CaptchaForm";
             this.Load += new System.EventHandler(this.CaptchaForm_Load);
-            ((System.ComponentModel.ISupportInitialize)(this.CaptchaDataGrid)).EndInit();
             this.gridMenu.ResumeLayout(false);
             this.cellMenu.ResumeLayout(false);
+            ((System.ComponentModel.ISupportInitialize)(this.CaptchaDataGrid)).EndInit();
             this.ResumeLayout(false);
 
         }
 
         #endregion
-
-        internal System.Windows.Forms.DataGridView CaptchaDataGrid;
         private System.Windows.Forms.ContextMenuStrip gridMenu;
         private System.Windows.Forms.ToolStripMenuItem selectAllToolStripMenuItem;
         private System.Windows.Forms.ContextMenuStrip cellMenu;
@@ -165,5 +163,6 @@
         private System.Windows.Forms.ToolStripMenuItem moveUPToolStripMenuItem;
         private System.Windows.Forms.ToolStripMenuItem moveDownToolStripMenuItem;
         private System.Windows.Forms.ToolStripMenuItem moveToLastToolStripMenuItem;
+        internal System.Windows.Forms.DataGridView CaptchaDataGrid;
     }
 }

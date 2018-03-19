@@ -47,11 +47,19 @@
             this.PasswordLabel = new System.Windows.Forms.Label();
             this.UsernameLabel = new System.Windows.Forms.Label();
             this.DomainLabel = new System.Windows.Forms.Label();
-            this.panel1 = new System.Windows.Forms.Panel();
+            this.ContentPanel = new System.Windows.Forms.Panel();
+            this.createOlv = new BrightIdeasSoftware.FastObjectListView();
+            this.username = ((BrightIdeasSoftware.OLVColumn)(new BrightIdeasSoftware.OLVColumn()));
+            this.password = ((BrightIdeasSoftware.OLVColumn)(new BrightIdeasSoftware.OLVColumn()));
+            this.dob = ((BrightIdeasSoftware.OLVColumn)(new BrightIdeasSoftware.OLVColumn()));
+            this.email = ((BrightIdeasSoftware.OLVColumn)(new BrightIdeasSoftware.OLVColumn()));
+            this.status = ((BrightIdeasSoftware.OLVColumn)(new BrightIdeasSoftware.OLVColumn()));
+            this.log = ((BrightIdeasSoftware.OLVColumn)(new BrightIdeasSoftware.OLVColumn()));
             this.StatusDataGrid = new System.Windows.Forms.DataGridView();
             this.StartButtonPanel.SuspendLayout();
             this.ConfigPanel.SuspendLayout();
-            this.panel1.SuspendLayout();
+            this.ContentPanel.SuspendLayout();
+            ((System.ComponentModel.ISupportInitialize)(this.createOlv)).BeginInit();
             ((System.ComponentModel.ISupportInitialize)(this.StatusDataGrid)).BeginInit();
             this.SuspendLayout();
             // 
@@ -272,14 +280,84 @@
             this.DomainLabel.TabIndex = 0;
             this.DomainLabel.Text = "*Domain:";
             // 
-            // panel1
+            // ContentPanel
             // 
-            this.panel1.Controls.Add(this.StatusDataGrid);
-            this.panel1.Dock = System.Windows.Forms.DockStyle.Fill;
-            this.panel1.Location = new System.Drawing.Point(355, 0);
-            this.panel1.Name = "panel1";
-            this.panel1.Size = new System.Drawing.Size(739, 623);
-            this.panel1.TabIndex = 2;
+            this.ContentPanel.Controls.Add(this.createOlv);
+            this.ContentPanel.Controls.Add(this.StatusDataGrid);
+            this.ContentPanel.Dock = System.Windows.Forms.DockStyle.Fill;
+            this.ContentPanel.Location = new System.Drawing.Point(355, 0);
+            this.ContentPanel.Name = "ContentPanel";
+            this.ContentPanel.Size = new System.Drawing.Size(739, 623);
+            this.ContentPanel.TabIndex = 2;
+            // 
+            // createOlv
+            // 
+            this.createOlv.AllColumns.Add(this.username);
+            this.createOlv.AllColumns.Add(this.password);
+            this.createOlv.AllColumns.Add(this.dob);
+            this.createOlv.AllColumns.Add(this.email);
+            this.createOlv.AllColumns.Add(this.status);
+            this.createOlv.AllColumns.Add(this.log);
+            this.createOlv.BackColor = System.Drawing.Color.FromArgb(((int)(((byte)(41)))), ((int)(((byte)(44)))), ((int)(((byte)(51)))));
+            this.createOlv.CellEditUseWholeCell = false;
+            this.createOlv.Columns.AddRange(new System.Windows.Forms.ColumnHeader[] {
+            this.username,
+            this.password,
+            this.dob,
+            this.email,
+            this.status,
+            this.log});
+            this.createOlv.Cursor = System.Windows.Forms.Cursors.Default;
+            this.createOlv.Dock = System.Windows.Forms.DockStyle.Fill;
+            this.createOlv.Font = new System.Drawing.Font("Century Gothic", 10F);
+            this.createOlv.ForeColor = System.Drawing.Color.FromArgb(((int)(((byte)(62)))), ((int)(((byte)(120)))), ((int)(((byte)(138)))));
+            this.createOlv.FullRowSelect = true;
+            this.createOlv.Location = new System.Drawing.Point(0, 0);
+            this.createOlv.Name = "createOlv";
+            this.createOlv.ShowGroups = false;
+            this.createOlv.Size = new System.Drawing.Size(739, 623);
+            this.createOlv.TabIndex = 3;
+            this.createOlv.UseCellFormatEvents = true;
+            this.createOlv.UseCompatibleStateImageBehavior = false;
+            this.createOlv.View = System.Windows.Forms.View.Details;
+            this.createOlv.VirtualMode = true;
+            this.createOlv.FormatCell += new System.EventHandler<BrightIdeasSoftware.FormatCellEventArgs>(this.createOlv_FormatCell);
+            // 
+            // username
+            // 
+            this.username.AspectName = "username";
+            this.username.Text = "Username";
+            this.username.Width = 96;
+            // 
+            // password
+            // 
+            this.password.AspectName = "password";
+            this.password.Text = "Password";
+            this.password.Width = 99;
+            // 
+            // dob
+            // 
+            this.dob.AspectName = "dob";
+            this.dob.Text = "Date of Birth";
+            this.dob.Width = 115;
+            // 
+            // email
+            // 
+            this.email.AspectName = "email";
+            this.email.Text = "Email";
+            this.email.Width = 148;
+            // 
+            // status
+            // 
+            this.status.AspectName = "status";
+            this.status.Text = "Status";
+            this.status.Width = 81;
+            // 
+            // log
+            // 
+            this.log.AspectName = "_log";
+            this.log.Text = "Log";
+            this.log.Width = 169;
             // 
             // StatusDataGrid
             // 
@@ -306,7 +384,7 @@
             this.AutoScaleMode = System.Windows.Forms.AutoScaleMode.Font;
             this.BackColor = System.Drawing.Color.FromArgb(((int)(((byte)(41)))), ((int)(((byte)(44)))), ((int)(((byte)(51)))));
             this.ClientSize = new System.Drawing.Size(1094, 663);
-            this.Controls.Add(this.panel1);
+            this.Controls.Add(this.ContentPanel);
             this.Controls.Add(this.ConfigPanel);
             this.Controls.Add(this.StartButtonPanel);
             this.Font = new System.Drawing.Font("Century Gothic", 12F, System.Drawing.FontStyle.Regular, System.Drawing.GraphicsUnit.Point, ((byte)(0)));
@@ -320,7 +398,8 @@
             this.StartButtonPanel.ResumeLayout(false);
             this.ConfigPanel.ResumeLayout(false);
             this.ConfigPanel.PerformLayout();
-            this.panel1.ResumeLayout(false);
+            this.ContentPanel.ResumeLayout(false);
+            ((System.ComponentModel.ISupportInitialize)(this.createOlv)).EndInit();
             ((System.ComponentModel.ISupportInitialize)(this.StatusDataGrid)).EndInit();
             this.ResumeLayout(false);
 
@@ -345,8 +424,15 @@
         private System.Windows.Forms.Label UsernameLabel;
         private System.Windows.Forms.Label DomainLabel;
         private System.Windows.Forms.Button StartButton;
-        private System.Windows.Forms.Panel panel1;
+        private System.Windows.Forms.Panel ContentPanel;
         private System.Windows.Forms.Button SaveSettingsButton;
         public System.Windows.Forms.DataGridView StatusDataGrid;
+        private BrightIdeasSoftware.FastObjectListView createOlv;
+        private BrightIdeasSoftware.OLVColumn username;
+        private BrightIdeasSoftware.OLVColumn password;
+        private BrightIdeasSoftware.OLVColumn dob;
+        private BrightIdeasSoftware.OLVColumn email;
+        private BrightIdeasSoftware.OLVColumn status;
+        private BrightIdeasSoftware.OLVColumn log;
     }
 }

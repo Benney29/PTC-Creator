@@ -1,4 +1,5 @@
-﻿using System;
+﻿using RandomNameGeneratorLibrary;
+using System;
 using System.Collections.Generic;
 using System.Linq;
 using System.Text;
@@ -22,21 +23,24 @@ namespace PTC_Creator.Models
         public void Initiate()
         {
             List<Task> taskList = new List<Task>();
-            Parallel.For(0, GlobalSettings.creatorSettings.createAmount, 
-                new ParallelOptions { MaxDegreeOfParallelism = GlobalSettings.creatorSettings.threadAmount }
-                , i => GetRandomAccount());
+            Random random = new Random();
+            PersonNameGenerator nameGenObj = new PersonNameGenerator();
+            for (int i = 0; i < GlobalSettings.creatorSettings.createAmount; i++)
+            {
+                GetRandomAccount(random, nameGenObj);
+            }
             foreach (StatusModel _ in GlobalSettings.creationBag)
             {
                 GlobalSettings.creationStatus.Add(_);
             }
-            GlobalSettings.createForm.StatusGridRedraw();
+            GlobalSettings.createForm.UpdateStatus();
         }
 
-        private void GetRandomAccount()
+        private void GetRandomAccount(Random random, PersonNameGenerator nameGenObj)
         {
-            string username = GetUsername();
-            string password = GetPassword();
-            string dob = GetDob().ToString("yyyy-MM-dd");
+            string username = GetUsername(random, nameGenObj);
+            string password = GetPassword(random);
+            string dob = GetDob(random).ToString("yyyy-MM-dd");
             StatusModel _ = new StatusModel();
             _.username = username;
             _.password = password;
@@ -46,23 +50,23 @@ namespace PTC_Creator.Models
             GlobalSettings.creationBag.Add(_);
         }
 
-        private string GetUsername()
+        private string GetUsername(Random random, PersonNameGenerator nameGenObj)
         {
             int maxLength = 14;
             GlobalSettings.creatorSettings.username = "";
-            GlobalSettings.nameGenObj.GenerateRandomFirstName().Replace(" ", "");
+            nameGenObj.GenerateRandomFirstName().Replace(" ", "");
             string name = GlobalSettings.creatorSettings.username == "" ?
-                GlobalSettings.nameGenObj.GenerateRandomFirstName().Replace(" ", "") : GlobalSettings.creatorSettings.username;
+                nameGenObj.GenerateRandomFirstName().Replace(" ", "") : GlobalSettings.creatorSettings.username;
 
-            var charSwitch = name.Select(x => GlobalSettings.random.Next() % 2 == 0 ? (char.IsUpper(x) ? x.ToString().ToLower().First() : x.ToString().ToUpper().First()) : x);
+            var charSwitch = name.Select(x => random.Next() % 2 == 0 ? (char.IsUpper(x) ? x.ToString().ToLower().First() : x.ToString().ToUpper().First()) : x);
             name = new String(charSwitch.ToArray()).Replace("l", "L").Replace("I", "i").Replace("O", "o").Replace("0", "1");//Try to avoid confused words
             if (name.Length > 14) return name.Substring(0, 14);
             string randomNumber = new string(Enumerable.Repeat(PASSWORD_CHARS_NUMERIC, maxLength - name.Length)
-              .Select(s => s[GlobalSettings.random.Next(s.Length)]).ToArray());
+              .Select(s => s[random.Next(s.Length)]).ToArray());
             return name + randomNumber;
         }
 
-        private string GetPassword()
+        private string GetPassword(Random random)
         {
             if (GlobalSettings.creatorSettings.password != "")
             {
@@ -70,20 +74,20 @@ namespace PTC_Creator.Models
             }
             string pass;
             pass = new string(Enumerable.Repeat(PASSWORD_CHARS_LCASE, 3)
-              .Select(s => s[GlobalSettings.random.Next(s.Length)]).ToArray());
+              .Select(s => s[random.Next(s.Length)]).ToArray());
             pass += new string(Enumerable.Repeat(PASSWORD_CHARS_UCASE, 3)
-              .Select(s => s[GlobalSettings.random.Next(s.Length)]).ToArray());
+              .Select(s => s[random.Next(s.Length)]).ToArray());
             pass += new string(Enumerable.Repeat(PASSWORD_CHARS_NUMERIC, 3)
-              .Select(s => s[GlobalSettings.random.Next(s.Length)]).ToArray());
+              .Select(s => s[random.Next(s.Length)]).ToArray());
             pass += new string(Enumerable.Repeat(PASSWORD_CHARS_SPECIAL, 3)
-              .Select(s => s[GlobalSettings.random.Next(s.Length)]).ToArray());
+              .Select(s => s[random.Next(s.Length)]).ToArray());
             return pass;
         }
-        private DateTime GetDob()
+        private DateTime GetDob(Random random)
         {
             DateTime start = new DateTime(1986, 1, 1);
             int range = (DateTime.Parse("1995-1-1") - start).Days;
-            return start.AddDays(GlobalSettings.random.Next(range));
+            return start.AddDays(random.Next(range));
         }
     }
 }

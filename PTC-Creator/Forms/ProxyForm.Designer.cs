@@ -88,7 +88,7 @@
             this.proxyOlv.Cursor = System.Windows.Forms.Cursors.Default;
             this.proxyOlv.Dock = System.Windows.Forms.DockStyle.Fill;
             this.proxyOlv.Font = new System.Drawing.Font("Century Gothic", 9.75F, System.Drawing.FontStyle.Regular, System.Drawing.GraphicsUnit.Point, ((byte)(0)));
-            this.proxyOlv.ForeColor = System.Drawing.Color.FromArgb(((int)(((byte)(62)))), ((int)(((byte)(120)))), ((int)(((byte)(138)))));
+            this.proxyOlv.ForeColor = System.Drawing.Color.FromArgb(((int)(((byte)(224)))), ((int)(((byte)(224)))), ((int)(((byte)(224)))));
             this.proxyOlv.FullRowSelect = true;
             this.proxyOlv.Location = new System.Drawing.Point(0, 0);
             this.proxyOlv.Name = "proxyOlv";
@@ -192,19 +192,19 @@
             this.addMultipleToolStripMenuItem1,
             this.settingsToolStripMenuItem});
             this.cellMenu.Name = "cellMenu";
-            this.cellMenu.Size = new System.Drawing.Size(181, 92);
+            this.cellMenu.Size = new System.Drawing.Size(144, 70);
             // 
             // addSingleToolStripMenuItem1
             // 
             this.addSingleToolStripMenuItem1.Name = "addSingleToolStripMenuItem1";
-            this.addSingleToolStripMenuItem1.Size = new System.Drawing.Size(180, 22);
+            this.addSingleToolStripMenuItem1.Size = new System.Drawing.Size(143, 22);
             this.addSingleToolStripMenuItem1.Text = "Add Single";
             this.addSingleToolStripMenuItem1.Click += new System.EventHandler(this.addSingleToolStripMenuItem_Click);
             // 
             // addMultipleToolStripMenuItem1
             // 
             this.addMultipleToolStripMenuItem1.Name = "addMultipleToolStripMenuItem1";
-            this.addMultipleToolStripMenuItem1.Size = new System.Drawing.Size(180, 22);
+            this.addMultipleToolStripMenuItem1.Size = new System.Drawing.Size(143, 22);
             this.addMultipleToolStripMenuItem1.Text = "Add Multiple";
             this.addMultipleToolStripMenuItem1.Click += new System.EventHandler(this.addMultipleToolStripMenuItem_Click);
             // 
@@ -216,34 +216,34 @@
             this.resetStatsToolStripMenuItem,
             this.deleteToolStripMenuItem});
             this.settingsToolStripMenuItem.Name = "settingsToolStripMenuItem";
-            this.settingsToolStripMenuItem.Size = new System.Drawing.Size(180, 22);
+            this.settingsToolStripMenuItem.Size = new System.Drawing.Size(143, 22);
             this.settingsToolStripMenuItem.Text = "Settings";
             // 
             // setThreadToolStripMenuItem
             // 
             this.setThreadToolStripMenuItem.Name = "setThreadToolStripMenuItem";
-            this.setThreadToolStripMenuItem.Size = new System.Drawing.Size(180, 22);
+            this.setThreadToolStripMenuItem.Size = new System.Drawing.Size(130, 22);
             this.setThreadToolStripMenuItem.Text = "Set Thread";
             this.setThreadToolStripMenuItem.Click += new System.EventHandler(this.setThreadToolStripMenuItem_Click);
             // 
             // setDelayToolStripMenuItem
             // 
             this.setDelayToolStripMenuItem.Name = "setDelayToolStripMenuItem";
-            this.setDelayToolStripMenuItem.Size = new System.Drawing.Size(180, 22);
+            this.setDelayToolStripMenuItem.Size = new System.Drawing.Size(130, 22);
             this.setDelayToolStripMenuItem.Text = "Set Delay";
             this.setDelayToolStripMenuItem.Click += new System.EventHandler(this.setDelayToolStripMenuItem_Click);
             // 
             // resetStatsToolStripMenuItem
             // 
             this.resetStatsToolStripMenuItem.Name = "resetStatsToolStripMenuItem";
-            this.resetStatsToolStripMenuItem.Size = new System.Drawing.Size(180, 22);
+            this.resetStatsToolStripMenuItem.Size = new System.Drawing.Size(130, 22);
             this.resetStatsToolStripMenuItem.Text = "Reset Stats";
             this.resetStatsToolStripMenuItem.Click += new System.EventHandler(this.resetStatsToolStripMenuItem_Click);
             // 
             // deleteToolStripMenuItem
             // 
             this.deleteToolStripMenuItem.Name = "deleteToolStripMenuItem";
-            this.deleteToolStripMenuItem.Size = new System.Drawing.Size(180, 22);
+            this.deleteToolStripMenuItem.Size = new System.Drawing.Size(130, 22);
             this.deleteToolStripMenuItem.Text = "Delete";
             this.deleteToolStripMenuItem.Click += new System.EventHandler(this.deleteToolStripMenuItem_Click);
             // 

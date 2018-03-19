@@ -1,6 +1,8 @@
 ﻿using Newtonsoft.Json;
 using PTC_Creator.Models;
 using System;
+using System.Collections.Generic;
+using System.Drawing;
 using System.Linq;
 using System.Threading.Tasks;
 using System.Windows.Forms;
@@ -12,12 +14,25 @@ namespace PTC_Creator.Forms
         public CreateForm()
         {
             InitializeComponent();
+            GlobalSettings.createForm = this;
         }
 
-        internal void StatusGridRedraw()
+        internal void UpdateStatus()
         {
-            this.StatusDataGrid.Refresh();
+            createOlv.SetObjects(GlobalSettings.creationStatus);
         }
+
+        internal void UpdateStatus(StatusModel m)
+        {
+            int index = createOlv.IndexOf(m);
+            createOlv.RefreshObject(m);
+        }
+
+        internal void UpdateStatus(List<StatusModel> m)
+        {
+            createOlv.RefreshObjects(m);
+        }
+
 
         private void CreateForm_Load(object sender, EventArgs e)
         {
@@ -30,6 +45,7 @@ namespace PTC_Creator.Forms
             RocketMapCheckBox.Checked = GlobalSettings.creatorSettings.rocketMapFormat;
             SaveInDBCheckBox.Checked = GlobalSettings.creatorSettings.saveDB;
             StatusDataGrid.DataSource = new BindingSource(GlobalSettings.creationStatus, null);
+            createOlv.VirtualMode = true;
         }
 
         private void UsernameTextBox_KeyPress(object sender, KeyPressEventArgs e)
@@ -163,6 +179,26 @@ namespace PTC_Creator.Forms
 
             return true;
         }
-        
+
+        private void createOlv_FormatCell(object sender, BrightIdeasSoftware.FormatCellEventArgs e)
+        {
+            if (e.Column.Text != "Status" || !(e.CellValue is CreationStatus))
+            {
+                return;
+            }
+
+            switch ((CreationStatus)e.CellValue)
+            {
+                case CreationStatus.Processing:
+                    e.SubItem.ForeColor = Color.White;
+                    break;
+                case CreationStatus.Created:
+                    e.SubItem.ForeColor = Color.Green;
+                    break;
+                case CreationStatus.Failed:
+                    e.SubItem.ForeColor = Color.Red;
+                    break;
+            }
+        }
     }
 }
