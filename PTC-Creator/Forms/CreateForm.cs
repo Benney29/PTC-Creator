@@ -190,6 +190,7 @@ namespace PTC_Creator.Forms
             switch ((CreationStatus)e.CellValue)
             {
                 case CreationStatus.Processing:
+                case CreationStatus.Pending:
                     e.SubItem.ForeColor = Color.White;
                     break;
                 case CreationStatus.Created:

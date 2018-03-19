@@ -1,12 +1,15 @@
 ﻿using PTC_Creator.Forms;
 using RandomNameGeneratorLibrary;
 using System;
+using System.Collections.Concurrent;
 using System.Collections.Generic;
 using System.Collections.ObjectModel;
 using System.ComponentModel;
 using System.Linq;
+using System.Net;
 using System.Net.Http;
 using System.Text;
+using System.Threading;
 using System.Threading.Tasks;
 
 namespace PTC_Creator.Models
@@ -20,6 +23,9 @@ namespace PTC_Creator.Models
         internal static WebProxyForm webProxyForm = new WebProxyForm();
         #endregion
 
+        internal static readonly string[] COOKIE_LIST = {"https://pokemon.com", "https://club.pokemon.com", "https://www.pokemon.com",
+            "http://pokemon.com", "http://club.pokemon.com", "http://www.pokemon.com" };
+
         internal static List<CaptchaAPI> captchaSettings = new List<CaptchaAPI>();
         internal static List<Proxy> proxyList = new List<Proxy>();
         internal static List<WebProxyItem> webProxy = new List<WebProxyItem>();
@@ -32,6 +38,7 @@ namespace PTC_Creator.Models
         internal static List<WorkerModel> workers = new List<WorkerModel>();
 
         internal static List<StatusModel> creationStatus = new List<StatusModel>();
+        internal static ConcurrentBag<StatusModel> creationPendingList = new ConcurrentBag<StatusModel>();
 
         public static int GetRandom(int length)
         {
@@ -119,6 +126,15 @@ namespace PTC_Creator.Models
         public CaptchaAPI()
         { }
 
+        public void IncrementSuccess()
+        {
+            Interlocked.Increment(ref _success_count);
+        }
+
+        public void IncrementFail()
+        {
+            Interlocked.Increment(ref _fail_count);
+        }
 
         private void NotifyPropertyChanged(string name)
         {
@@ -292,6 +308,7 @@ namespace PTC_Creator.Models
     {
         Waiting,
         Processing,
+        Pending,
         Created,
         Failed
     }
@@ -300,15 +317,23 @@ namespace PTC_Creator.Models
     #region Worker Settings
     public class WorkerModel
     {
-        public HttpClient client;
-        public bool inUse;
-        public DateTime last_used_time;
-        public Proxy proxyItem;
-        public int create_amount;
-        public int failed_amount;
+        public HttpClient client { get; set; }
 
-        public WorkerModel(HttpClient _client, Proxy _proxyItem)
+        public bool inUse { get; set; }
+
+        public DateTime last_used_time { get; set; }
+
+        public Proxy proxyItem { get; set; }
+
+        public int create_amount { get; set; }
+
+        public int failed_amount { get; set; }
+        
+        private CookieContainer cookieJar { get; set; }
+
+        public WorkerModel(HttpClient _client, Proxy _proxyItem, CookieContainer _cookieJar)
         {
+            cookieJar = _cookieJar;
             _client.DefaultRequestHeaders.Add("User-Agent", "Mozilla/5.0 (Windows NT 10.0; WOW64) AppleWebKit/537.36 (KHTML, like Gecko) Chrome/64.0.3282.186 Safari/537.36");
             _client.DefaultRequestHeaders.Add("Origin", "https://club.pokemon.com");
             _client.DefaultRequestHeaders.Add("Upgrade-Insecure-Requests", "1");
@@ -351,11 +376,25 @@ namespace PTC_Creator.Models
                 last_used_time = DateTime.Now.AddHours(2);
                 return false;
             }
-            else if (DateTime.Now.Subtract(last_used_time).TotalSeconds < proxyItem.delay_sec)
+            else if (create_amount == 0 && DateTime.Now.Subtract(last_used_time).TotalSeconds < proxyItem.delay_sec)
             {
                 return false;
             }
             return true;
+        }
+
+        public void ResetCookies()
+        {
+            last_used_time = DateTime.Now;
+            List<Cookie> ret = new List<Cookie>();
+            GlobalSettings.COOKIE_LIST.ToList().ForEach(_ =>
+            {
+                CookieCollection cookies = cookieJar.GetCookies(new Uri(_));
+                foreach (Cookie co in cookies)
+                {
+                    co.Expires = new DateTime(2018, 1, 1);
+                }
+            });
         }
     }
     #endregion

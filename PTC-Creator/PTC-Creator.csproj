@@ -108,10 +108,20 @@
     <Compile Include="MainForm.Designer.cs">
       <DependentUpon>MainForm.cs</DependentUpon>
     </Compile>
+    <Compile Include="Models\Captchas\AntiCaptcha\AnticaptchaBase.cs" />
+    <Compile Include="Models\Captchas\AntiCaptcha\BalanceResponse.cs" />
+    <Compile Include="Models\Captchas\AntiCaptcha\CreateTaskResponse.cs" />
+    <Compile Include="Models\Captchas\AntiCaptcha\DebugHelper.cs" />
+    <Compile Include="Models\Captchas\AntiCaptcha\HttpHelper.cs" />
+    <Compile Include="Models\Captchas\AntiCaptcha\JsonHelper.cs" />
+    <Compile Include="Models\Captchas\AntiCaptcha\NoCaptcha.cs" />
+    <Compile Include="Models\Captchas\AntiCaptcha\TaskResultResponse.cs" />
+    <Compile Include="Models\Captchas\ImagetyperzAPI.cs" />
     <Compile Include="Models\Controller.cs" />
     <Compile Include="Models\Creator.cs" />
     <Compile Include="Models\GlobalSettings.cs" />
     <Compile Include="Models\HttpClientControl.cs" />
+    <Compile Include="Models\PendingChecker.cs" />
     <Compile Include="Program.cs" />
     <Compile Include="Properties\AssemblyInfo.cs" />
     <Compile Include="Properties\Settings1.Designer.cs">

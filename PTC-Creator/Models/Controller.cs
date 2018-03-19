@@ -17,6 +17,8 @@ namespace PTC_Creator.Models
         const string PASSWORD_CHARS_UCASE = "ABCDEFGHJKLMNPQRSTWXYZ";
         const string PASSWORD_CHARS_NUMERIC = "23456789";
         const string PASSWORD_CHARS_SPECIAL = "*$-+?_&=!%{}/";
+
+        List<Task> taskList = new List<Task>();
         ConcurrentBag<HttpClient> worker = new ConcurrentBag<HttpClient>();
         Object lockObj = new object();
 
@@ -36,8 +38,6 @@ namespace PTC_Creator.Models
 
         private void StartWorkers()
         {
-            List<Task> taskList = new List<Task>();
-
             while (GlobalSettings.creationStatus.Count(_ => _.status == CreationStatus.Created) < GlobalSettings.creatorSettings.createAmount)
             {
                 foreach (StatusModel _ in GlobalSettings.creationStatus)
@@ -46,6 +46,8 @@ namespace PTC_Creator.Models
                     {
                         continue;
                     }
+
+                    CheckPending();
 
                     while (taskList.Count > GlobalSettings.creatorSettings.threadAmount)
                     {
@@ -56,21 +58,19 @@ namespace PTC_Creator.Models
                     WorkerModel worker = null;
                     while (worker == null)
                     {
-                        lock (lockObj)
+                        worker = GlobalSettings.workers.FirstOrDefault(__ => __.IsUsable());
+                        if (worker != null)
                         {
-                            worker = GlobalSettings.workers.FirstOrDefault(__ => __.IsUsable());
-                            if (worker != null)
-                            {
-                                worker.inUse = true;
-                            }
+                            worker.inUse = true;
                         }
-                        if (worker == null)
+                        else
                         {
                             Thread.Sleep(10000);
                         }
                     }
+                    CancellationTokenSource cts = new CancellationTokenSource();
                     _.ChangeStatus(CreationStatus.Processing);
-                    Task t = Task.Run(() => new Creator(worker, _).Start());
+                    Task t = Task.Factory.StartNew(() => new Creator(worker, _, cts), cts.Token);
                     taskList.Add(t);
                 }
 
@@ -79,7 +79,39 @@ namespace PTC_Creator.Models
                 //Check failed count and add new slots
                 Initiate_accounts(GlobalSettings.creatorSettings.createAmount - GlobalSettings.creationStatus.Count(_ => _.status == CreationStatus.Failed));
             }
+        }
 
+        private void CheckPending()
+        {
+            StatusModel pending;
+            while (GlobalSettings.creationPendingList.TryTake(out pending))
+            {
+                WorkerModel worker = null;
+                //found pending account
+                while (taskList.Count > GlobalSettings.creatorSettings.threadAmount)
+                {
+                    Thread.Sleep(5000);
+                    taskList = taskList.Where(__ => __.Status == TaskStatus.Running).ToList();
+                }
+
+                while (worker == null)
+                {
+                    worker = GlobalSettings.workers.FirstOrDefault(__ => __.IsUsable());
+                    if (worker != null)
+                    {
+                        worker.inUse = true;
+                    }
+                    else
+                    {
+                        Thread.Sleep(10000);
+                    }
+                }
+
+                pending.ChangeStatus(CreationStatus.Processing);
+                CancellationTokenSource cts = new CancellationTokenSource();
+                Task t = Task.Factory.StartNew(() => new PendingChecker(worker, pending, cts), cts.Token);
+                taskList.Add(t);
+            }
         }
 
         #region account
@@ -173,7 +205,7 @@ namespace PTC_Creator.Models
                                 Credentials = new NetworkCredential(_.username, _.password)
                             }
                         };
-                        GlobalSettings.workers.Add(new WorkerModel(new HttpClient(handler), _));
+                        GlobalSettings.workers.Add(new WorkerModel(new HttpClient(handler), _, cookieJar));
                     }                  
                 }
             });
