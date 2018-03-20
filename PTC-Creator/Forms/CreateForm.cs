@@ -83,7 +83,7 @@ namespace PTC_Creator.Forms
             }
         }
 
-        private async void StartButton_ClickAsync(object sender, EventArgs e)
+        private void StartButton_ClickAsync(object sender, EventArgs e)
         {
             if (Validate_Config())
             {
@@ -97,7 +97,7 @@ namespace PTC_Creator.Forms
                 GlobalSettings.creatorSettings.saveDB = SaveInDBCheckBox.Checked;
                 StopButton.Visible = true;
                 StartButton.Visible = false;
-                await Task.Run(() => new Controller().Start());
+                Task.Run(() => new Controller().Start());
             }
         }
 
