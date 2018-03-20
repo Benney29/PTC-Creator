@@ -45,6 +45,7 @@
             this.proxyOlv = new BrightIdeasSoftware.FastObjectListView();
             this.proxy = ((BrightIdeasSoftware.OLVColumn)(new BrightIdeasSoftware.OLVColumn()));
             this.type = ((BrightIdeasSoftware.OLVColumn)(new BrightIdeasSoftware.OLVColumn()));
+            this.rotating = ((BrightIdeasSoftware.OLVColumn)(new BrightIdeasSoftware.OLVColumn()));
             this.username = ((BrightIdeasSoftware.OLVColumn)(new BrightIdeasSoftware.OLVColumn()));
             this.password = ((BrightIdeasSoftware.OLVColumn)(new BrightIdeasSoftware.OLVColumn()));
             this.thread_amount = ((BrightIdeasSoftware.OLVColumn)(new BrightIdeasSoftware.OLVColumn()));
@@ -52,6 +53,7 @@
             this.create_count = ((BrightIdeasSoftware.OLVColumn)(new BrightIdeasSoftware.OLVColumn()));
             this.fail_count = ((BrightIdeasSoftware.OLVColumn)(new BrightIdeasSoftware.OLVColumn()));
             this.usable = ((BrightIdeasSoftware.OLVColumn)(new BrightIdeasSoftware.OLVColumn()));
+            this.toggleRotatingProxyToolStripMenuItem = new System.Windows.Forms.ToolStripMenuItem();
             this.gridMenu.SuspendLayout();
             this.cellMenu.SuspendLayout();
             this.ContentPanel.SuspendLayout();
@@ -87,7 +89,7 @@
             this.addMultipleToolStripMenuItem1,
             this.settingsToolStripMenuItem});
             this.cellMenu.Name = "cellMenu";
-            this.cellMenu.Size = new System.Drawing.Size(144, 70);
+            this.cellMenu.Size = new System.Drawing.Size(181, 92);
             // 
             // addSingleToolStripMenuItem1
             // 
@@ -106,12 +108,13 @@
             // settingsToolStripMenuItem
             // 
             this.settingsToolStripMenuItem.DropDownItems.AddRange(new System.Windows.Forms.ToolStripItem[] {
+            this.toggleRotatingProxyToolStripMenuItem,
             this.setThreadToolStripMenuItem,
             this.setDelayToolStripMenuItem,
             this.resetStatsToolStripMenuItem,
             this.deleteToolStripMenuItem});
             this.settingsToolStripMenuItem.Name = "settingsToolStripMenuItem";
-            this.settingsToolStripMenuItem.Size = new System.Drawing.Size(143, 22);
+            this.settingsToolStripMenuItem.Size = new System.Drawing.Size(180, 22);
             this.settingsToolStripMenuItem.Text = "Settings";
             // 
             // setThreadToolStripMenuItem
@@ -159,6 +162,7 @@
             // 
             this.proxyOlv.AllColumns.Add(this.proxy);
             this.proxyOlv.AllColumns.Add(this.type);
+            this.proxyOlv.AllColumns.Add(this.rotating);
             this.proxyOlv.AllColumns.Add(this.username);
             this.proxyOlv.AllColumns.Add(this.password);
             this.proxyOlv.AllColumns.Add(this.thread_amount);
@@ -171,6 +175,7 @@
             this.proxyOlv.Columns.AddRange(new System.Windows.Forms.ColumnHeader[] {
             this.proxy,
             this.type,
+            this.rotating,
             this.username,
             this.password,
             this.thread_amount,
@@ -203,6 +208,12 @@
             // 
             this.type.AspectName = "type";
             this.type.Text = "Type";
+            // 
+            // rotating
+            // 
+            this.rotating.AspectName = "rotating";
+            this.rotating.Text = "Rotating";
+            this.rotating.Width = 77;
             // 
             // username
             // 
@@ -244,6 +255,13 @@
             // 
             this.usable.AspectName = "usable";
             this.usable.Text = "Usable";
+            // 
+            // toggleRotatingProxyToolStripMenuItem
+            // 
+            this.toggleRotatingProxyToolStripMenuItem.Name = "toggleRotatingProxyToolStripMenuItem";
+            this.toggleRotatingProxyToolStripMenuItem.Size = new System.Drawing.Size(190, 22);
+            this.toggleRotatingProxyToolStripMenuItem.Text = "Toggle Rotating Proxy";
+            this.toggleRotatingProxyToolStripMenuItem.Click += new System.EventHandler(this.toggleRotatingProxyToolStripMenuItem_Click);
             // 
             // ProxyForm
             // 
@@ -287,5 +305,7 @@
         private BrightIdeasSoftware.OLVColumn create_count;
         private BrightIdeasSoftware.OLVColumn fail_count;
         private BrightIdeasSoftware.OLVColumn usable;
+        private BrightIdeasSoftware.OLVColumn rotating;
+        private System.Windows.Forms.ToolStripMenuItem toggleRotatingProxyToolStripMenuItem;
     }
 }

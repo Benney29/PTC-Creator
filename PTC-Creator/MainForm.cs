@@ -9,6 +9,7 @@ using System.Data;
 using System.Drawing;
 using System.Linq;
 using System.Text;
+using System.Threading;
 using System.Threading.Tasks;
 using System.Windows.Forms;
 
@@ -16,9 +17,27 @@ namespace PTC_Creator
 {
     public partial class MainForm : Form
     {
+
         public MainForm()
         {
             InitializeComponent();
+            Task.Run(() => UpdateStatusBarThread());
+        }
+
+        internal void UpdateStatusBar()
+        {
+            SuccessLabel.BeginInvoke(new Action(() =>
+            {
+                SuccessLabel.Text = "Success: " + GlobalSettings.creationStatus.Count(_ => _.status == CreationStatus.Created);
+            }));
+            FailLabel.BeginInvoke(new Action(() =>
+            {
+                FailLabel.Text = "Fail: " + GlobalSettings.creationStatus.Count(_ => _.status == CreationStatus.Failed);
+            }));
+            PendingLabel.BeginInvoke(new Action(() =>
+            {
+                PendingLabel.Text = "Pending: " + GlobalSettings.creationStatus.Count(_ => _.status == CreationStatus.Pending);
+            }));
         }
 
 
@@ -129,6 +148,15 @@ namespace PTC_Creator
             ContentPanel.Controls.Clear();
             ContentPanel.Controls.Add(GlobalSettings.captchaFrom);
             GlobalSettings.captchaFrom.Show();
+        }
+
+        private async Task UpdateStatusBarThread()
+        {
+            while (true)
+            {
+                UpdateStatusBar();
+                await Task.Delay(5000);
+            }
         }
 
         #region Window Control Button

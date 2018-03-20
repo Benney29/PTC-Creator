@@ -13,13 +13,11 @@ namespace PTC_Creator.Models
     {
         WorkerModel worker;
         StatusModel status;
-        CancellationTokenSource cts;
         
-        public PendingChecker(WorkerModel _worker, StatusModel _status, CancellationTokenSource _cts)
+        public PendingChecker(WorkerModel _worker, StatusModel _status)
         {
             worker = _worker;
             status = _status;
-            cts = _cts;
         }
 
         public void Check()
@@ -174,8 +172,7 @@ namespace PTC_Creator.Models
                 }
                 worker.ResetCookies();
                 worker.inUse = false;
-                cts.Cancel();
-                cts.Token.ThrowIfCancellationRequested();
+                Thread.CurrentThread.Abort();
             }
         }
 

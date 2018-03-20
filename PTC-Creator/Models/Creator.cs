@@ -17,17 +17,20 @@ namespace PTC_Creator.Models
     {
         WorkerModel worker;
         StatusModel status;
-        CancellationTokenSource cts;
         
-        public Creator(WorkerModel _worker, StatusModel _status, CancellationTokenSource _cts)
+        public Creator(WorkerModel _worker, StatusModel _status)
         {
             worker = _worker;
             status = _status;
-            cts = _cts;
         }
 
         public void Start()
         {
+            if (GlobalSettings.worker_stop)
+            {
+                status.AddLog("Stopped.", CreationStatus.Waiting);
+                terminateWorker(false, true);
+            }
             status.AddLog("Start Checking Username");
 
             //If check username failed
@@ -45,6 +48,7 @@ namespace PTC_Creator.Models
 
             if (GlobalSettings.worker_stop)
             {
+                status.AddLog("Stopped.", CreationStatus.Waiting);
                 terminateWorker(false, true);
             }
 
@@ -57,7 +61,7 @@ namespace PTC_Creator.Models
             status.AddLog("Starting to submit account creation data...");
 
             SubmitAccountCreation(token, captcha_response);
-            status.AddLog("Account Created");
+            status.AddLog("Account Created", CreationStatus.Created);
 
             SaveAccount(status);
 
@@ -81,19 +85,17 @@ namespace PTC_Creator.Models
                     if (res.StatusCode == HttpStatusCode.Forbidden || res.StatusCode == HttpStatusCode.ServiceUnavailable ||
                         check.Contains("Request was throttled") || check.Contains("forbidden") || check.Contains("request could not be"))
                     {
-                        status.AddLog("Failed to check username due to proxy banned...");
-                        status.ChangeStatus(CreationStatus.Waiting);
+                        status.AddLog("Failed to check username due to proxy banned...", CreationStatus.Waiting);
                         terminateWorker(false);
                     }
                     else if (!check.Contains("true"))
                     {
-                        status.AddLog("Username check failed. Username used...");
-                        status.ChangeStatus(CreationStatus.Failed);
+                        status.AddLog("Username check failed. Username used...", CreationStatus.Failed);
                         terminateWorker(false, true);
                     }
                 }
             }
-            catch { status.AddLog("Failed to check username due to proxy timed-out..."); terminateWorker(false); }
+            catch { status.AddLog("Failed to check username due to proxy timed-out...", CreationStatus.Waiting); terminateWorker(false); }
         }
 
         private string GetFirstWebPage()
@@ -108,8 +110,7 @@ namespace PTC_Creator.Models
 
             if (pageSource == "" || !pageSource.Contains("Verify Age"))
             {
-                status.ChangeStatus(CreationStatus.Waiting);
-                status.AddLog("Failed to receive first page...");
+                status.AddLog("Failed to receive first page...", CreationStatus.Waiting);
                 terminateWorker(false);
             }
             return pageSource;
@@ -127,8 +128,7 @@ namespace PTC_Creator.Models
 
             if (token == "")
             {
-                status.ChangeStatus(CreationStatus.Waiting);
-                status.AddLog("No csrf token found...");
+                status.AddLog("No csrf token found...", CreationStatus.Waiting);
                 terminateWorker(false);
             }
 
@@ -161,8 +161,7 @@ namespace PTC_Creator.Models
 
             if (pageSource == "") // || !pageSource.Contains("With a Pokémon Trainer Club account, you can:") um... Still thinking about adding this
             {
-                status.ChangeStatus(CreationStatus.Waiting);
-                status.AddLog("Submitting age verification failed, possibly proxy issue...");
+                status.AddLog("Submitting age verification failed, possibly proxy issue...", CreationStatus.Waiting);
                 terminateWorker(false);
             }
 
@@ -208,8 +207,7 @@ namespace PTC_Creator.Models
                         break;
                 }
             }
-            status.AddLog("Failed Receive any recaptcha response...");
-            status.ChangeStatus(CreationStatus.Waiting);
+            status.AddLog("Failed Receive any recaptcha response...", CreationStatus.Waiting);
             terminateWorker(false, true);
             return "";
         }
@@ -250,34 +248,25 @@ namespace PTC_Creator.Models
             }
             else if (pageSource.Contains("Verify Age"))
             {
-                status.AddLog("Oops, this proxy has been used by others and hit the limit... Try again 2 hours later...");
-                worker.Reset();
-                worker.last_used_time = DateTime.Now.AddHours(2); ;
-                worker.ResetCookies();
-                worker.inUse = false;
-                worker.proxyItem.IncrementFail();
-                status.ChangeStatus(CreationStatus.Failed);
-                cts.Cancel();
-                cts.Token.ThrowIfCancellationRequested();
+                status.AddLog("Oops, this proxy has been used by others and hit the limit... Try again 2 hours later...", CreationStatus.Failed);
+                worker.ForceWait();
+                Thread.CurrentThread.Abort();
             }
-            else if (pageSource.Contains("Access Denied"))
+            else if (pageSource.Contains("Access Denied") || pageSource.Contains("The request could not be satisfied."))
             {
-                status.ChangeStatus(CreationStatus.Failed);
-                status.AddLog("Oops, PTC website returned access denied... Failed...");
+                status.AddLog("Oops, PTC website returned access denied... Failed...", CreationStatus.Failed);
                 terminateWorker(false);
             }
             else if (pageSource.Contains("There is a problem with your email address.") || pageSource.Contains("Unexpected Error"))
             {
-                status.ChangeStatus(CreationStatus.Pending);
                 GlobalSettings.creationPendingList.Add(status);
-                status.AddLog("Oops, Unexpected error from PTC website... Added this too check list...");
+                status.AddLog("Oops, Unexpected error from PTC website... Added this too check list...", CreationStatus.Pending);
                 terminateWorker(false);
             }
             else
             {
-                status.ChangeStatus(CreationStatus.Pending);
                 GlobalSettings.creationPendingList.Add(status);
-                status.AddLog("Unknow state. Proxy issue. Added this to check list...");
+                status.AddLog("Unknow state. Proxy issue. Added this to check list...", CreationStatus.Pending);
                 terminateWorker(false);
             }
 
@@ -285,13 +274,13 @@ namespace PTC_Creator.Models
 
         private void SaveAccount(StatusModel _save)
         {
-            lock (GlobalSettings.fileLocker)
+            if (GlobalSettings.creatorSettings.saveDB)
             {
-                if (GlobalSettings.creatorSettings.saveDB)
-                {
-                    SaveToDb(_save);
-                }
-                else
+                SaveToDb(_save);
+            }
+            else
+            {
+                lock (GlobalSettings.fileLocker)
                 {
                     SaveToFile(_save);
                 }
@@ -479,7 +468,6 @@ namespace PTC_Creator.Models
         {
             if (success)
             {
-                status.ChangeStatus(CreationStatus.Created);
                 worker.create_amount += 1;
                 worker.proxyItem.IncrementSuccess();
                 worker.proxyItem.create_count += 1;
@@ -495,8 +483,7 @@ namespace PTC_Creator.Models
                 }
                 worker.ResetCookies();
                 worker.inUse = false;
-                cts.Cancel();
-                cts.Token.ThrowIfCancellationRequested();
+                Thread.CurrentThread.Abort();
             }
         }
     }

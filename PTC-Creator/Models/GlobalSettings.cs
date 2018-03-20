@@ -154,6 +154,8 @@ namespace PTC_Creator.Models
 
         public ProxyType type { get; set; }
 
+        public bool rotating { get; set; }
+
         public string username { get; set; }
 
         public string password { get; set; }
@@ -172,10 +174,11 @@ namespace PTC_Creator.Models
         public Proxy()
         { }
 
-        public Proxy(string _proxy, ProxyType proxy_type = ProxyType.HTTP)
+        public Proxy(string _proxy, ProxyType proxy_type = ProxyType.HTTP, bool _rotating = false)
         {
             proxy = _proxy;
             type = proxy_type;
+            rotating = _rotating;
             delay_sec = 900;
             create_count = 0;
             fail_count = 0;
@@ -183,10 +186,11 @@ namespace PTC_Creator.Models
             usable = true;
         }
 
-        public Proxy(string _proxy, string _username, string _password, ProxyType proxy_type = ProxyType.HTTP)
+        public Proxy(string _proxy, string _username, string _password, ProxyType proxy_type = ProxyType.HTTP, bool _rotating = false)
         {
             proxy = _proxy;
             type = proxy_type;
+            rotating = _rotating;
             delay_sec = 900;
             create_count = 0;
             fail_count = 0;
@@ -270,7 +274,7 @@ namespace PTC_Creator.Models
         public string username { get; set; }
         public string password { get; set; }
         public CreationStatus status { get; set; }
-        private List<string> log = new List<string>();
+        private List<LogModel> log = new List<LogModel>();
         public string dob { get; set; }
         public string email { get; set; }
 
@@ -280,19 +284,19 @@ namespace PTC_Creator.Models
             {
                 if (log.Count > 0)
                 {
-                    return log[log.Count - 1];
+                    return log[log.Count - 1].message;
                 }
                 return "";
             }
         }
-        public List<string> GetLog()
-        {
-            return log;
-        }
 
-        public void AddLog(string message)
+        public void AddLog(string message, CreationStatus creationStatus = CreationStatus.None)
         {
-            log.Add(message);
+            if (creationStatus != CreationStatus.None)
+            {
+                status = creationStatus;
+            }
+            log.Add(new LogModel(message));
             GlobalSettings.createForm.UpdateStatus(this);
         }
 
@@ -304,9 +308,22 @@ namespace PTC_Creator.Models
 
 
     }
+
+    public class LogModel
+    {
+        public DateTime time { get; set; }
+        public string message { get; set; }
+
+        public LogModel(string _message)
+        {
+            time = DateTime.Now;
+            message = _message;
+        }
+    }
     
     public enum CreationStatus
     {
+        None,
         Waiting,
         Processing,
         Pending,
@@ -360,11 +377,65 @@ namespace PTC_Creator.Models
             failed_amount = 0;
         }
 
+        private void RotatingReset()
+        {
+            client.Dispose();
+            cookieJar = new CookieContainer();
+            HttpClientHandler handler = new HttpClientHandler
+            {
+                UseCookies = true,
+                CookieContainer = cookieJar,
+                UseProxy = true,
+                Proxy = new WebProxy(proxyItem.proxy, false)
+                {
+                    UseDefaultCredentials = false,
+                    Credentials = new NetworkCredential(proxyItem.username, proxyItem.password)
+                }
+            };
+            client = new HttpClient(handler);
+            client.DefaultRequestHeaders.Add("User-Agent", "Mozilla/5.0 (Windows NT 10.0; WOW64) AppleWebKit/537.36 (KHTML, like Gecko) Chrome/64.0.3282.186 Safari/537.36");
+            client.DefaultRequestHeaders.Add("Origin", "https://club.pokemon.com");
+            client.DefaultRequestHeaders.Add("Upgrade-Insecure-Requests", "1");
+            client.DefaultRequestHeaders.Add("Referer", "https://club.pokemon.com/us/pokemon-trainer-club/parents/sign-up");
+            client.DefaultRequestHeaders.Add("DNT", "1");
+            client.DefaultRequestHeaders.Add("Accept", "*/*");
+            client.DefaultRequestHeaders.Add("Accept-Language", "en-US,en;q=0.5");
+            client.DefaultRequestHeaders.Add("Cache-Control", "no-cache");
+            client.MaxResponseContentBufferSize = 524288;
+            client.Timeout = new TimeSpan(0, 0, 30);
+            client.BaseAddress = new Uri("https://club.pokemon.com/");
+        }
+
+        public void ForceWait()
+        {
+            Reset();
+            proxyItem.IncrementFail();
+            if (!proxyItem.rotating)
+            {
+                ResetCookies();
+                last_used_time = DateTime.Now.AddHours(2);
+            }
+            else
+            {
+                RotatingReset();
+            }
+            inUse = false;
+        }
+
         public bool IsUsable()
         {
             if (inUse)
             {
                 return false;
+            }
+            else if (proxyItem.rotating)
+            {
+                if (create_amount == 5 || failed_amount > 3)
+                {
+                    Reset();
+                    RotatingReset();
+                }
+                return true;
             }
             else if (create_amount == 5)
             {
@@ -383,6 +454,7 @@ namespace PTC_Creator.Models
             }
             return true;
         }
+        
 
         public void ResetCookies()
         {

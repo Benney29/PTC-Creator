@@ -19,18 +19,17 @@ namespace PTC_Creator.Forms
 
         internal void UpdateStatus()
         {
-            createOlv.SetObjects(GlobalSettings.creationStatus);
+                createOlv.SetObjects(GlobalSettings.creationStatus);
         }
 
         internal void UpdateStatus(StatusModel m)
         {
-            int index = createOlv.IndexOf(m);
-            createOlv.RefreshObject(m);
+            Task.Run(() => createOlv.RefreshObject(m));
         }
 
         internal void UpdateStatus(List<StatusModel> m)
         {
-            createOlv.RefreshObjects(m);
+                createOlv.RefreshObjects(m);
         }
 
 
@@ -66,7 +65,6 @@ namespace PTC_Creator.Forms
 
         private void RocketMapCheckBox_Click(object sender, EventArgs e)
         {
-            RocketMapCheckBox.Checked = !RocketMapCheckBox.Checked;
             GlobalSettings.creatorSettings.rocketMapFormat = RocketMapCheckBox.Checked;
             if (RocketMapCheckBox.Checked)
             {
@@ -77,7 +75,6 @@ namespace PTC_Creator.Forms
 
         private void SaveInDBCheckBox_Click(object sender, EventArgs e)
         {
-            SaveInDBCheckBox.Checked = !SaveInDBCheckBox.Checked;
             GlobalSettings.creatorSettings.saveDB = SaveInDBCheckBox.Checked;
             if (SaveInDBCheckBox.Checked)
             {
@@ -98,9 +95,17 @@ namespace PTC_Creator.Forms
                 GlobalSettings.creatorSettings.createAmount = int.Parse(CreateAmountTextBox.Text.Trim());
                 GlobalSettings.creatorSettings.rocketMapFormat = RocketMapCheckBox.Checked;
                 GlobalSettings.creatorSettings.saveDB = SaveInDBCheckBox.Checked;
-
+                StopButton.Visible = true;
+                StartButton.Visible = false;
                 await Task.Run(() => new Controller().Start());
             }
+        }
+
+        private void StopButton_Click(object sender, EventArgs e)
+        {
+            GlobalSettings.worker_stop = true;
+            StartButton.Visible = true;
+            StopButton.Visible = false;
         }
 
         private void SaveSettingsButton_Click(object sender, EventArgs e)
@@ -201,5 +206,6 @@ namespace PTC_Creator.Forms
                     break;
             }
         }
+
     }
 }

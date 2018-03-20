@@ -18,22 +18,39 @@ namespace PTC_Creator.Models
         const string PASSWORD_CHARS_NUMERIC = "23456789";
         const string PASSWORD_CHARS_SPECIAL = "*$-+?_&=!%{}/";
 
-        List<Task> taskList = new List<Task>();
+        List<Thread> threadList = new List<Thread>();
         ConcurrentBag<HttpClient> worker = new ConcurrentBag<HttpClient>();
         Object lockObj = new object();
+        Thread webProxyThread;
 
         public void Start()
         {
+            ThreadPool.SetMinThreads(50, 1);
+
+            GlobalSettings.worker_stop = false;
+            
+            GlobalSettings.creationStatus.Clear();
+            GlobalSettings.workers.Clear();
+
             Initiate_accounts(GlobalSettings.creatorSettings.createAmount);
 
             if (GlobalSettings.webProxy.Count > 0)
             {
-                new Thread(WebProxyThread).Start();
+                webProxyThread = new Thread(WebProxyThread);
+                webProxyThread.Start();
             }
 
             Initiate_worker();
 
             StartWorkers();
+
+            GlobalSettings.worker_stop = true;
+
+            try
+            {
+                webProxyThread.Abort();
+            }
+            catch { }
         }
 
         private void StartWorkers()
@@ -42,6 +59,10 @@ namespace PTC_Creator.Models
             {
                 foreach (StatusModel _ in GlobalSettings.creationStatus)
                 {
+                    if (GlobalSettings.worker_stop)
+                    {
+                        return;
+                    }
                     if (_.status != CreationStatus.Waiting)
                     {
                         continue;
@@ -49,16 +70,19 @@ namespace PTC_Creator.Models
 
                     CheckPending();
 
-                    while (taskList.Count > GlobalSettings.creatorSettings.threadAmount)
+                    while (threadList.Count > GlobalSettings.creatorSettings.threadAmount)
                     {
                         Thread.Sleep(5000);
-                        taskList = taskList.Where(__ => __.Status == TaskStatus.Running).ToList();
+                        threadList = threadList.Where(__ => __.IsAlive).ToList();
                     }
 
                     WorkerModel worker = null;
                     while (worker == null)
                     {
-                        worker = GlobalSettings.workers.FirstOrDefault(__ => __.IsUsable());
+                        lock (lockObj)
+                        {
+                            worker = GlobalSettings.workers.FirstOrDefault(__ => __.IsUsable());
+                        }
                         if (worker != null)
                         {
                             worker.inUse = true;
@@ -68,13 +92,14 @@ namespace PTC_Creator.Models
                             Thread.Sleep(10000);
                         }
                     }
-                    CancellationTokenSource cts = new CancellationTokenSource();
                     _.ChangeStatus(CreationStatus.Processing);
-                    Task t = Task.Factory.StartNew(() => new Creator(worker, _, cts), cts.Token);
-                    taskList.Add(t);
+                    Thread t = new Thread(new Creator(worker, _).Start);
+                    t.Start();
+                    threadList.Add(t);
+                    Thread.Sleep(200);
                 }
 
-                Task.WaitAll(taskList.ToArray());
+                threadList.ForEach(_ => _.Join());
 
                 //Check failed count and add new slots
                 Initiate_accounts(GlobalSettings.creatorSettings.createAmount - GlobalSettings.creationStatus.Count(_ => _.status == CreationStatus.Failed));
@@ -86,17 +111,24 @@ namespace PTC_Creator.Models
             StatusModel pending;
             while (GlobalSettings.creationPendingList.TryTake(out pending))
             {
+                if (GlobalSettings.worker_stop)
+                {
+                    return;
+                }
                 WorkerModel worker = null;
                 //found pending account
-                while (taskList.Count > GlobalSettings.creatorSettings.threadAmount)
+                while (threadList.Count > GlobalSettings.creatorSettings.threadAmount)
                 {
                     Thread.Sleep(5000);
-                    taskList = taskList.Where(__ => __.Status == TaskStatus.Running).ToList();
+                    threadList = threadList.Where(__ => __.IsAlive).ToList();
                 }
 
                 while (worker == null)
                 {
-                    worker = GlobalSettings.workers.FirstOrDefault(__ => __.IsUsable());
+                    lock (lockObj)
+                    {
+                        worker = GlobalSettings.workers.FirstOrDefault(__ => __.IsUsable());
+                    }
                     if (worker != null)
                     {
                         worker.inUse = true;
@@ -108,9 +140,9 @@ namespace PTC_Creator.Models
                 }
 
                 pending.ChangeStatus(CreationStatus.Processing);
-                CancellationTokenSource cts = new CancellationTokenSource();
-                Task t = Task.Factory.StartNew(() => new PendingChecker(worker, pending, cts), cts.Token);
-                taskList.Add(t);
+                Thread t = new Thread(new PendingChecker(worker, pending).Check);
+                t.Start();
+                threadList.Add(t);
             }
         }
 
@@ -118,10 +150,10 @@ namespace PTC_Creator.Models
 
         public void Initiate_accounts(int amount)
         {
-            List<Task> taskList = new List<Task>();
+            List<Task> threadList = new List<Task>();
             Random random = new Random();
             PersonNameGenerator nameGenObj = new PersonNameGenerator();
-            for (int i = 0; i < amount; i++)
+            for (int i = GlobalSettings.creationStatus.Count(_ => _.status == CreationStatus.Waiting); i < amount; i++)
             {
                 GetRandomAccount(random, nameGenObj);
             }
@@ -175,6 +207,7 @@ namespace PTC_Creator.Models
               .Select(s => s[random.Next(s.Length)]).ToArray());
             return pass;
         }
+
         private DateTime GetDob(Random random)
         {
             DateTime start = new DateTime(1986, 1, 1);
@@ -221,9 +254,25 @@ namespace PTC_Creator.Models
                     {
                         string content = client.GetStringAsync(_.url).Result;
 
+                        List<Proxy> proxyList = GlobalSettings.webProxyForm.GetProxies(content, true);
+
                         lock (lockObj)
                         {
-                            GlobalSettings.webProxyForm.GetProxies(content, true);
+                            foreach(Proxy p in proxyList)
+                            {
+                                CookieContainer cookieJar = new CookieContainer();
+                                if (_.type == ProxyType.HTTP)
+                                {
+                                    HttpClientHandler handler = new HttpClientHandler
+                                    {
+                                        UseCookies = true,
+                                        CookieContainer = cookieJar,
+                                        UseProxy = true,
+                                        Proxy = new WebProxy(p.proxy)
+                                    };
+                                    GlobalSettings.workers.Add(new WorkerModel(new HttpClient(handler), p, cookieJar));
+                                }
+                            }
                         }
                     }
                 }

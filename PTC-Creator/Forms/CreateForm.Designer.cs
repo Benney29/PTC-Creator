@@ -30,6 +30,7 @@
         {
             System.ComponentModel.ComponentResourceManager resources = new System.ComponentModel.ComponentResourceManager(typeof(CreateForm));
             this.StartButtonPanel = new System.Windows.Forms.Panel();
+            this.StopButton = new System.Windows.Forms.Button();
             this.SaveSettingsButton = new System.Windows.Forms.Button();
             this.StartButton = new System.Windows.Forms.Button();
             this.ConfigPanel = new System.Windows.Forms.Panel();
@@ -66,6 +67,7 @@
             // StartButtonPanel
             // 
             this.StartButtonPanel.BorderStyle = System.Windows.Forms.BorderStyle.FixedSingle;
+            this.StartButtonPanel.Controls.Add(this.StopButton);
             this.StartButtonPanel.Controls.Add(this.SaveSettingsButton);
             this.StartButtonPanel.Controls.Add(this.StartButton);
             this.StartButtonPanel.Dock = System.Windows.Forms.DockStyle.Bottom;
@@ -73,6 +75,22 @@
             this.StartButtonPanel.Name = "StartButtonPanel";
             this.StartButtonPanel.Size = new System.Drawing.Size(1094, 40);
             this.StartButtonPanel.TabIndex = 0;
+            // 
+            // StopButton
+            // 
+            this.StopButton.Anchor = ((System.Windows.Forms.AnchorStyles)(((System.Windows.Forms.AnchorStyles.Top | System.Windows.Forms.AnchorStyles.Bottom) 
+            | System.Windows.Forms.AnchorStyles.Left)));
+            this.StopButton.BackColor = System.Drawing.Color.DeepPink;
+            this.StopButton.FlatStyle = System.Windows.Forms.FlatStyle.Flat;
+            this.StopButton.ForeColor = System.Drawing.Color.Black;
+            this.StopButton.Location = new System.Drawing.Point(269, -1);
+            this.StopButton.Name = "StopButton";
+            this.StopButton.Size = new System.Drawing.Size(138, 40);
+            this.StopButton.TabIndex = 2;
+            this.StopButton.Text = "Stop";
+            this.StopButton.UseVisualStyleBackColor = false;
+            this.StopButton.Visible = false;
+            this.StopButton.Click += new System.EventHandler(this.StopButton_Click);
             // 
             // SaveSettingsButton
             // 
@@ -434,5 +452,6 @@
         private BrightIdeasSoftware.OLVColumn email;
         private BrightIdeasSoftware.OLVColumn status;
         private BrightIdeasSoftware.OLVColumn log;
+        private System.Windows.Forms.Button StopButton;
     }
 }

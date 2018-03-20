@@ -41,9 +41,9 @@ namespace PTC_Creator.Forms
             UpdateWebProxy();
         }
 
-        internal int GetProxies(string content, bool addToList)
+        internal List<Proxy> GetProxies(string content, bool addToList)
         {
-            int ret = 0;
+            List<Proxy> ret = new List<Proxy>();
             Regex proxy = new Regex(@"\d+.\d+.\d+.\d+:\d+");
             MatchCollection m_collection = proxy.Matches(content);
 
@@ -53,10 +53,11 @@ namespace PTC_Creator.Forms
                 {
                     if (m.Success && GlobalSettings.proxyList.FirstOrDefault(i => i.proxy == m.Value) == null)
                     {
-                        ret += 1;
+                        Proxy p = new Proxy(m.Value);
+                        ret.Add(p);
                         if (addToList)
                         {
-                            GlobalSettings.proxyList.Add(new Proxy(m.Value));
+                            GlobalSettings.proxyList.Add(p);
                         }
                     }
                 }

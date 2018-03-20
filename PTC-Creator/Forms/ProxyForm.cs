@@ -1,6 +1,7 @@
 ﻿using PTC_Creator.Forms.ProxyForms;
 using PTC_Creator.Models;
 using System;
+using System.Collections.Concurrent;
 using System.Collections.Generic;
 using System.ComponentModel;
 using System.Data;
@@ -63,37 +64,52 @@ namespace PTC_Creator.Forms
 
         private void addMultipleToolStripMenuItem_Click(object sender, EventArgs e)
         {
-            if (!openFileDialog.CheckFileExists)
+            if (openFileDialog.ShowDialog() == DialogResult.OK)
             {
-                MessageBox.Show("File doesn't exist");
-                return;
+                if (!openFileDialog.CheckFileExists)
+                {
+                    MessageBox.Show("File doesn't exist");
+                    return;
+                }
+                Regex proxyAuth = new Regex(@"\d+.\d+.\d+.\d+:\d+:.+:.+");
+                Regex proxy = new Regex(@"\d+.\d+.\d+.\d+:\d+");
+                int previous_count = GlobalSettings.proxyList.Count; //Use to show how many unique proxies been added to queue
+                List<string> proxy_list = File.ReadAllLines(openFileDialog.FileName).ToList();
+                ConcurrentBag<Proxy> temp_proxyList = new ConcurrentBag<Proxy>();
+                Parallel.ForEach(proxy_list, _ =>
+                {
+                    Match m = proxyAuth.Match(_);
+                    if (m.Success)
+                    {
+                        string[] values = m.Value.Split(':');
+                        if (GlobalSettings.proxyList.FirstOrDefault(i => i.proxy == (values[0] + ":" + values[1])) == null)
+                        {
+                            temp_proxyList.Add(new Proxy(values[0] + ":" + values[1], values[2], values[3]));
+                        }
+                    }
+                    else
+                    {
+                        m = proxy.Match(_);
+                        if (m.Success && GlobalSettings.proxyList.FirstOrDefault(i => i.proxy == m.Value) == null)
+                        {
+                            temp_proxyList.Add(new Proxy(m.Value));
+                        }
+                    }
+                });
+                GlobalSettings.proxyList.AddRange(temp_proxyList.ToList());
+                MessageBox.Show(GlobalSettings.proxyList.Count - previous_count + " unique proxies added to proxy list");
+                this.UpdateProxy();
             }
-            Regex proxyAuth = new Regex(@"\d+.\d+.\d+.\d+:\d+:.+:.+");
-            Regex proxy = new Regex(@"\d+.\d+.\d+.\d+:\d+");
-            int previous_count = GlobalSettings.proxyList.Count; //Use to show how many unique proxies been added to queue
-            List<string> proxy_list = File.ReadAllLines(openFileDialog.FileName).ToList();
-            proxy_list.ForEach(_ =>
+        }
+
+        private void toggleRotatingProxyToolStripMenuItem_Click(object sender, EventArgs e)
+        {
+            List<Proxy> pList = proxyOlv.SelectedObjects.Cast<Proxy>().ToList();
+            foreach (Proxy _ in pList)
             {
-                Match m = proxyAuth.Match(_);
-                if (m.Success)
-                {
-                    string[] values = m.Value.Split(':');
-                    if (GlobalSettings.proxyList.FirstOrDefault(i => i.proxy == (values[0] + ":" + values[1])) == null)
-                    {
-                        GlobalSettings.proxyList.Add(new Proxy(values[0] + ":" + values[1], values[2], values[3]));
-                    }
-                }
-                else
-                {
-                    m = proxy.Match(_);
-                    if (m.Success && GlobalSettings.proxyList.FirstOrDefault(i => i.proxy == m.Value) == null)
-                    {
-                        GlobalSettings.proxyList.Add(new Proxy(m.Value));
-                    }
-                }
-            });
-            MessageBox.Show(GlobalSettings.proxyList.Count - previous_count + " unique proxies added to proxy list");
-            this.UpdateProxy();
+                _.rotating = !_.rotating;
+            }
+            this.UpdateProxy(pList);
         }
 
         private void setThreadToolStripMenuItem_Click(object sender, EventArgs e)
@@ -126,5 +142,6 @@ namespace PTC_Creator.Forms
             });
             UpdateProxy();
         }
+
     }
 }
