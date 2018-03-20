@@ -207,13 +207,11 @@ namespace PTC_Creator.Models
         public void IncrementSuccess()
         {
             create_count += 1;
-            GlobalSettings.proxyForm.UpdateProxy(this);
         }
 
         public void IncrementFail()
         {
             fail_count += 1;
-            GlobalSettings.proxyForm.UpdateProxy(this);
         }
     }
 
@@ -242,7 +240,6 @@ namespace PTC_Creator.Models
         {
             amount = _amount;
             total += amount;
-            GlobalSettings.webProxyForm.UpdateWebProxy(this);
         }
     }
 
@@ -301,13 +298,11 @@ namespace PTC_Creator.Models
                 status = creationStatus;
             }
             log.Add(new LogModel(message));
-            GlobalSettings.createForm.UpdateStatus(this);
         }
 
         public void ChangeStatus(CreationStatus s)
         {
             status = s;
-            GlobalSettings.createForm.UpdateStatus(this);
         }
 
 
@@ -334,6 +329,7 @@ namespace PTC_Creator.Models
         Created,
         Failed
     }
+    
     #endregion
 
     #region Worker Settings

@@ -16,21 +16,6 @@ namespace PTC_Creator.Forms
             InitializeComponent();
         }
 
-        internal void UpdateStatus()
-        {
-            createOlv.SetObjects(GlobalSettings.creationStatus);
-        }
-
-        internal void UpdateStatus(StatusModel m)
-        {
-            Task.Run(() => createOlv.RefreshObject(m));
-        }
-
-        internal void UpdateStatus(List<StatusModel> m)
-        {
-            createOlv.RefreshObjects(m);
-        }
-
 
         private void CreateForm_Load(object sender, EventArgs e)
         {

@@ -18,39 +18,10 @@ namespace PTC_Creator
 {
     public partial class MainForm : Form
     {
-        bool stopUpdate = false;
         public MainForm()
         {
             InitializeComponent();
-            new Thread(UpdateStatusBarThread).Start();
         }
-
-        internal void UpdateStatusBar()
-        {
-            int success = GlobalSettings.creationStatus.ToList().Count(_ => _.status == CreationStatus.Created);
-            int fail = GlobalSettings.creationStatus.ToList().Count(_ => _.status == CreationStatus.Failed);
-            int pending = GlobalSettings.creationStatus.ToList().Count(_ => _.status == CreationStatus.Pending);
-            SuccessLabel.BeginInvoke(new Action(() =>
-            {
-                    SuccessLabel.Text = "Success: " + success;
-            }));
-            FailLabel.BeginInvoke(new Action(() =>
-            {
-                    FailLabel.Text = "Fail: " + fail;
-            }));
-            PendingLabel.BeginInvoke(new Action(() =>
-            {
-                    PendingLabel.Text = "Pending: " + pending;
-            }));
-            RateLabel.BeginInvoke(new Action(() =>
-            {
-                if (success + fail != 0)
-                {
-                    RateLabel.Text = String.Format("Success Rate: {0:P2}", (decimal)success / (success + fail));
-                }
-            }));
-        }
-
 
         private void MainForm_Load(object sender, EventArgs e)
         {
@@ -112,7 +83,6 @@ namespace PTC_Creator
             }
             #endregion
 
-            this.MaximizedBounds = Screen.FromHandle(this.Handle).WorkingArea;
 
             GlobalSettings.webProxyForm.TopLevel = 
                 GlobalSettings.createForm.TopLevel = 
@@ -128,6 +98,8 @@ namespace PTC_Creator
                 GlobalSettings.createForm.Dock = 
                 GlobalSettings.captchaFrom.Dock = 
                 GlobalSettings.proxyForm.Dock = DockStyle.Fill;
+
+            this.MaximizedBounds = Screen.FromHandle(this.Handle).WorkingArea;
 
             ContentPanel.Controls.Clear();
             ContentPanel.Controls.Add(GlobalSettings.createForm);
@@ -160,15 +132,6 @@ namespace PTC_Creator
             ContentPanel.Controls.Clear();
             ContentPanel.Controls.Add(GlobalSettings.captchaFrom);
             GlobalSettings.captchaFrom.Show();
-        }
-
-        private void UpdateStatusBarThread()
-        {
-            while (!stopUpdate)
-            {
-                UpdateStatusBar();
-                Thread.Sleep(5000);
-            }
         }
 
         #region Window Control Button
@@ -233,12 +196,24 @@ namespace PTC_Creator
 
         private void MainForm_FormClosing(object sender, FormClosingEventArgs e)
         {
-            stopUpdate = true;
             Properties.Settings.Default.CaptchaSettings= JsonConvert.SerializeObject(GlobalSettings.captchaSettings);
             Properties.Settings.Default.ProxyList = JsonConvert.SerializeObject(GlobalSettings.proxyList);
             Properties.Settings.Default.CreatorSettings = JsonConvert.SerializeObject(GlobalSettings.creatorSettings);
             Properties.Settings.Default.WebProxyList = JsonConvert.SerializeObject(GlobalSettings.webProxy);
             Properties.Settings.Default.Save();
+        }
+
+        private void StatusTimer_Tick(object sender, EventArgs e)
+        {
+            List<StatusModel> status = GlobalSettings.creationStatus.ToList();
+            int success = status.Count(_ => _.status == CreationStatus.Created);
+            int fail = status.Count(_ => _.status == CreationStatus.Failed);
+            int pending = status.Count(_ => _.status == CreationStatus.Pending);
+            decimal rate = success + fail == 0 ? 0 : (decimal)success / (success + fail);
+            SuccessLabel.Text = "Success: " + success;
+            FailLabel.Text = "Fail: " + fail;
+            PendingLabel.Text = "Pending: " + pending;            
+            RateLabel.Text = String.Format("Success Rate: {0:P2}", rate);
         }
     }
 }

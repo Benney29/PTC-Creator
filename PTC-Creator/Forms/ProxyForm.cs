@@ -30,21 +30,6 @@ namespace PTC_Creator.Forms
             proxyOlv.SetObjects(GlobalSettings.proxyList);
         }
 
-        internal void UpdateProxy(Proxy p)
-        {
-            proxyOlv.RefreshObject(p);
-        }
-
-        internal void UpdateProxy()
-        {
-            proxyOlv.SetObjects(GlobalSettings.proxyList);
-        }
-
-        internal void UpdateProxy(List<Proxy> p)
-        {
-            proxyOlv.RefreshObjects(p);
-        }
-        
 
         private void proxyOlv_CellRightClick(object sender, BrightIdeasSoftware.CellRightClickEventArgs e)
         {
@@ -100,7 +85,7 @@ namespace PTC_Creator.Forms
                 });
                 GlobalSettings.proxyList.AddRange(temp_proxyList.ToList());
                 MessageBox.Show(GlobalSettings.proxyList.Count - previous_count + " unique proxies added to proxy list");
-                this.UpdateProxy();
+                proxyOlv.SetObjects(GlobalSettings.proxyList);
             }
         }
 
@@ -111,7 +96,7 @@ namespace PTC_Creator.Forms
             {
                 _.rotating = !_.rotating;
             }
-            this.UpdateProxy(pList);
+            proxyOlv.RefreshObjects(pList);
         }
 
         private void setThreadToolStripMenuItem_Click(object sender, EventArgs e)
@@ -132,7 +117,7 @@ namespace PTC_Creator.Forms
             {
                 _.create_count = 0;
                 _.fail_count = 0;
-                UpdateProxy(_);
+                proxyOlv.RefreshObject(_);
             });
         }
 
@@ -142,7 +127,7 @@ namespace PTC_Creator.Forms
             {
                 GlobalSettings.proxyList.Remove(_);
             });
-            UpdateProxy();
+            proxyOlv.SetObjects(GlobalSettings.proxyList);
         }
 
         private async void testAllToolStripMenuItem_Click(object sender, EventArgs e)
@@ -204,14 +189,14 @@ namespace PTC_Creator.Forms
                     {
                         proxyItem.usable = false;
                     }
-                    GlobalSettings.proxyForm.UpdateProxy(proxyItem);
+                    proxyOlv.RefreshObject(proxyItem);
                 }
                 catch
                 {
                     proxyItem.usable = false;
                 }
                 proxyItem.test_log = "Tested: " + DateTime.Now.ToString();
-                GlobalSettings.proxyForm.UpdateProxy(proxyItem);
+                proxyOlv.RefreshObject(proxyItem);
             }
         }
 
@@ -239,12 +224,12 @@ namespace PTC_Creator.Forms
             {
                 _.usable = !_.usable;
             });
-            UpdateProxy(GlobalSettings.proxyList);
+            proxyOlv.RefreshObjects(GlobalSettings.proxyList);
         }
 
         private void toggleSelectedUsableToolStripMenuItem_Click(object sender, EventArgs e)
         {
-            proxyOlv.SelectedObjects.Cast<Proxy>().ToList().ForEach(_ => { _.usable = !_.usable; UpdateProxy(_); });
+            proxyOlv.SelectedObjects.Cast<Proxy>().ToList().ForEach(_ => { _.usable = !_.usable; proxyOlv.RefreshObject(_); });
         }
     }
 }

@@ -134,19 +134,19 @@
             this.addToolStripMenuItem1,
             this.deleteToolStripMenuItem});
             this.cellMenu.Name = "cellMenu";
-            this.cellMenu.Size = new System.Drawing.Size(181, 70);
+            this.cellMenu.Size = new System.Drawing.Size(108, 48);
             // 
             // addToolStripMenuItem1
             // 
             this.addToolStripMenuItem1.Name = "addToolStripMenuItem1";
-            this.addToolStripMenuItem1.Size = new System.Drawing.Size(180, 22);
+            this.addToolStripMenuItem1.Size = new System.Drawing.Size(107, 22);
             this.addToolStripMenuItem1.Text = "Add";
             this.addToolStripMenuItem1.Click += new System.EventHandler(this.addToolStripMenuItem1_Click);
             // 
             // deleteToolStripMenuItem
             // 
             this.deleteToolStripMenuItem.Name = "deleteToolStripMenuItem";
-            this.deleteToolStripMenuItem.Size = new System.Drawing.Size(180, 22);
+            this.deleteToolStripMenuItem.Size = new System.Drawing.Size(107, 22);
             this.deleteToolStripMenuItem.Text = "Delete";
             this.deleteToolStripMenuItem.Click += new System.EventHandler(this.deleteToolStripMenuItem_Click);
             // 
@@ -174,7 +174,6 @@
 
         #endregion
         private System.Windows.Forms.Panel ContentPanel;
-        private BrightIdeasSoftware.FastObjectListView WebProxyOlv;
         private BrightIdeasSoftware.OLVColumn url;
         private BrightIdeasSoftware.OLVColumn type;
         private BrightIdeasSoftware.OLVColumn total;
@@ -185,5 +184,6 @@
         private System.Windows.Forms.ToolStripMenuItem addToolStripMenuItem;
         private System.Windows.Forms.ToolStripMenuItem addToolStripMenuItem1;
         private System.Windows.Forms.ToolStripMenuItem deleteToolStripMenuItem;
+        internal BrightIdeasSoftware.FastObjectListView WebProxyOlv;
     }
 }

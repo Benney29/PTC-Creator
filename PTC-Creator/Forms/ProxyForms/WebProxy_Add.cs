@@ -39,7 +39,7 @@ namespace PTC_Creator.Forms.ProxyForms
             if (!GlobalSettings.webProxy.Any(_ => _.url == UrlTextBox.Text.Trim()))
             {
                 GlobalSettings.webProxy.Add(new WebProxyItem(UrlTextBox.Text.Trim(), (ProxyType)Enum.Parse(typeof(ProxyType), ProxyTypeComboBox.Text)));
-                GlobalSettings.webProxyForm.UpdateWebProxy();
+                GlobalSettings.proxyForm.proxyOlv.SetObjects(GlobalSettings.proxyList);
                 this.Close();
             }
             else

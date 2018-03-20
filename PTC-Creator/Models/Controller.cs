@@ -154,7 +154,7 @@ namespace PTC_Creator.Models
             {
                 GetRandomAccount(random, nameGenObj);
             }
-            GlobalSettings.createForm.UpdateStatus();
+            GlobalSettings.createForm.createOlv.SetObjects(GlobalSettings.creationStatus);
         }
 
         private void GetRandomAccount(Random random, PersonNameGenerator nameGenObj)

@@ -33,7 +33,7 @@ namespace PTC_Creator.Forms.ProxyForms
             {
                 _proxies.ForEach(_ => _.delay_sec = int.Parse(DelayTextBox.Text));
                 MessageBox.Show(_proxies.Count + " proxies has updated");
-                GlobalSettings.proxyForm.UpdateProxy(_proxies);
+                GlobalSettings.proxyForm.proxyOlv.UpdateObjects(_proxies);
                 this.Close();
             }
         }

@@ -1,6 +1,6 @@
-﻿using log4net;
-using System;
+﻿using System;
 using System.Collections.Generic;
+using System.IO;
 using System.Linq;
 using System.Threading.Tasks;
 using System.Windows.Forms;
@@ -15,36 +15,35 @@ namespace PTC_Creator
         [STAThread]
         static void Main()
         {
-            AppDomain currentDomain = default(AppDomain);
-            currentDomain = AppDomain.CurrentDomain;
-            // Handler for unhandled exceptions.
-            currentDomain.UnhandledException += GlobalUnhandledExceptionHandler;
-            // Handler for exceptions in threads behind forms.
-            Application.ThreadException += GlobalThreadExceptionHandler;
-
             Properties.Settings.Default.Upgrade();
             Properties.Settings.Default.Reload();
             Properties.Settings.Default.Save();
+
             Application.EnableVisualStyles();
             Application.SetCompatibleTextRenderingDefault(false);
             Application.Run(new MainForm());
+
+            Application.ThreadException += Application_ThreadException;
         }
 
 
-        private static void GlobalUnhandledExceptionHandler(object sender, UnhandledExceptionEventArgs e)
+        private static void Application_ThreadException(object sender, System.Threading.ThreadExceptionEventArgs e)
         {
-            Exception ex = default(Exception);
-            ex = (Exception)e.ExceptionObject;
-            ILog log = LogManager.GetLogger(typeof(Program));
-            log.Error(ex.Message + "\n" + ex.StackTrace);
-        }
+            if (e.Exception is ObjectDisposedException)
+            {
+                MessageBox.Show("An object disposed exception has occured. A log will be written to log.txt", "Fatal Error");
 
-        private static void GlobalThreadExceptionHandler(object sender, System.Threading.ThreadExceptionEventArgs e)
-        {
-            Exception ex = default(Exception);
-            ex = e.Exception;
-            ILog log = LogManager.GetLogger(typeof(Program)); //Log4NET
-            log.Error(ex.Message + "\n" + ex.StackTrace);
+                try
+                {
+                    File.WriteAllText("log.txt", e.Exception.ToString());
+                }
+                catch
+                {
+                    MessageBox.Show(String.Format("Failed to write log file. Screenshot this exception:\n{0}", e.Exception.ToString()));
+                }
+
+                Application.Exit();
+            }
         }
     }
 }

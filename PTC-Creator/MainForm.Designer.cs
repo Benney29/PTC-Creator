@@ -28,6 +28,7 @@
         /// </summary>
         private void InitializeComponent()
         {
+            this.components = new System.ComponentModel.Container();
             System.ComponentModel.ComponentResourceManager resources = new System.ComponentModel.ComponentResourceManager(typeof(MainForm));
             this.WindowPanel = new System.Windows.Forms.Panel();
             this.MinimizeButton = new System.Windows.Forms.Button();
@@ -36,6 +37,7 @@
             this.TitleLabel = new System.Windows.Forms.Label();
             this.pictureBox1 = new System.Windows.Forms.PictureBox();
             this.StatusPanel = new System.Windows.Forms.Panel();
+            this.RateLabel = new System.Windows.Forms.Label();
             this.PendingLabel = new System.Windows.Forms.Label();
             this.FailLabel = new System.Windows.Forms.Label();
             this.SuccessLabel = new System.Windows.Forms.Label();
@@ -46,7 +48,7 @@
             this.CaptchaButton = new System.Windows.Forms.Button();
             this.ProxyButton = new System.Windows.Forms.Button();
             this.CreateAccountButton = new System.Windows.Forms.Button();
-            this.RateLabel = new System.Windows.Forms.Label();
+            this.StatusTimer = new System.Windows.Forms.Timer(this.components);
             this.WindowPanel.SuspendLayout();
             ((System.ComponentModel.ISupportInitialize)(this.pictureBox1)).BeginInit();
             this.StatusPanel.SuspendLayout();
@@ -153,6 +155,15 @@
             this.StatusPanel.Name = "StatusPanel";
             this.StatusPanel.Size = new System.Drawing.Size(1250, 32);
             this.StatusPanel.TabIndex = 1;
+            // 
+            // RateLabel
+            // 
+            this.RateLabel.AutoSize = true;
+            this.RateLabel.Location = new System.Drawing.Point(646, 6);
+            this.RateLabel.Name = "RateLabel";
+            this.RateLabel.Size = new System.Drawing.Size(129, 21);
+            this.RateLabel.TabIndex = 3;
+            this.RateLabel.Text = "Success Rate: 0";
             // 
             // PendingLabel
             // 
@@ -266,14 +277,11 @@
             this.CreateAccountButton.UseVisualStyleBackColor = true;
             this.CreateAccountButton.Click += new System.EventHandler(this.CreateAccountButton_Click);
             // 
-            // RateLabel
+            // StatusTimer
             // 
-            this.RateLabel.AutoSize = true;
-            this.RateLabel.Location = new System.Drawing.Point(646, 6);
-            this.RateLabel.Name = "RateLabel";
-            this.RateLabel.Size = new System.Drawing.Size(129, 21);
-            this.RateLabel.TabIndex = 3;
-            this.RateLabel.Text = "Success Rate: 0";
+            this.StatusTimer.Enabled = true;
+            this.StatusTimer.Interval = 1000;
+            this.StatusTimer.Tick += new System.EventHandler(this.StatusTimer_Tick);
             // 
             // MainForm
             // 
@@ -323,6 +331,7 @@
         private System.Windows.Forms.Label FailLabel;
         private System.Windows.Forms.Label SuccessLabel;
         private System.Windows.Forms.Label RateLabel;
+        private System.Windows.Forms.Timer StatusTimer;
     }
 }
 

@@ -15,22 +15,6 @@ namespace PTC_Creator.Forms
 {
     public partial class WebProxyForm : Form
     {
-        internal void UpdateWebProxy()
-        {
-            WebProxyOlv.SetObjects(GlobalSettings.webProxy);
-        }
-
-        internal void UpdateWebProxy(WebProxyItem p)
-        {
-            WebProxyOlv.UpdateObject(p);
-        }
-
-        internal void UpdateWebProxy(List<WebProxyItem> p)
-        {
-            WebProxyOlv.UpdateObjects(p);
-        }
-
-
         public WebProxyForm()
         {
             InitializeComponent();
@@ -39,7 +23,7 @@ namespace PTC_Creator.Forms
         private void WebProxyForm_Load(object sender, EventArgs e)
         {
             GlobalSettings.webProxyForm = this;
-            UpdateWebProxy();
+            WebProxyOlv.SetObjects(GlobalSettings.webProxy);
         }
 
         internal List<Proxy> GetProxies(string content, bool addToList)
@@ -63,7 +47,7 @@ namespace PTC_Creator.Forms
                     }
                 }
             }
-            GlobalSettings.proxyForm.UpdateProxy();
+            GlobalSettings.proxyForm.proxyOlv.SetObjects(GlobalSettings.proxyList);
             return ret;
         }
 
@@ -91,7 +75,7 @@ namespace PTC_Creator.Forms
             {
                 GlobalSettings.webProxy.Remove(_);
             });
-            UpdateWebProxy();
+            WebProxyOlv.SetObjects(GlobalSettings.webProxy);
         }
     }
 }

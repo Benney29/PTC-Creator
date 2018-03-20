@@ -445,7 +445,6 @@
         private System.Windows.Forms.Panel ContentPanel;
         private System.Windows.Forms.Button SaveSettingsButton;
         public System.Windows.Forms.DataGridView StatusDataGrid;
-        private BrightIdeasSoftware.FastObjectListView createOlv;
         private BrightIdeasSoftware.OLVColumn username;
         private BrightIdeasSoftware.OLVColumn password;
         private BrightIdeasSoftware.OLVColumn dob;
@@ -453,5 +452,6 @@
         private BrightIdeasSoftware.OLVColumn status;
         private BrightIdeasSoftware.OLVColumn log;
         private System.Windows.Forms.Button StopButton;
+        internal BrightIdeasSoftware.FastObjectListView createOlv;
     }
 }
