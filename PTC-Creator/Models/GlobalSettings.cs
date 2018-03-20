@@ -35,6 +35,7 @@ namespace PTC_Creator.Models
         private static PersonNameGenerator nameGenObj = new PersonNameGenerator();
 
         internal static bool worker_stop = false;
+        internal static Object fileLocker = new object();
         internal static List<WorkerModel> workers = new List<WorkerModel>();
 
         internal static List<StatusModel> creationStatus = new List<StatusModel>();

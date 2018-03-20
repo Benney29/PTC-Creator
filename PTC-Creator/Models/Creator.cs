@@ -2,6 +2,7 @@
 using PTC_Creator.Models.Captchas.AntiCaptcha;
 using System;
 using System.Collections.Generic;
+using System.IO;
 using System.Linq;
 using System.Net;
 using System.Net.Http;
@@ -57,6 +58,9 @@ namespace PTC_Creator.Models
 
             SubmitAccountCreation(token, captcha_response);
             status.AddLog("Account Created");
+
+            SaveAccount(status);
+
             terminateWorker(true);
             return;
         }
@@ -278,6 +282,76 @@ namespace PTC_Creator.Models
             }
 
         }
+
+        private void SaveAccount(StatusModel _save)
+        {
+            lock (GlobalSettings.fileLocker)
+            {
+                if (GlobalSettings.creatorSettings.saveDB)
+                {
+                    SaveToDb(_save);
+                }
+                else
+                {
+                    SaveToFile(_save);
+                }
+            }
+        }
+
+        private void SaveToDb(StatusModel _save)
+        {
+            while (true)
+            {
+                try
+                {
+                    List<KeyValuePair<string, string>> content = new List<KeyValuePair<string, string>>();
+                    content.Add(new KeyValuePair<string, string>("api", GlobalSettings.creatorSettings.api));
+                    content.Add(new KeyValuePair<string, string>("type", "1"));//Pokemon accounts
+                    content.Add(new KeyValuePair<string, string>("account", string.Format("{0}:{1}", _save.username, _save.password)));
+                    content.Add(new KeyValuePair<string, string>("account_level", "0"));
+                    content.Add(new KeyValuePair<string, string>("email", string.Format("{0}@{1}", _save.username, GlobalSettings.creatorSettings.domain)));
+                    FormUrlEncodedContent sendContent = new FormUrlEncodedContent(content);
+                    using (HttpClient client = new HttpClient())
+                    {
+                        HttpResponseMessage response = client.PostAsync("https://api.shuffletanker.com/api/v2/Account/AddAccount/", sendContent).Result;
+                        if (response.IsSuccessStatusCode)
+                        {
+                            break;
+                        }
+                    }
+                }
+                catch { }
+            }
+            status.AddLog("Account saved in database...");
+        }
+
+        private void SaveToFile(StatusModel _save)
+        {
+            string path = Directory.GetCurrentDirectory() + @"\" + GlobalSettings.creatorSettings.domain + ".txt";
+            if (!File.Exists(path))
+            {
+                StreamWriter sw = File.CreateText(path);
+                sw.Close();
+            }
+            while (true)
+            {
+                try
+                {
+                    if (!GlobalSettings.creatorSettings.rocketMapFormat)
+                    {
+                        File.AppendAllText(path, string.Format("{0}:{1}" + Environment.NewLine, _save.username, _save.password));
+                    }
+                    else
+                    {
+                        File.AppendAllText(path, string.Format("ptc,{0},{1}" + Environment.NewLine, _save.username, _save.password));
+                    }
+                    break;
+                }
+                catch { Thread.Sleep(1000); }
+            }
+            status.AddLog("Account saved in file...");
+        }
+
 
         #region Sub Captcha Section
         private string AntiCaptcha(CaptchaAPI model)
