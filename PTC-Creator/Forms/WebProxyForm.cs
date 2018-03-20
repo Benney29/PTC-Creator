@@ -62,6 +62,7 @@ namespace PTC_Creator.Forms
                     }
                 }
             }
+            GlobalSettings.proxyForm.UpdateProxy();
             return ret;
         }
 

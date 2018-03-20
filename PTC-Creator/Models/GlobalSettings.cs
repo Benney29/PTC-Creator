@@ -170,6 +170,8 @@ namespace PTC_Creator.Models
 
         public bool usable { get; set; }
 
+        public string test_log { get; set; }
+
         //This is used to deserialize object
         public Proxy()
         { }
@@ -184,6 +186,7 @@ namespace PTC_Creator.Models
             fail_count = 0;
             thread_amount = 1;
             usable = true;
+            test_log = "";
         }
 
         public Proxy(string _proxy, string _username, string _password, ProxyType proxy_type = ProxyType.HTTP, bool _rotating = false)
@@ -198,6 +201,7 @@ namespace PTC_Creator.Models
             thread_amount = 1;
             username = _username;
             password = _password;
+            test_log = "";
         }
 
         public void IncrementSuccess()
