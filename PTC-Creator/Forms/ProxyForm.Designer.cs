@@ -58,7 +58,7 @@
             this.fail_count = ((BrightIdeasSoftware.OLVColumn)(new BrightIdeasSoftware.OLVColumn()));
             this.usable = ((BrightIdeasSoftware.OLVColumn)(new BrightIdeasSoftware.OLVColumn()));
             this.Log = ((BrightIdeasSoftware.OLVColumn)(new BrightIdeasSoftware.OLVColumn()));
-            this.toggleSelectedUsableToolStripMenuItem = new System.Windows.Forms.ToolStripMenuItem();
+            this.toggleSelectedUsableToolStripMenuItem1 = new System.Windows.Forms.ToolStripMenuItem();
             this.gridMenu.SuspendLayout();
             this.cellMenu.SuspendLayout();
             this.ContentPanel.SuspendLayout();
@@ -109,76 +109,76 @@
             this.addSingleToolStripMenuItem1,
             this.addMultipleToolStripMenuItem1,
             this.settingsToolStripMenuItem,
-            this.testSelectedToolStripMenuItem,
-            this.toggleSelectedUsableToolStripMenuItem});
+            this.testSelectedToolStripMenuItem});
             this.cellMenu.Name = "cellMenu";
-            this.cellMenu.Size = new System.Drawing.Size(196, 136);
+            this.cellMenu.Size = new System.Drawing.Size(181, 114);
             // 
             // addSingleToolStripMenuItem1
             // 
             this.addSingleToolStripMenuItem1.Name = "addSingleToolStripMenuItem1";
-            this.addSingleToolStripMenuItem1.Size = new System.Drawing.Size(195, 22);
+            this.addSingleToolStripMenuItem1.Size = new System.Drawing.Size(180, 22);
             this.addSingleToolStripMenuItem1.Text = "Add Single";
             this.addSingleToolStripMenuItem1.Click += new System.EventHandler(this.addSingleToolStripMenuItem_Click);
             // 
             // addMultipleToolStripMenuItem1
             // 
             this.addMultipleToolStripMenuItem1.Name = "addMultipleToolStripMenuItem1";
-            this.addMultipleToolStripMenuItem1.Size = new System.Drawing.Size(195, 22);
+            this.addMultipleToolStripMenuItem1.Size = new System.Drawing.Size(180, 22);
             this.addMultipleToolStripMenuItem1.Text = "Add Multiple";
             this.addMultipleToolStripMenuItem1.Click += new System.EventHandler(this.addMultipleToolStripMenuItem_Click);
             // 
             // settingsToolStripMenuItem
             // 
             this.settingsToolStripMenuItem.DropDownItems.AddRange(new System.Windows.Forms.ToolStripItem[] {
+            this.toggleSelectedUsableToolStripMenuItem1,
             this.toggleRotatingProxyToolStripMenuItem,
             this.setThreadToolStripMenuItem,
             this.setDelayToolStripMenuItem,
             this.resetStatsToolStripMenuItem,
             this.deleteToolStripMenuItem});
             this.settingsToolStripMenuItem.Name = "settingsToolStripMenuItem";
-            this.settingsToolStripMenuItem.Size = new System.Drawing.Size(195, 22);
+            this.settingsToolStripMenuItem.Size = new System.Drawing.Size(180, 22);
             this.settingsToolStripMenuItem.Text = "Settings";
             // 
             // toggleRotatingProxyToolStripMenuItem
             // 
             this.toggleRotatingProxyToolStripMenuItem.Name = "toggleRotatingProxyToolStripMenuItem";
-            this.toggleRotatingProxyToolStripMenuItem.Size = new System.Drawing.Size(190, 22);
+            this.toggleRotatingProxyToolStripMenuItem.Size = new System.Drawing.Size(195, 22);
             this.toggleRotatingProxyToolStripMenuItem.Text = "Toggle Rotating Proxy";
             this.toggleRotatingProxyToolStripMenuItem.Click += new System.EventHandler(this.toggleRotatingProxyToolStripMenuItem_Click);
             // 
             // setThreadToolStripMenuItem
             // 
             this.setThreadToolStripMenuItem.Name = "setThreadToolStripMenuItem";
-            this.setThreadToolStripMenuItem.Size = new System.Drawing.Size(190, 22);
+            this.setThreadToolStripMenuItem.Size = new System.Drawing.Size(195, 22);
             this.setThreadToolStripMenuItem.Text = "Set Thread";
             this.setThreadToolStripMenuItem.Click += new System.EventHandler(this.setThreadToolStripMenuItem_Click);
             // 
             // setDelayToolStripMenuItem
             // 
             this.setDelayToolStripMenuItem.Name = "setDelayToolStripMenuItem";
-            this.setDelayToolStripMenuItem.Size = new System.Drawing.Size(190, 22);
+            this.setDelayToolStripMenuItem.Size = new System.Drawing.Size(195, 22);
             this.setDelayToolStripMenuItem.Text = "Set Delay";
             this.setDelayToolStripMenuItem.Click += new System.EventHandler(this.setDelayToolStripMenuItem_Click);
             // 
             // resetStatsToolStripMenuItem
             // 
             this.resetStatsToolStripMenuItem.Name = "resetStatsToolStripMenuItem";
-            this.resetStatsToolStripMenuItem.Size = new System.Drawing.Size(190, 22);
+            this.resetStatsToolStripMenuItem.Size = new System.Drawing.Size(195, 22);
             this.resetStatsToolStripMenuItem.Text = "Reset Stats";
             this.resetStatsToolStripMenuItem.Click += new System.EventHandler(this.resetStatsToolStripMenuItem_Click);
             // 
             // deleteToolStripMenuItem
             // 
             this.deleteToolStripMenuItem.Name = "deleteToolStripMenuItem";
-            this.deleteToolStripMenuItem.Size = new System.Drawing.Size(190, 22);
+            this.deleteToolStripMenuItem.Size = new System.Drawing.Size(195, 22);
             this.deleteToolStripMenuItem.Text = "Delete";
             this.deleteToolStripMenuItem.Click += new System.EventHandler(this.deleteToolStripMenuItem_Click);
             // 
             // testSelectedToolStripMenuItem
             // 
             this.testSelectedToolStripMenuItem.Name = "testSelectedToolStripMenuItem";
-            this.testSelectedToolStripMenuItem.Size = new System.Drawing.Size(195, 22);
+            this.testSelectedToolStripMenuItem.Size = new System.Drawing.Size(180, 22);
             this.testSelectedToolStripMenuItem.Text = "Test Selected";
             this.testSelectedToolStripMenuItem.Click += new System.EventHandler(this.testSelectedToolStripMenuItem_Click);
             // 
@@ -303,12 +303,12 @@
             this.Log.Text = "Log";
             this.Log.Width = 192;
             // 
-            // toggleSelectedUsableToolStripMenuItem
+            // toggleSelectedUsableToolStripMenuItem1
             // 
-            this.toggleSelectedUsableToolStripMenuItem.Name = "toggleSelectedUsableToolStripMenuItem";
-            this.toggleSelectedUsableToolStripMenuItem.Size = new System.Drawing.Size(195, 22);
-            this.toggleSelectedUsableToolStripMenuItem.Text = "Toggle Selected Usable";
-            this.toggleSelectedUsableToolStripMenuItem.Click += new System.EventHandler(this.toggleSelectedUsableToolStripMenuItem_Click);
+            this.toggleSelectedUsableToolStripMenuItem1.Name = "toggleSelectedUsableToolStripMenuItem1";
+            this.toggleSelectedUsableToolStripMenuItem1.Size = new System.Drawing.Size(195, 22);
+            this.toggleSelectedUsableToolStripMenuItem1.Text = "Toggle Selected Usable";
+            this.toggleSelectedUsableToolStripMenuItem1.Click += new System.EventHandler(this.toggleSelectedUsableToolStripMenuItem_Click);
             // 
             // ProxyForm
             // 
@@ -358,6 +358,6 @@
         private System.Windows.Forms.ToolStripMenuItem testSelectedToolStripMenuItem;
         private BrightIdeasSoftware.OLVColumn Log;
         private System.Windows.Forms.ToolStripMenuItem toggleAllUsableToolStripMenuItem;
-        private System.Windows.Forms.ToolStripMenuItem toggleSelectedUsableToolStripMenuItem;
+        private System.Windows.Forms.ToolStripMenuItem toggleSelectedUsableToolStripMenuItem1;
     }
 }
