@@ -18,7 +18,7 @@ namespace PTC_Creator
 {
     public partial class MainForm : Form
     {
-
+        bool stopUpdate = false;
         public MainForm()
         {
             InitializeComponent();
@@ -164,7 +164,7 @@ namespace PTC_Creator
 
         private void UpdateStatusBarThread()
         {
-            while (true)
+            while (!stopUpdate)
             {
                 UpdateStatusBar();
                 Thread.Sleep(5000);
@@ -233,6 +233,7 @@ namespace PTC_Creator
 
         private void MainForm_FormClosing(object sender, FormClosingEventArgs e)
         {
+            stopUpdate = true;
             Properties.Settings.Default.CaptchaSettings= JsonConvert.SerializeObject(GlobalSettings.captchaSettings);
             Properties.Settings.Default.ProxyList = JsonConvert.SerializeObject(GlobalSettings.proxyList);
             Properties.Settings.Default.CreatorSettings = JsonConvert.SerializeObject(GlobalSettings.creatorSettings);
