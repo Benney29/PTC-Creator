@@ -38,6 +38,7 @@ namespace PTC_Creator.Forms
 
         private void WebProxyForm_Load(object sender, EventArgs e)
         {
+            GlobalSettings.webProxyForm = this;
             UpdateWebProxy();
         }
 

@@ -16,6 +16,7 @@ namespace PTC_Creator.Forms
 
         private void CaptchaForm_Load(object sender, EventArgs e)
         {
+            GlobalSettings.captchaFrom = this;
             CaptchaDataGrid.DataSource = new BindingSource(GlobalSettings.captchaSettings, null);
             CaptchaDataGrid.Columns["provider"].ReadOnly = true;
             CaptchaDataGrid.Columns["success_count"].ReadOnly = true;

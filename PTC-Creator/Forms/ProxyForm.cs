@@ -23,10 +23,10 @@ namespace PTC_Creator.Forms
         public ProxyForm()
         {
             InitializeComponent();
-            GlobalSettings.proxyForm = this;
         }
         private void ProxyForm_Load(object sender, EventArgs e)
         {
+            GlobalSettings.proxyForm = this;
             proxyOlv.SetObjects(GlobalSettings.proxyList);
         }
 

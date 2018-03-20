@@ -14,12 +14,11 @@ namespace PTC_Creator.Forms
         public CreateForm()
         {
             InitializeComponent();
-            GlobalSettings.createForm = this;
         }
 
         internal void UpdateStatus()
         {
-                createOlv.SetObjects(GlobalSettings.creationStatus);
+            createOlv.SetObjects(GlobalSettings.creationStatus);
         }
 
         internal void UpdateStatus(StatusModel m)
@@ -29,12 +28,13 @@ namespace PTC_Creator.Forms
 
         internal void UpdateStatus(List<StatusModel> m)
         {
-                createOlv.RefreshObjects(m);
+            createOlv.RefreshObjects(m);
         }
 
 
         private void CreateForm_Load(object sender, EventArgs e)
         {
+            GlobalSettings.createForm = this;
             ShuffleAPITextBox.Text = GlobalSettings.creatorSettings.api;
             DomainTextBox.Text = GlobalSettings.creatorSettings.domain;
             UsernameTextBox.Text = GlobalSettings.creatorSettings.username;
@@ -57,7 +57,7 @@ namespace PTC_Creator.Forms
 
         private void NumOnly_KeyPress(object sender, KeyPressEventArgs e)
         {
-            if (!char.IsDigit(e.KeyChar) && !char.IsControl(e.KeyChar) )
+            if (!char.IsDigit(e.KeyChar) && !char.IsControl(e.KeyChar))
             {
                 e.Handled = true;
             }
