@@ -274,6 +274,8 @@ namespace PTC_Creator.Models
                                 }
                             }
                         }
+                        _.AddAmount(proxyList.Count());
+                        _.last_check_date = DateTime.Now;
                     }
                 }
                 Thread.Sleep(900000);

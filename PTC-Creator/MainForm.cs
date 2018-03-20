@@ -8,6 +8,7 @@ using System.ComponentModel;
 using System.Data;
 using System.Drawing;
 using System.Linq;
+using System.Reflection;
 using System.Text;
 using System.Threading;
 using System.Threading.Tasks;
@@ -43,6 +44,7 @@ namespace PTC_Creator
 
         private void MainForm_Load(object sender, EventArgs e)
         {
+            TitleLabel.Text += $" [Version - {Assembly.GetExecutingAssembly().GetName().Version}]";
             #region Load saved settings
             try
             {
