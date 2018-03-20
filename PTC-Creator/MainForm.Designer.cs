@@ -161,9 +161,9 @@
             this.RateLabel.AutoSize = true;
             this.RateLabel.Location = new System.Drawing.Point(646, 6);
             this.RateLabel.Name = "RateLabel";
-            this.RateLabel.Size = new System.Drawing.Size(129, 21);
+            this.RateLabel.Size = new System.Drawing.Size(163, 21);
             this.RateLabel.TabIndex = 3;
-            this.RateLabel.Text = "Success Rate: 0";
+            this.RateLabel.Text = "Success Rate: 0.00%";
             // 
             // PendingLabel
             // 

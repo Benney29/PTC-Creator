@@ -205,15 +205,18 @@ namespace PTC_Creator
 
         private void StatusTimer_Tick(object sender, EventArgs e)
         {
-            List<StatusModel> status = GlobalSettings.creationStatus.ToList();
-            int success = status.Count(_ => _.status == CreationStatus.Created);
-            int fail = status.Count(_ => _.status == CreationStatus.Failed);
-            int pending = status.Count(_ => _.status == CreationStatus.Pending);
-            decimal rate = success + fail == 0 ? 0 : (decimal)success / (success + fail);
-            SuccessLabel.Text = "Success: " + success;
-            FailLabel.Text = "Fail: " + fail;
-            PendingLabel.Text = "Pending: " + pending;            
-            RateLabel.Text = String.Format("Success Rate: {0:P2}", rate);
+            if (GlobalSettings.creationStatus.Count > 0)
+            {
+                List<StatusModel> status = GlobalSettings.creationStatus.ToList();
+                int success = status.Count(_ => _.status == CreationStatus.Created);
+                int fail = status.Count(_ => _.status == CreationStatus.Failed);
+                int pending = status.Count(_ => _.status == CreationStatus.Pending);
+                decimal rate = success + fail == 0 ? 0 : (decimal)success / (success + fail);
+                SuccessLabel.Text = "Success: " + success;
+                FailLabel.Text = "Fail: " + fail;
+                PendingLabel.Text = "Pending: " + pending;
+                RateLabel.Text = String.Format("Success Rate: {0:P2}", rate);
+            }
         }
     }
 }
