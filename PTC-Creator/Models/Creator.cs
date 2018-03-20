@@ -179,33 +179,37 @@ namespace PTC_Creator.Models
             string response = "";
             foreach (CaptchaAPI _ in GlobalSettings.captchaSettings.Where(_ => _.enabled))
             {
-                switch (_.provider)
+                try
                 {
-                    case CaptchaProvider.AntiCaptcha:
-                        response = AntiCaptcha(_);
-                        if (response != "")
-                        {
-                            status.AddLog(_.provider.ToString() + " solution received...");
-                            return response;
-                        }
-                        break;
-                    case CaptchaProvider.ImageTyperz:
-                        response = ImageTyperz(_);
-                        if (response != "")
-                        {
-                            status.AddLog(_.provider.ToString() + " solution received...");
-                            return response;
-                        }
-                        break;
-                    case CaptchaProvider.TwoCaptcha:
-                        response = TwoCaptcha(_);
-                        if (response != "")
-                        {
-                            status.AddLog(_.provider.ToString() + " solution received...");
-                            return response;
-                        }
-                        break;
+                    switch (_.provider)
+                    {
+                        case CaptchaProvider.AntiCaptcha:
+                            response = AntiCaptcha(_);
+                            if (response != "")
+                            {
+                                status.AddLog(_.provider.ToString() + " solution received...");
+                                return response;
+                            }
+                            break;
+                        case CaptchaProvider.ImageTyperz:
+                            response = ImageTyperz(_);
+                            if (response != "")
+                            {
+                                status.AddLog(_.provider.ToString() + " solution received...");
+                                return response;
+                            }
+                            break;
+                        case CaptchaProvider.TwoCaptcha:
+                            response = TwoCaptcha(_);
+                            if (response != "")
+                            {
+                                status.AddLog(_.provider.ToString() + " solution received...");
+                                return response;
+                            }
+                            break;
+                    }
                 }
+                catch { status.AddLog("Failed to receive catpcha for " + _.provider.ToString()); }
             }
             status.AddLog("Failed Receive any recaptcha response...", CreationStatus.Waiting);
             terminateWorker(false, true);
