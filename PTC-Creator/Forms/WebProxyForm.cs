@@ -90,6 +90,7 @@ namespace PTC_Creator.Forms
             {
                 GlobalSettings.webProxy.Remove(_);
             });
+            UpdateWebProxy();
         }
     }
 }

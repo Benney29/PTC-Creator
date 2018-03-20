@@ -237,13 +237,14 @@ namespace PTC_Creator.Forms
         {
             GlobalSettings.proxyList.ForEach(_ =>
             {
-                _.usable = true;
+                _.usable = !_.usable;
             });
+            UpdateProxy(GlobalSettings.proxyList);
         }
 
         private void toggleSelectedUsableToolStripMenuItem_Click(object sender, EventArgs e)
         {
-            proxyOlv.SelectedObjects.Cast<Proxy>().ToList().ForEach(_ => { _.usable = true; });
+            proxyOlv.SelectedObjects.Cast<Proxy>().ToList().ForEach(_ => { _.usable = !_.usable; UpdateProxy(_); });
         }
     }
 }

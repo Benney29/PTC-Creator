@@ -36,6 +36,9 @@
             this.TitleLabel = new System.Windows.Forms.Label();
             this.pictureBox1 = new System.Windows.Forms.PictureBox();
             this.StatusPanel = new System.Windows.Forms.Panel();
+            this.PendingLabel = new System.Windows.Forms.Label();
+            this.FailLabel = new System.Windows.Forms.Label();
+            this.SuccessLabel = new System.Windows.Forms.Label();
             this.MainPanel = new System.Windows.Forms.Panel();
             this.ContentPanel = new System.Windows.Forms.Panel();
             this.ButtonPanel = new System.Windows.Forms.Panel();
@@ -43,9 +46,7 @@
             this.CaptchaButton = new System.Windows.Forms.Button();
             this.ProxyButton = new System.Windows.Forms.Button();
             this.CreateAccountButton = new System.Windows.Forms.Button();
-            this.SuccessLabel = new System.Windows.Forms.Label();
-            this.FailLabel = new System.Windows.Forms.Label();
-            this.PendingLabel = new System.Windows.Forms.Label();
+            this.RateLabel = new System.Windows.Forms.Label();
             this.WindowPanel.SuspendLayout();
             ((System.ComponentModel.ISupportInitialize)(this.pictureBox1)).BeginInit();
             this.StatusPanel.SuspendLayout();
@@ -142,6 +143,7 @@
             // StatusPanel
             // 
             this.StatusPanel.BackColor = System.Drawing.Color.SaddleBrown;
+            this.StatusPanel.Controls.Add(this.RateLabel);
             this.StatusPanel.Controls.Add(this.PendingLabel);
             this.StatusPanel.Controls.Add(this.FailLabel);
             this.StatusPanel.Controls.Add(this.SuccessLabel);
@@ -151,6 +153,36 @@
             this.StatusPanel.Name = "StatusPanel";
             this.StatusPanel.Size = new System.Drawing.Size(1250, 32);
             this.StatusPanel.TabIndex = 1;
+            // 
+            // PendingLabel
+            // 
+            this.PendingLabel.AutoSize = true;
+            this.PendingLabel.Location = new System.Drawing.Point(426, 6);
+            this.PendingLabel.Name = "PendingLabel";
+            this.PendingLabel.Size = new System.Drawing.Size(78, 21);
+            this.PendingLabel.TabIndex = 2;
+            this.PendingLabel.Text = "Pending:";
+            // 
+            // FailLabel
+            // 
+            this.FailLabel.AutoSize = true;
+            this.FailLabel.ForeColor = System.Drawing.Color.White;
+            this.FailLabel.Location = new System.Drawing.Point(241, 6);
+            this.FailLabel.Name = "FailLabel";
+            this.FailLabel.Size = new System.Drawing.Size(43, 21);
+            this.FailLabel.TabIndex = 1;
+            this.FailLabel.Text = "Fail: ";
+            // 
+            // SuccessLabel
+            // 
+            this.SuccessLabel.AutoSize = true;
+            this.SuccessLabel.Font = new System.Drawing.Font("Century Gothic", 12F, System.Drawing.FontStyle.Regular, System.Drawing.GraphicsUnit.Point, ((byte)(0)));
+            this.SuccessLabel.ForeColor = System.Drawing.Color.White;
+            this.SuccessLabel.Location = new System.Drawing.Point(21, 6);
+            this.SuccessLabel.Name = "SuccessLabel";
+            this.SuccessLabel.Size = new System.Drawing.Size(78, 21);
+            this.SuccessLabel.TabIndex = 0;
+            this.SuccessLabel.Text = "Success: ";
             // 
             // MainPanel
             // 
@@ -234,35 +266,14 @@
             this.CreateAccountButton.UseVisualStyleBackColor = true;
             this.CreateAccountButton.Click += new System.EventHandler(this.CreateAccountButton_Click);
             // 
-            // SuccessLabel
+            // RateLabel
             // 
-            this.SuccessLabel.AutoSize = true;
-            this.SuccessLabel.Font = new System.Drawing.Font("Century Gothic", 12F, System.Drawing.FontStyle.Regular, System.Drawing.GraphicsUnit.Point, ((byte)(0)));
-            this.SuccessLabel.ForeColor = System.Drawing.Color.White;
-            this.SuccessLabel.Location = new System.Drawing.Point(21, 6);
-            this.SuccessLabel.Name = "SuccessLabel";
-            this.SuccessLabel.Size = new System.Drawing.Size(78, 21);
-            this.SuccessLabel.TabIndex = 0;
-            this.SuccessLabel.Text = "Success: ";
-            // 
-            // FailLabel
-            // 
-            this.FailLabel.AutoSize = true;
-            this.FailLabel.ForeColor = System.Drawing.Color.White;
-            this.FailLabel.Location = new System.Drawing.Point(233, 6);
-            this.FailLabel.Name = "FailLabel";
-            this.FailLabel.Size = new System.Drawing.Size(43, 21);
-            this.FailLabel.TabIndex = 1;
-            this.FailLabel.Text = "Fail: ";
-            // 
-            // PendingLabel
-            // 
-            this.PendingLabel.AutoSize = true;
-            this.PendingLabel.Location = new System.Drawing.Point(427, 6);
-            this.PendingLabel.Name = "PendingLabel";
-            this.PendingLabel.Size = new System.Drawing.Size(78, 21);
-            this.PendingLabel.TabIndex = 2;
-            this.PendingLabel.Text = "Pending:";
+            this.RateLabel.AutoSize = true;
+            this.RateLabel.Location = new System.Drawing.Point(646, 6);
+            this.RateLabel.Name = "RateLabel";
+            this.RateLabel.Size = new System.Drawing.Size(129, 21);
+            this.RateLabel.TabIndex = 3;
+            this.RateLabel.Text = "Success Rate: 0";
             // 
             // MainForm
             // 
@@ -311,6 +322,7 @@
         private System.Windows.Forms.Label PendingLabel;
         private System.Windows.Forms.Label FailLabel;
         private System.Windows.Forms.Label SuccessLabel;
+        private System.Windows.Forms.Label RateLabel;
     }
 }
 

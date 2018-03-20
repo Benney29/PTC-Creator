@@ -27,17 +27,29 @@ namespace PTC_Creator
 
         internal void UpdateStatusBar()
         {
+            List<StatusModel> status = GlobalSettings.creationStatus.ToList();
+            int success = status.Count(_ => _.status == CreationStatus.Created);
+            int fail = status.Count(_ => _.status == CreationStatus.Failed);
+            int pending = status.Count(_ => _.status == CreationStatus.Pending);
             SuccessLabel.BeginInvoke(new Action(() =>
             {
-                SuccessLabel.Text = "Success: " + GlobalSettings.creationStatus.Count(_ => _.status == CreationStatus.Created);
+                    SuccessLabel.Text = "Success: " + success;
             }));
             FailLabel.BeginInvoke(new Action(() =>
             {
-                FailLabel.Text = "Fail: " + GlobalSettings.creationStatus.Count(_ => _.status == CreationStatus.Failed);
+                    FailLabel.Text = "Fail: " + fail;
             }));
             PendingLabel.BeginInvoke(new Action(() =>
             {
-                PendingLabel.Text = "Pending: " + GlobalSettings.creationStatus.Count(_ => _.status == CreationStatus.Pending);
+                    PendingLabel.Text = "Pending: " + pending;
+            }));
+            RateLabel.BeginInvoke(new Action(() =>
+            {
+                try
+                {
+                    RateLabel.Text = String.Format("Success Rate: {0:P2}",success / (success + fail));
+                }
+                catch { }
             }));
         }
 
