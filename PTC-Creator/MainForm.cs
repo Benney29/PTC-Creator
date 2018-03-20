@@ -22,15 +22,14 @@ namespace PTC_Creator
         public MainForm()
         {
             InitializeComponent();
-            Task.Run(() => UpdateStatusBarThread());
+            new Thread(UpdateStatusBarThread).Start();
         }
 
         internal void UpdateStatusBar()
         {
-            List<StatusModel> status = GlobalSettings.creationStatus.ToList();
-            int success = status.Count(_ => _.status == CreationStatus.Created);
-            int fail = status.Count(_ => _.status == CreationStatus.Failed);
-            int pending = status.Count(_ => _.status == CreationStatus.Pending);
+            int success = GlobalSettings.creationStatus.Count(_ => _.status == CreationStatus.Created);
+            int fail = GlobalSettings.creationStatus.Count(_ => _.status == CreationStatus.Failed);
+            int pending = GlobalSettings.creationStatus.Count(_ => _.status == CreationStatus.Pending);
             SuccessLabel.BeginInvoke(new Action(() =>
             {
                     SuccessLabel.Text = "Success: " + success;
@@ -45,11 +44,10 @@ namespace PTC_Creator
             }));
             RateLabel.BeginInvoke(new Action(() =>
             {
-                try
+                if (success + fail != 0)
                 {
-                    RateLabel.Text = String.Format("Success Rate: {0:P2}",success / (success + fail));
+                    RateLabel.Text = String.Format("Success Rate: {0:P2}", (decimal)success / (success + fail));
                 }
-                catch { }
             }));
         }
 
@@ -164,12 +162,12 @@ namespace PTC_Creator
             GlobalSettings.captchaFrom.Show();
         }
 
-        private async Task UpdateStatusBarThread()
+        private void UpdateStatusBarThread()
         {
             while (true)
             {
                 UpdateStatusBar();
-                await Task.Delay(5000);
+                Thread.Sleep(5000);
             }
         }
 

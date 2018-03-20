@@ -57,7 +57,7 @@ namespace PTC_Creator.Models
         {
             while (GlobalSettings.creationStatus.Count(_ => _.status == CreationStatus.Created) < GlobalSettings.creatorSettings.createAmount)
             {
-                foreach (StatusModel _ in GlobalSettings.creationStatus)
+                foreach (StatusModel _ in GlobalSettings.creationStatus.ToList())
                 {
                     if (GlobalSettings.worker_stop)
                     {
