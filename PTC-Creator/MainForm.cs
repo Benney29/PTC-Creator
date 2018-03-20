@@ -27,9 +27,9 @@ namespace PTC_Creator
 
         internal void UpdateStatusBar()
         {
-            int success = GlobalSettings.creationStatus.Count(_ => _.status == CreationStatus.Created);
-            int fail = GlobalSettings.creationStatus.Count(_ => _.status == CreationStatus.Failed);
-            int pending = GlobalSettings.creationStatus.Count(_ => _.status == CreationStatus.Pending);
+            int success = GlobalSettings.creationStatus.ToList().Count(_ => _.status == CreationStatus.Created);
+            int fail = GlobalSettings.creationStatus.ToList().Count(_ => _.status == CreationStatus.Failed);
+            int pending = GlobalSettings.creationStatus.ToList().Count(_ => _.status == CreationStatus.Pending);
             SuccessLabel.BeginInvoke(new Action(() =>
             {
                     SuccessLabel.Text = "Success: " + success;

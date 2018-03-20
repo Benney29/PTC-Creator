@@ -55,7 +55,7 @@ namespace PTC_Creator.Models
 
         private void StartWorkers()
         {
-            while (GlobalSettings.creationStatus.Count(_ => _.status == CreationStatus.Created) < GlobalSettings.creatorSettings.createAmount)
+            while (GlobalSettings.creationStatus.ToList().Count(_ => _.status == CreationStatus.Created) < GlobalSettings.creatorSettings.createAmount)
             {
                 foreach (StatusModel _ in GlobalSettings.creationStatus.ToList())
                 {
@@ -177,7 +177,6 @@ namespace PTC_Creator.Models
         private string GetUsername(Random random, PersonNameGenerator nameGenObj)
         {
             int maxLength = 14;
-            GlobalSettings.creatorSettings.username = "";
             nameGenObj.GenerateRandomFirstName().Replace(" ", "");
             string name = GlobalSettings.creatorSettings.username == "" ?
                 nameGenObj.GenerateRandomFirstName().Replace(" ", "") : GlobalSettings.creatorSettings.username;
