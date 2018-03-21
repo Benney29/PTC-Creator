@@ -452,6 +452,6 @@
         private BrightIdeasSoftware.OLVColumn status;
         private BrightIdeasSoftware.OLVColumn log;
         private System.Windows.Forms.Button StopButton;
-        internal BrightIdeasSoftware.FastObjectListView createOlv;
+        private BrightIdeasSoftware.FastObjectListView createOlv;
     }
 }

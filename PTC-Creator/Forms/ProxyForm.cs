@@ -24,13 +24,28 @@ namespace PTC_Creator.Forms
         {
             InitializeComponent();
         }
+
         private void ProxyForm_Load(object sender, EventArgs e)
         {
             GlobalSettings.proxyForm = this;
             proxyOlv.SetObjects(GlobalSettings.proxyList);
         }
 
+        internal void UpdateProxy(Proxy p)
+        {
+            proxyOlv.RefreshObject(p);
+        }
 
+        internal void UpdateProxy()
+        {
+            proxyOlv.SetObjects(GlobalSettings.proxyList);
+        }
+
+        internal void UpdateProxy(List<Proxy> p)
+        {
+            proxyOlv.RefreshObjects(p);
+        }
+        
         private void proxyOlv_CellRightClick(object sender, BrightIdeasSoftware.CellRightClickEventArgs e)
         {
             if (e.RowIndex < 0)

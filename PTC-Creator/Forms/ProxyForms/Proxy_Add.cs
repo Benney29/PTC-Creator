@@ -49,7 +49,7 @@ namespace PTC_Creator.Forms
                 }
             }
             MessageBox.Show("New Proxy Added");
-            GlobalSettings.proxyForm.proxyOlv.SetObjects(GlobalSettings.proxyList);
+            GlobalSettings.proxyForm.UpdateProxy();
             this.Close();
         }
 

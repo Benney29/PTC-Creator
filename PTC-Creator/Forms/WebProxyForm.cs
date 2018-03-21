@@ -20,6 +20,21 @@ namespace PTC_Creator.Forms
             InitializeComponent();
         }
 
+        internal void UpdateWebProxy()
+        {
+            WebProxyOlv.SetObjects(GlobalSettings.webProxy);
+        }
+
+        internal void UpdateWebProxy(WebProxyItem p)
+        {
+            WebProxyOlv.UpdateObject(p);
+        }
+
+        internal void UpdateWebProxy(List<WebProxyItem> p)
+        {
+            WebProxyOlv.UpdateObjects(p);
+        }
+
         private void WebProxyForm_Load(object sender, EventArgs e)
         {
             GlobalSettings.webProxyForm = this;
@@ -47,7 +62,7 @@ namespace PTC_Creator.Forms
                     }
                 }
             }
-            GlobalSettings.proxyForm.proxyOlv.SetObjects(GlobalSettings.proxyList);
+            GlobalSettings.proxyForm.UpdateProxy();
             return ret;
         }
 

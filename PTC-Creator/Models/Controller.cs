@@ -154,7 +154,7 @@ namespace PTC_Creator.Models
             {
                 GetRandomAccount(random, nameGenObj);
             }
-            GlobalSettings.createForm.createOlv.SetObjects(GlobalSettings.creationStatus);
+            GlobalSettings.createForm.UpdateStatus();
         }
 
         private void GetRandomAccount(Random random, PersonNameGenerator nameGenObj)
@@ -270,8 +270,8 @@ namespace PTC_Creator.Models
                                 }
                             }
                         }
-                        _.AddAmount(proxyList.Count());
                         _.last_check_date = DateTime.Now;
+                        _.AddAmount(proxyList.Count());
                     }
                 }
                 Thread.Sleep(900000);

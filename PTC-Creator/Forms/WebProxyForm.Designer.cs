@@ -184,6 +184,6 @@
         private System.Windows.Forms.ToolStripMenuItem addToolStripMenuItem;
         private System.Windows.Forms.ToolStripMenuItem addToolStripMenuItem1;
         private System.Windows.Forms.ToolStripMenuItem deleteToolStripMenuItem;
-        internal BrightIdeasSoftware.FastObjectListView WebProxyOlv;
+        private BrightIdeasSoftware.FastObjectListView WebProxyOlv;
     }
 }
