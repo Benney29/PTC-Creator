@@ -93,7 +93,7 @@ namespace PTC_Creator.Models
                     Thread t = new Thread(new Creator(worker, _).Start);
                     t.Start();
                     threadList.Add(t);
-                    Thread.Sleep(200);
+                    Thread.Sleep(50);
                 }
 
                 threadList.ForEach(_ => _.Join());
