@@ -36,13 +36,12 @@ namespace PTC_Creator.Models
 
             if (CheckAccountState(pageSource))
             {
-                status.AddLog("Account created");
+                status.AddLog("Account created", CreationStatus.Created);
                 terminateWorker(true);
             }
             else
             {
-                status.ChangeStatus(CreationStatus.Failed);
-                status.AddLog("Account failed to create...");
+                status.AddLog("Account failed to create...", CreationStatus.Failed);
                 terminateWorker(false, true);
             }
         }
@@ -74,8 +73,7 @@ namespace PTC_Creator.Models
             string token = re.Match(pageSource).Value.Replace("lt value=", "");
             if (token == "")
             {
-                status.ChangeStatus(CreationStatus.Pending);
-                status.AddLog("No lt token found...");
+                status.AddLog("No lt token found...", CreationStatus.Pending);
                 terminateWorker(false);
             }
             return token;
@@ -87,8 +85,7 @@ namespace PTC_Creator.Models
             string token = re.Match(pageSource).Value.Replace("execution value=", "");
             if (token == "")
             {
-                status.ChangeStatus(CreationStatus.Pending);
-                status.AddLog("No execution token found...");
+                status.AddLog("No execution token found...", CreationStatus.Pending);
                 terminateWorker(false);
             }
             return token;
@@ -100,8 +97,7 @@ namespace PTC_Creator.Models
             string token = re.Match(pageSource).Value.Replace("_eventId value=", "");
             if (token == "")
             {
-                status.ChangeStatus(CreationStatus.Pending);
-                status.AddLog("No event id token found...");
+                status.AddLog("No event id token found...", CreationStatus.Pending);
                 terminateWorker(false);
             }
             return token;
@@ -137,8 +133,7 @@ namespace PTC_Creator.Models
 
             if (pageSource == "")
             {
-                status.ChangeStatus(CreationStatus.Pending);
-                status.AddLog("Failed to submit login data, proxy issue...");
+                status.AddLog("Failed to submit login data, proxy issue...", CreationStatus.Pending);
                 terminateWorker(false);
             }
             return pageSource;
