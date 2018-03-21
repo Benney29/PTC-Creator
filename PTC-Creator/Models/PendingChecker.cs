@@ -42,7 +42,7 @@ namespace PTC_Creator.Models
             else
             {
                 status.AddLog("Account failed to create...", CreationStatus.Failed);
-                terminateWorker(false, true);
+                terminateWorker(false, true, false);
             }
         }
 
@@ -150,11 +150,10 @@ namespace PTC_Creator.Models
 
         #endregion
 
-        private void terminateWorker(bool success, bool is_proxy_good = false)
+        private void terminateWorker(bool success, bool is_proxy_good = false, bool add_back_to_list = true)
         {
             if (success)
             {
-                status.ChangeStatus(CreationStatus.Created);
                 worker.ResetCookies();
                 worker.inUse = false;
             }
@@ -164,6 +163,10 @@ namespace PTC_Creator.Models
                 {
                     worker.failed_amount += 1;
                     worker.proxyItem.IncrementFail();
+                }
+                if (add_back_to_list)
+                {
+                    GlobalSettings.creationPendingList.Add(status);
                 }
                 worker.ResetCookies();
                 worker.inUse = false;
