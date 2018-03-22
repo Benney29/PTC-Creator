@@ -7,7 +7,7 @@ using System.Text.RegularExpressions;
 using System.Threading;
 using System.Threading.Tasks;
 
-namespace PTC_Creator.Models
+namespace PTC_Creator.Models.Creation
 {
     class PendingChecker
     {

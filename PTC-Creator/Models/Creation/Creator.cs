@@ -11,7 +11,7 @@ using System.Text.RegularExpressions;
 using System.Threading;
 using System.Threading.Tasks;
 
-namespace PTC_Creator.Models
+namespace PTC_Creator.Models.Creation
 {
     public class Creator
     {
@@ -349,7 +349,7 @@ namespace PTC_Creator.Models
         #region Sub Captcha Section
         private string AntiCaptcha(CaptchaAPI model)
         {
-            var api = new NoCaptchaProxyless
+            NoCaptchaProxyless api = new NoCaptchaProxyless
             {
                 ClientKey = model.api,
                 WebsiteUrl = new Uri("https://club.pokemon.com/us/pokemon-trainer-club/parents/sign-up"),

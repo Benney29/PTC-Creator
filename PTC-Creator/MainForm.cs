@@ -1,18 +1,12 @@
 ﻿using Newtonsoft.Json;
-using PTC_Creator.Forms;
 using PTC_Creator.Models;
+using PTC_Creator.Models.Util;
 using System;
 using System.Collections.Generic;
-using System.Collections.ObjectModel;
-using System.ComponentModel;
-using System.Data;
 using System.Diagnostics;
 using System.Drawing;
 using System.Linq;
 using System.Reflection;
-using System.Text;
-using System.Threading;
-using System.Threading.Tasks;
 using System.Windows.Forms;
 
 namespace PTC_Creator
@@ -24,9 +18,18 @@ namespace PTC_Creator
             InitializeComponent();
         }
 
-        private void MainForm_Load(object sender, EventArgs e)
+        private async void MainForm_Load(object sender, EventArgs e)
         {
-            Assembly assembly = System.Reflection.Assembly.GetExecutingAssembly();
+            if (!(await UpdateAgent.IsLatest()))
+            {
+                DialogResult result = MessageBox.Show("New version found. Do you want to update?", "Found Update", MessageBoxButtons.YesNo);
+                if (result == DialogResult.Yes)
+                {
+                    await UpdateAgent.Execute();
+                }
+            }
+
+            Assembly assembly = Assembly.GetExecutingAssembly();
             FileVersionInfo fvi = FileVersionInfo.GetVersionInfo(assembly.Location);
             string version = fvi.FileVersion;
             TitleLabel.Text += $" [Version - {version}]";

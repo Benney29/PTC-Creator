@@ -8,7 +8,7 @@ using System.Net.Http;
 using System.Threading;
 using System.Threading.Tasks;
 
-namespace PTC_Creator.Models
+namespace PTC_Creator.Models.Creation
 {
     internal class Controller
     {
@@ -178,7 +178,7 @@ namespace PTC_Creator.Models
             string name = GlobalSettings.creatorSettings.username == "" ?
                 nameGenObj.GenerateRandomFirstName().Replace(" ", "") : GlobalSettings.creatorSettings.username;
 
-            var charSwitch = name.Select(x => random.Next() % 2 == 0 ? (char.IsUpper(x) ? x.ToString().ToLower().First() : x.ToString().ToUpper().First()) : x);
+            IEnumerable<char> charSwitch = name.Select(x => random.Next() % 2 == 0 ? (char.IsUpper(x) ? x.ToString().ToLower().First() : x.ToString().ToUpper().First()) : x);
             name = new String(charSwitch.ToArray()).Replace("l", "L").Replace("I", "i").Replace("O", "o").Replace("0", "1");//Try to avoid confused words
             if (name.Length > 14) return name.Substring(0, 14);
             string randomNumber = new string(Enumerable.Repeat(PASSWORD_CHARS_NUMERIC, maxLength - name.Length)
