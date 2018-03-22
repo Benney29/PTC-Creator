@@ -25,7 +25,10 @@ namespace PTC_Creator
                 DialogResult result = MessageBox.Show("New version found. Do you want to update?", "Found Update", MessageBoxButtons.YesNo);
                 if (result == DialogResult.Yes)
                 {
-                    await UpdateAgent.Execute();
+                    if (!(await UpdateAgent.Execute()))
+                    {
+                        MessageBox.Show("Update failed. Try again later.");
+                    }
                 }
             }
 
@@ -33,6 +36,7 @@ namespace PTC_Creator
             FileVersionInfo fvi = FileVersionInfo.GetVersionInfo(assembly.Location);
             string version = fvi.FileVersion;
             TitleLabel.Text += $" [Version - {version}]";
+
             #region Load saved settings
             try
             {

@@ -42,7 +42,6 @@ namespace PTC_Creator.Models.Util
 
                 if (!match.Success)
                     return false;
-
                 Version gitVersion = new Version($"{match.Groups[1]}.{match.Groups[2]}.{match.Groups[3]}.{match.Groups[4]}");
                 RemoteVersion = gitVersion;
 
