@@ -234,7 +234,7 @@ namespace PTC_Creator.Models.Creation
                                 Credentials = new NetworkCredential(_.username, _.password)
                             }
                         };
-                        GlobalSettings.workers.Add(new WorkerModel(new HttpClient(handler), _, cookieJar));
+                        GlobalSettings.workers.Add(new WorkerModel(new HttpClient(handler, true), _, cookieJar));
                     }                  
                 }
             });
