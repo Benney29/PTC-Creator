@@ -183,7 +183,7 @@ namespace PTC_Creator.Forms
                     Credentials = new NetworkCredential(proxyItem.username, proxyItem.password)
                 }
             };
-            using (HttpClient client = new HttpClient(handler, true))
+            using (HttpClient client = new HttpClient(handler))
             {
                 client.DefaultRequestHeaders.Add("User-Agent", "Mozilla/5.0 (Windows NT 10.0; WOW64) AppleWebKit/537.36 (KHTML, like Gecko) Chrome/64.0.3282.186 Safari/537.36");
                 client.DefaultRequestHeaders.Add("Origin", "https://club.pokemon.com");
