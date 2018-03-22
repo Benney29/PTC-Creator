@@ -34,6 +34,9 @@
             this.SaveSettingsButton = new System.Windows.Forms.Button();
             this.StartButton = new System.Windows.Forms.Button();
             this.ConfigPanel = new System.Windows.Forms.Panel();
+            this.ThreadCreationSpeedTipLabel = new System.Windows.Forms.Label();
+            this.ThreadCreationSpeedTextBox = new System.Windows.Forms.TextBox();
+            this.ThreadCreationSpeedLabel = new System.Windows.Forms.Label();
             this.CreateAmountTextBox = new System.Windows.Forms.TextBox();
             this.ThreadAmountTextBox = new System.Windows.Forms.TextBox();
             this.PasswordTextBox = new System.Windows.Forms.TextBox();
@@ -126,6 +129,9 @@
             // 
             this.ConfigPanel.BackColor = System.Drawing.Color.FromArgb(((int)(((byte)(41)))), ((int)(((byte)(44)))), ((int)(((byte)(51)))));
             this.ConfigPanel.BorderStyle = System.Windows.Forms.BorderStyle.FixedSingle;
+            this.ConfigPanel.Controls.Add(this.ThreadCreationSpeedTipLabel);
+            this.ConfigPanel.Controls.Add(this.ThreadCreationSpeedTextBox);
+            this.ConfigPanel.Controls.Add(this.ThreadCreationSpeedLabel);
             this.ConfigPanel.Controls.Add(this.CreateAmountTextBox);
             this.ConfigPanel.Controls.Add(this.ThreadAmountTextBox);
             this.ConfigPanel.Controls.Add(this.PasswordTextBox);
@@ -147,11 +153,43 @@
             this.ConfigPanel.Size = new System.Drawing.Size(355, 623);
             this.ConfigPanel.TabIndex = 1;
             // 
+            // ThreadCreationSpeedTipLabel
+            // 
+            this.ThreadCreationSpeedTipLabel.AutoSize = true;
+            this.ThreadCreationSpeedTipLabel.Font = new System.Drawing.Font("Century Gothic", 9F, System.Drawing.FontStyle.Regular, System.Drawing.GraphicsUnit.Point, ((byte)(0)));
+            this.ThreadCreationSpeedTipLabel.Location = new System.Drawing.Point(132, 461);
+            this.ThreadCreationSpeedTipLabel.Name = "ThreadCreationSpeedTipLabel";
+            this.ThreadCreationSpeedTipLabel.Size = new System.Drawing.Size(104, 17);
+            this.ThreadCreationSpeedTipLabel.TabIndex = 18;
+            this.ThreadCreationSpeedTipLabel.Text = "Recommand: 10";
+            // 
+            // ThreadCreationSpeedTextBox
+            // 
+            this.ThreadCreationSpeedTextBox.Anchor = ((System.Windows.Forms.AnchorStyles)(((System.Windows.Forms.AnchorStyles.Top | System.Windows.Forms.AnchorStyles.Left) 
+            | System.Windows.Forms.AnchorStyles.Right)));
+            this.ThreadCreationSpeedTextBox.Location = new System.Drawing.Point(242, 437);
+            this.ThreadCreationSpeedTextBox.Name = "ThreadCreationSpeedTextBox";
+            this.ThreadCreationSpeedTextBox.Size = new System.Drawing.Size(49, 27);
+            this.ThreadCreationSpeedTextBox.TabIndex = 17;
+            this.ThreadCreationSpeedTextBox.Text = "10";
+            this.ThreadCreationSpeedTextBox.KeyPress += new System.Windows.Forms.KeyPressEventHandler(this.NumOnly_KeyPress);
+            // 
+            // ThreadCreationSpeedLabel
+            // 
+            this.ThreadCreationSpeedLabel.Anchor = ((System.Windows.Forms.AnchorStyles)(((System.Windows.Forms.AnchorStyles.Top | System.Windows.Forms.AnchorStyles.Left) 
+            | System.Windows.Forms.AnchorStyles.Right)));
+            this.ThreadCreationSpeedLabel.AutoSize = true;
+            this.ThreadCreationSpeedLabel.Location = new System.Drawing.Point(11, 440);
+            this.ThreadCreationSpeedLabel.Name = "ThreadCreationSpeedLabel";
+            this.ThreadCreationSpeedLabel.Size = new System.Drawing.Size(225, 21);
+            this.ThreadCreationSpeedLabel.TabIndex = 16;
+            this.ThreadCreationSpeedLabel.Text = "Thread Creation Speed (/s):";
+            // 
             // CreateAmountTextBox
             // 
             this.CreateAmountTextBox.Anchor = ((System.Windows.Forms.AnchorStyles)(((System.Windows.Forms.AnchorStyles.Top | System.Windows.Forms.AnchorStyles.Left) 
             | System.Windows.Forms.AnchorStyles.Right)));
-            this.CreateAmountTextBox.Location = new System.Drawing.Point(156, 408);
+            this.CreateAmountTextBox.Location = new System.Drawing.Point(153, 299);
             this.CreateAmountTextBox.Name = "CreateAmountTextBox";
             this.CreateAmountTextBox.Size = new System.Drawing.Size(98, 27);
             this.CreateAmountTextBox.TabIndex = 15;
@@ -162,7 +200,7 @@
             // 
             this.ThreadAmountTextBox.Anchor = ((System.Windows.Forms.AnchorStyles)(((System.Windows.Forms.AnchorStyles.Top | System.Windows.Forms.AnchorStyles.Left) 
             | System.Windows.Forms.AnchorStyles.Right)));
-            this.ThreadAmountTextBox.Location = new System.Drawing.Point(156, 331);
+            this.ThreadAmountTextBox.Location = new System.Drawing.Point(155, 368);
             this.ThreadAmountTextBox.Name = "ThreadAmountTextBox";
             this.ThreadAmountTextBox.Size = new System.Drawing.Size(98, 27);
             this.ThreadAmountTextBox.TabIndex = 14;
@@ -173,7 +211,7 @@
             // 
             this.PasswordTextBox.Anchor = ((System.Windows.Forms.AnchorStyles)(((System.Windows.Forms.AnchorStyles.Top | System.Windows.Forms.AnchorStyles.Left) 
             | System.Windows.Forms.AnchorStyles.Right)));
-            this.PasswordTextBox.Location = new System.Drawing.Point(156, 254);
+            this.PasswordTextBox.Location = new System.Drawing.Point(153, 230);
             this.PasswordTextBox.Name = "PasswordTextBox";
             this.PasswordTextBox.Size = new System.Drawing.Size(176, 27);
             this.PasswordTextBox.TabIndex = 13;
@@ -182,7 +220,7 @@
             // 
             this.UsernameTextBox.Anchor = ((System.Windows.Forms.AnchorStyles)(((System.Windows.Forms.AnchorStyles.Top | System.Windows.Forms.AnchorStyles.Left) 
             | System.Windows.Forms.AnchorStyles.Right)));
-            this.UsernameTextBox.Location = new System.Drawing.Point(156, 177);
+            this.UsernameTextBox.Location = new System.Drawing.Point(153, 161);
             this.UsernameTextBox.Name = "UsernameTextBox";
             this.UsernameTextBox.Size = new System.Drawing.Size(176, 27);
             this.UsernameTextBox.TabIndex = 12;
@@ -192,7 +230,7 @@
             // 
             this.DomainTextBox.Anchor = ((System.Windows.Forms.AnchorStyles)(((System.Windows.Forms.AnchorStyles.Top | System.Windows.Forms.AnchorStyles.Left) 
             | System.Windows.Forms.AnchorStyles.Right)));
-            this.DomainTextBox.Location = new System.Drawing.Point(116, 100);
+            this.DomainTextBox.Location = new System.Drawing.Point(113, 92);
             this.DomainTextBox.Name = "DomainTextBox";
             this.DomainTextBox.Size = new System.Drawing.Size(216, 27);
             this.DomainTextBox.TabIndex = 11;
@@ -201,7 +239,7 @@
             // 
             this.ShuffleAPITextBox.Anchor = ((System.Windows.Forms.AnchorStyles)(((System.Windows.Forms.AnchorStyles.Top | System.Windows.Forms.AnchorStyles.Left) 
             | System.Windows.Forms.AnchorStyles.Right)));
-            this.ShuffleAPITextBox.Location = new System.Drawing.Point(116, 23);
+            this.ShuffleAPITextBox.Location = new System.Drawing.Point(113, 23);
             this.ShuffleAPITextBox.Name = "ShuffleAPITextBox";
             this.ShuffleAPITextBox.Size = new System.Drawing.Size(216, 27);
             this.ShuffleAPITextBox.TabIndex = 10;
@@ -211,7 +249,7 @@
             this.SaveInDBCheckBox.Anchor = ((System.Windows.Forms.AnchorStyles)(((System.Windows.Forms.AnchorStyles.Top | System.Windows.Forms.AnchorStyles.Left) 
             | System.Windows.Forms.AnchorStyles.Right)));
             this.SaveInDBCheckBox.AutoSize = true;
-            this.SaveInDBCheckBox.Location = new System.Drawing.Point(167, 533);
+            this.SaveInDBCheckBox.Location = new System.Drawing.Point(165, 562);
             this.SaveInDBCheckBox.Name = "SaveInDBCheckBox";
             this.SaveInDBCheckBox.Size = new System.Drawing.Size(167, 25);
             this.SaveInDBCheckBox.TabIndex = 9;
@@ -224,7 +262,7 @@
             this.CreateAmountLabel.Anchor = ((System.Windows.Forms.AnchorStyles)(((System.Windows.Forms.AnchorStyles.Top | System.Windows.Forms.AnchorStyles.Left) 
             | System.Windows.Forms.AnchorStyles.Right)));
             this.CreateAmountLabel.AutoSize = true;
-            this.CreateAmountLabel.Location = new System.Drawing.Point(14, 411);
+            this.CreateAmountLabel.Location = new System.Drawing.Point(11, 302);
             this.CreateAmountLabel.Name = "CreateAmountLabel";
             this.CreateAmountLabel.Size = new System.Drawing.Size(139, 21);
             this.CreateAmountLabel.TabIndex = 8;
@@ -235,7 +273,7 @@
             this.RocketMapCheckBox.Anchor = ((System.Windows.Forms.AnchorStyles)(((System.Windows.Forms.AnchorStyles.Top | System.Windows.Forms.AnchorStyles.Left) 
             | System.Windows.Forms.AnchorStyles.Right)));
             this.RocketMapCheckBox.AutoSize = true;
-            this.RocketMapCheckBox.Location = new System.Drawing.Point(69, 472);
+            this.RocketMapCheckBox.Location = new System.Drawing.Point(67, 509);
             this.RocketMapCheckBox.Name = "RocketMapCheckBox";
             this.RocketMapCheckBox.Size = new System.Drawing.Size(265, 25);
             this.RocketMapCheckBox.TabIndex = 7;
@@ -248,7 +286,7 @@
             this.ThreadLabel.Anchor = ((System.Windows.Forms.AnchorStyles)(((System.Windows.Forms.AnchorStyles.Top | System.Windows.Forms.AnchorStyles.Left) 
             | System.Windows.Forms.AnchorStyles.Right)));
             this.ThreadLabel.AutoSize = true;
-            this.ThreadLabel.Location = new System.Drawing.Point(14, 334);
+            this.ThreadLabel.Location = new System.Drawing.Point(11, 371);
             this.ThreadLabel.Name = "ThreadLabel";
             this.ThreadLabel.Size = new System.Drawing.Size(138, 21);
             this.ThreadLabel.TabIndex = 6;
@@ -259,7 +297,7 @@
             this.ShuffleAPILabel.Anchor = ((System.Windows.Forms.AnchorStyles)(((System.Windows.Forms.AnchorStyles.Top | System.Windows.Forms.AnchorStyles.Left) 
             | System.Windows.Forms.AnchorStyles.Right)));
             this.ShuffleAPILabel.AutoSize = true;
-            this.ShuffleAPILabel.Location = new System.Drawing.Point(14, 26);
+            this.ShuffleAPILabel.Location = new System.Drawing.Point(11, 26);
             this.ShuffleAPILabel.Name = "ShuffleAPILabel";
             this.ShuffleAPILabel.Size = new System.Drawing.Size(96, 21);
             this.ShuffleAPILabel.TabIndex = 5;
@@ -270,7 +308,7 @@
             this.PasswordLabel.Anchor = ((System.Windows.Forms.AnchorStyles)(((System.Windows.Forms.AnchorStyles.Top | System.Windows.Forms.AnchorStyles.Left) 
             | System.Windows.Forms.AnchorStyles.Right)));
             this.PasswordLabel.AutoSize = true;
-            this.PasswordLabel.Location = new System.Drawing.Point(14, 257);
+            this.PasswordLabel.Location = new System.Drawing.Point(11, 233);
             this.PasswordLabel.Name = "PasswordLabel";
             this.PasswordLabel.Size = new System.Drawing.Size(86, 21);
             this.PasswordLabel.TabIndex = 4;
@@ -281,7 +319,7 @@
             this.UsernameLabel.Anchor = ((System.Windows.Forms.AnchorStyles)(((System.Windows.Forms.AnchorStyles.Top | System.Windows.Forms.AnchorStyles.Left) 
             | System.Windows.Forms.AnchorStyles.Right)));
             this.UsernameLabel.AutoSize = true;
-            this.UsernameLabel.Location = new System.Drawing.Point(14, 180);
+            this.UsernameLabel.Location = new System.Drawing.Point(11, 164);
             this.UsernameLabel.Name = "UsernameLabel";
             this.UsernameLabel.Size = new System.Drawing.Size(136, 21);
             this.UsernameLabel.TabIndex = 2;
@@ -292,7 +330,7 @@
             this.DomainLabel.Anchor = ((System.Windows.Forms.AnchorStyles)(((System.Windows.Forms.AnchorStyles.Top | System.Windows.Forms.AnchorStyles.Left) 
             | System.Windows.Forms.AnchorStyles.Right)));
             this.DomainLabel.AutoSize = true;
-            this.DomainLabel.Location = new System.Drawing.Point(14, 103);
+            this.DomainLabel.Location = new System.Drawing.Point(11, 95);
             this.DomainLabel.Name = "DomainLabel";
             this.DomainLabel.Size = new System.Drawing.Size(81, 21);
             this.DomainLabel.TabIndex = 0;
@@ -453,5 +491,8 @@
         private BrightIdeasSoftware.OLVColumn log;
         private System.Windows.Forms.Button StopButton;
         private BrightIdeasSoftware.FastObjectListView createOlv;
+        private System.Windows.Forms.TextBox ThreadCreationSpeedTextBox;
+        private System.Windows.Forms.Label ThreadCreationSpeedLabel;
+        private System.Windows.Forms.Label ThreadCreationSpeedTipLabel;
     }
 }

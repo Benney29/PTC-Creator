@@ -474,7 +474,6 @@ namespace PTC_Creator.Models.Creation
             {
                 worker.create_amount += 1;
                 worker.proxyItem.IncrementSuccess();
-                worker.proxyItem.create_count += 1;
                 worker.ResetCookies();
                 worker.inUse = false;
             }

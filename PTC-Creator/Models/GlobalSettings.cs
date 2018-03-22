@@ -266,6 +266,7 @@ namespace PTC_Creator.Models
         public string password { get; set; }
         public int createAmount { get; set; }
         public int threadAmount { get; set; }
+        public int threadCreationSpeed { get; set; }
         public bool rocketMapFormat { get; set; }
         public bool saveDB { get; set; }
 

@@ -52,6 +52,7 @@ namespace PTC_Creator.Models.Creation
 
         private void StartWorkers()
         {
+            int creation_delay = 1000 / GlobalSettings.creatorSettings.threadCreationSpeed;
             while (GlobalSettings.creationStatus.ToList().Count(_ => _.status == CreationStatus.Created) < GlobalSettings.creatorSettings.createAmount)
             {
                 foreach (StatusModel _ in GlobalSettings.creationStatus.ToList())
@@ -93,7 +94,7 @@ namespace PTC_Creator.Models.Creation
                     Thread t = new Thread(new Creator(worker, _).Start);
                     t.Start();
                     threadList.Add(t);
-                    Thread.Sleep(100);
+                    Thread.Sleep(creation_delay);
                 }
 
                 threadList.ForEach(_ => _.Join());

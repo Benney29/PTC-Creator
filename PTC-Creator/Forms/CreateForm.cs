@@ -40,8 +40,9 @@ namespace PTC_Creator.Forms
             DomainTextBox.Text = GlobalSettings.creatorSettings.domain;
             UsernameTextBox.Text = GlobalSettings.creatorSettings.username;
             PasswordTextBox.Text = GlobalSettings.creatorSettings.password;
-            ThreadAmountTextBox.Text = GlobalSettings.creatorSettings.threadAmount.ToString();
             CreateAmountTextBox.Text = GlobalSettings.creatorSettings.createAmount.ToString();
+            ThreadAmountTextBox.Text = GlobalSettings.creatorSettings.threadAmount.ToString();
+            ThreadCreationSpeedTextBox.Text = GlobalSettings.creatorSettings.threadCreationSpeed.ToString();
             RocketMapCheckBox.Checked = GlobalSettings.creatorSettings.rocketMapFormat;
             SaveInDBCheckBox.Checked = GlobalSettings.creatorSettings.saveDB;
             StatusDataGrid.DataSource = new BindingSource(GlobalSettings.creationStatus, null);
@@ -92,8 +93,9 @@ namespace PTC_Creator.Forms
                 GlobalSettings.creatorSettings.domain = DomainTextBox.Text.Trim();
                 GlobalSettings.creatorSettings.username = UsernameTextBox.Text.Trim();
                 GlobalSettings.creatorSettings.password = PasswordTextBox.Text.Trim();
-                GlobalSettings.creatorSettings.threadAmount = int.Parse(ThreadAmountTextBox.Text.Trim());
                 GlobalSettings.creatorSettings.createAmount = int.Parse(CreateAmountTextBox.Text.Trim());
+                GlobalSettings.creatorSettings.threadAmount = int.Parse(ThreadAmountTextBox.Text.Trim());
+                GlobalSettings.creatorSettings.threadCreationSpeed = int.Parse(ThreadAmountTextBox.Text.Trim());
                 GlobalSettings.creatorSettings.rocketMapFormat = RocketMapCheckBox.Checked;
                 GlobalSettings.creatorSettings.saveDB = SaveInDBCheckBox.Checked;
                 StopButton.Visible = true;
@@ -115,8 +117,9 @@ namespace PTC_Creator.Forms
             GlobalSettings.creatorSettings.domain = DomainTextBox.Text.Trim();
             GlobalSettings.creatorSettings.username = UsernameTextBox.Text.Trim();
             GlobalSettings.creatorSettings.password = PasswordTextBox.Text.Trim();
-            try { GlobalSettings.creatorSettings.threadAmount = int.Parse(ThreadAmountTextBox.Text.Trim()); } catch { }
             try { GlobalSettings.creatorSettings.createAmount = int.Parse(CreateAmountTextBox.Text.Trim()); } catch { }
+            try { GlobalSettings.creatorSettings.threadAmount = int.Parse(ThreadAmountTextBox.Text.Trim()); } catch { }
+            try { GlobalSettings.creatorSettings.threadCreationSpeed = int.Parse(ThreadCreationSpeedTextBox.Text.Trim()); } catch { }
             GlobalSettings.creatorSettings.rocketMapFormat = RocketMapCheckBox.Checked;
             GlobalSettings.creatorSettings.saveDB = SaveInDBCheckBox.Checked;
             Properties.Settings.Default.CreatorSettings = JsonConvert.SerializeObject(GlobalSettings.creatorSettings);
@@ -145,14 +148,19 @@ namespace PTC_Creator.Forms
                     return false;
                 }
             }
+            else if (CreateAmountTextBox.Text.Trim() == "" || !int.TryParse(CreateAmountTextBox.Text.Trim(), out tester) || tester == 0)
+            {
+                MessageBox.Show("Please enter creation amount");
+                return false;
+            }
             else if (ThreadAmountTextBox.Text.Trim() == "" || !int.TryParse(ThreadAmountTextBox.Text.Trim(), out tester) || tester == 0)
             {
                 MessageBox.Show("Please enter thread amount");
                 return false;
             }
-            else if (CreateAmountTextBox.Text.Trim() == "" || !int.TryParse(CreateAmountTextBox.Text.Trim(), out tester) || tester == 0)
+            else if (!int.TryParse(ThreadCreationSpeedTextBox.Text.Trim(), out tester))
             {
-                MessageBox.Show("Please enter creation amount");
+                MessageBox.Show("Please enter thread creation speed");
                 return false;
             }
             #endregion
