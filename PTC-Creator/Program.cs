@@ -15,10 +15,6 @@ namespace PTC_Creator
         [STAThread]
         static void Main()
         {
-            Properties.Settings.Default.Upgrade();
-            Properties.Settings.Default.Reload();
-            Properties.Settings.Default.Save();
-
             Application.EnableVisualStyles();
             Application.SetCompatibleTextRenderingDefault(false);
             Application.Run(new MainForm());
