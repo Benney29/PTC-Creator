@@ -6,6 +6,7 @@ using System.Collections.Generic;
 using System.Collections.ObjectModel;
 using System.ComponentModel;
 using System.Data;
+using System.Diagnostics;
 using System.Drawing;
 using System.Linq;
 using System.Reflection;
@@ -25,7 +26,10 @@ namespace PTC_Creator
 
         private void MainForm_Load(object sender, EventArgs e)
         {
-            TitleLabel.Text += $" [Version - {Assembly.GetExecutingAssembly().GetName().Version}]";
+            Assembly assembly = System.Reflection.Assembly.GetExecutingAssembly();
+            FileVersionInfo fvi = FileVersionInfo.GetVersionInfo(assembly.Location);
+            string version = fvi.FileVersion;
+            TitleLabel.Text += $" [Version - {version}]";
             #region Load saved settings
             try
             {
@@ -222,5 +226,6 @@ namespace PTC_Creator
                 catch { }
             }
         }
+
     }
 }
