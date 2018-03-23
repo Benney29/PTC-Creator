@@ -94,13 +94,16 @@ namespace PTC_Creator.Models.Creation
                         check.Contains("Request was throttled") || check.Contains("forbidden") || check.Contains("request could not be"))
             {
                 status.AddLog("Failed to check username due to proxy banned...", CreationStatus.Waiting, LogType.Warning);
+                response.Dispose();
                 terminateWorker(false);
             }
             else if (!check.Contains("true"))
             {
                 status.AddLog("Failed to check username due to username used...", CreationStatus.Failed, LogType.Critical);
+                response.Dispose();
                 terminateWorker(false, true);
             }
+            response.Dispose();
         }
 
         private string GetFirstWebPage()
