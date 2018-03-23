@@ -28,6 +28,7 @@
         /// </summary>
         private void InitializeComponent()
         {
+            this.components = new System.ComponentModel.Container();
             this.WindowPanel = new System.Windows.Forms.Panel();
             this.ClostButton = new System.Windows.Forms.Button();
             this.TitleLabel = new System.Windows.Forms.Label();
@@ -36,6 +37,7 @@
             this.LogOlv = new BrightIdeasSoftware.FastObjectListView();
             this.time = ((BrightIdeasSoftware.OLVColumn)(new BrightIdeasSoftware.OLVColumn()));
             this.message = ((BrightIdeasSoftware.OLVColumn)(new BrightIdeasSoftware.OLVColumn()));
+            this.timer = new System.Windows.Forms.Timer(this.components);
             this.WindowPanel.SuspendLayout();
             ((System.ComponentModel.ISupportInitialize)(this.pictureBox1)).BeginInit();
             this.ContentPanel.SuspendLayout();
@@ -116,26 +118,36 @@
             this.LogOlv.Dock = System.Windows.Forms.DockStyle.Fill;
             this.LogOlv.ForeColor = System.Drawing.Color.FromArgb(((int)(((byte)(224)))), ((int)(((byte)(224)))), ((int)(((byte)(224)))));
             this.LogOlv.FullRowSelect = true;
+            this.LogOlv.GridLines = true;
             this.LogOlv.Location = new System.Drawing.Point(0, 0);
             this.LogOlv.Name = "LogOlv";
             this.LogOlv.ShowGroups = false;
             this.LogOlv.Size = new System.Drawing.Size(919, 403);
             this.LogOlv.TabIndex = 0;
+            this.LogOlv.UseCellFormatEvents = true;
             this.LogOlv.UseCompatibleStateImageBehavior = false;
             this.LogOlv.View = System.Windows.Forms.View.Details;
             this.LogOlv.VirtualMode = true;
+            this.LogOlv.FormatCell += new System.EventHandler<BrightIdeasSoftware.FormatCellEventArgs>(this.LogOlv_FormatCell);
             // 
             // time
             // 
             this.time.AspectName = "time";
+            this.time.AspectToStringFormat = "";
             this.time.Text = "Time";
-            this.time.Width = 176;
+            this.time.Width = 302;
             // 
             // message
             // 
             this.message.AspectName = "message";
             this.message.Text = "Message";
-            this.message.Width = 732;
+            this.message.Width = 609;
+            // 
+            // timer
+            // 
+            this.timer.Enabled = true;
+            this.timer.Interval = 1000;
+            this.timer.Tick += new System.EventHandler(this.timer_Tick);
             // 
             // LogForm
             // 
@@ -169,5 +181,6 @@
         private BrightIdeasSoftware.FastObjectListView LogOlv;
         private BrightIdeasSoftware.OLVColumn time;
         private BrightIdeasSoftware.OLVColumn message;
+        private System.Windows.Forms.Timer timer;
     }
 }

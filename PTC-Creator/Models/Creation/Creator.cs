@@ -28,40 +28,39 @@ namespace PTC_Creator.Models.Creation
         {
             if (GlobalSettings.worker_stop)
             {
-                status.AddLog("Stopped.", CreationStatus.Waiting);
+                status.AddLog("Stopped.", CreationStatus.Waiting, LogType.Warning);
                 terminateWorker(false, true);
             }
-            status.AddLog("Start Checking Username");
+            status.AddLog("Start Checking Username", CreationStatus.Processing, LogType.Info);
 
             //If check username failed
             CheckUsername();
-            status.AddLog("Username check passed, getting first page...");
+            status.AddLog("Username check passed, getting first page...", CreationStatus.Processing, LogType.Info);
 
             string pageSource = GetFirstWebPage();
-            status.AddLog("Page received, looking for csrf token...");
+            status.AddLog("Page received, looking for csrf token...", CreationStatus.Processing, LogType.Info);
 
             string token = GetCsrfToken(pageSource);
-            status.AddLog("Csrf token found, starting to submit age verification...");
+            status.AddLog("Csrf token found, starting to submit age verification...", CreationStatus.Processing, LogType.Info);
 
             SubmitAgeVerification(token);
-            status.AddLog("Age verification passed, start creating account");
+            status.AddLog("Age verification passed, start creating account", CreationStatus.Processing, LogType.Info);
 
             if (GlobalSettings.worker_stop)
             {
-                status.AddLog("Stopped.", CreationStatus.Waiting);
+                status.AddLog("Stopped.", CreationStatus.Waiting, LogType.Warning);
                 terminateWorker(false, true);
             }
 
-            status.AddLog("Requesting captcha from provider");
             string captcha_response = "";
             while (captcha_response == "")
             {
                 captcha_response = GetCaptcha();
             }
-            status.AddLog("Starting to submit account creation data...");
+            status.AddLog("Starting to submit account creation data...", CreationStatus.Processing, LogType.Info);
 
             SubmitAccountCreation(token, captcha_response);
-            status.AddLog("Account Created", CreationStatus.Created);
+            status.AddLog("Account Created", CreationStatus.Created, LogType.Success);
 
             SaveAccount(status);
 
@@ -86,17 +85,21 @@ namespace PTC_Creator.Models.Creation
                     if (res.StatusCode == HttpStatusCode.Forbidden || res.StatusCode == HttpStatusCode.ServiceUnavailable ||
                         check.Contains("Request was throttled") || check.Contains("forbidden") || check.Contains("request could not be"))
                     {
-                        status.AddLog("Failed to check username due to proxy banned...", CreationStatus.Waiting);
-                        terminateWorker(false);
+                        status.AddLog("Failed to check username due to proxy banned...", CreationStatus.Waiting, LogType.Warning);
+                        throw new Exception();
                     }
                     else if (!check.Contains("true"))
                     {
-                        status.AddLog("Username check failed. Username used...", CreationStatus.Failed);
-                        terminateWorker(false, true);
+                        status.AddLog("Failed to check username due to username used...", CreationStatus.Failed, LogType.Critical);
+                        throw new Exception();
                     }
                 }
             }
-            catch { status.AddLog("Failed to check username due to proxy timed-out...", CreationStatus.Waiting); terminateWorker(false); }
+            catch (Exception ex)
+            {
+                status.AddLog("Username check failed.", CreationStatus.None, LogType.Warning);
+                terminateWorker(false);
+            }
         }
 
         private string GetFirstWebPage()
@@ -114,7 +117,7 @@ namespace PTC_Creator.Models.Creation
 
             if (pageSource == "" || !pageSource.Contains("Verify Age"))
             {
-                status.AddLog("Failed to receive first page...", CreationStatus.Waiting);
+                status.AddLog("Failed to receive first page...", CreationStatus.Waiting, LogType.Warning);
                 terminateWorker(false);
             }
             return pageSource;
@@ -132,7 +135,7 @@ namespace PTC_Creator.Models.Creation
 
             if (token == "")
             {
-                status.AddLog("No csrf token found...", CreationStatus.Waiting);
+                status.AddLog("No csrf token found...", CreationStatus.Waiting, LogType.Warning);
                 terminateWorker(false);
             }
 
@@ -168,7 +171,7 @@ namespace PTC_Creator.Models.Creation
 
             if (pageSource == "") // || !pageSource.Contains("With a Pokémon Trainer Club account, you can:") um... Still thinking about adding this
             {
-                status.AddLog("Submitting age verification failed, possibly proxy issue...", CreationStatus.Waiting);
+                status.AddLog("Submitting age verification failed, possibly proxy issue...", CreationStatus.Waiting, LogType.Warning);
                 terminateWorker(false);
             }
 
@@ -191,37 +194,52 @@ namespace PTC_Creator.Models.Creation
                     switch (_.provider)
                     {
                         case CaptchaProvider.AntiCaptcha:
-                            status.AddLog("Getting captcha response from " + _.provider.ToString() + "...");
+                            status.AddLog("Getting captcha response from " + _.provider.ToString() + "...", CreationStatus.Processing, LogType.Info);
                             response = AntiCaptcha(_);
                             if (response != "")
                             {
-                                status.AddLog(_.provider.ToString() + " solution received...");
+                                status.AddLog(_.provider.ToString() + " solution received...", CreationStatus.Processing, LogType.Success);
                                 return response;
+                            }
+                            else
+                            {
+                                status.AddLog(_.provider.ToString() + " no solution received...", CreationStatus.Processing, LogType.Warning);
                             }
                             break;
                         case CaptchaProvider.ImageTyperz:
-                            status.AddLog("Getting captcha response from " + _.provider.ToString() + "...");
+                            status.AddLog("Getting captcha response from " + _.provider.ToString() + "...", CreationStatus.Processing, LogType.Info);
                             response = ImageTyperz(_);
                             if (response != "")
                             {
-                                status.AddLog(_.provider.ToString() + " solution received...");
+                                status.AddLog(_.provider.ToString() + " solution received...", CreationStatus.Processing, LogType.Success);
                                 return response;
+                            }
+                            else
+                            {
+                                status.AddLog(_.provider.ToString() + " no solution received...", CreationStatus.Processing, LogType.Warning);
                             }
                             break;
                         case CaptchaProvider.TwoCaptcha:
-                            status.AddLog("Getting captcha response from " + _.provider.ToString() + "...");
+                            status.AddLog("Getting captcha response from " + _.provider.ToString() + "...", CreationStatus.Processing, LogType.Info);
                             response = TwoCaptcha(_);
                             if (response != "")
                             {
-                                status.AddLog(_.provider.ToString() + " solution received...");
+                                status.AddLog(_.provider.ToString() + " solution received...", CreationStatus.Processing, LogType.Success);
                                 return response;
+                            }
+                            else
+                            {
+                                status.AddLog(_.provider.ToString() + " no solution received...", CreationStatus.Processing, LogType.Warning);
                             }
                             break;
                     }
                 }
-                catch { status.AddLog("Failed to receive catpcha for " + _.provider.ToString()); }
+                catch(Exception ex) {
+                    status.AddLog("Captcha Exception: " + _.provider.ToString(), CreationStatus.Processing, LogType.Critical);
+                    status.AddLog("Captcha Exception: " + ex.ToString(), CreationStatus.Processing, LogType.Critical);
+                }
             }
-            status.AddLog("Failed Receive any recaptcha response...", CreationStatus.Waiting);
+            status.AddLog("Failed Receive any recaptcha response...", CreationStatus.Waiting, LogType.Critical);
             terminateWorker(false, true);
             return "";
         }
@@ -264,25 +282,25 @@ namespace PTC_Creator.Models.Creation
             }
             else if (pageSource.Contains("Verify Age"))
             {
-                status.AddLog("Oops, this proxy has been used by others and hit the limit... Try again 2 hours later...", CreationStatus.Failed);
+                status.AddLog("Oops, this proxy has been used by others and hit the limit... Try again 2 hours later...", CreationStatus.Failed, LogType.Critical);
                 worker.ForceWait();
                 Thread.CurrentThread.Abort();
             }
             else if (pageSource.Contains("Access Denied") || pageSource.Contains("The request could not be satisfied."))
             {
-                status.AddLog("Oops, PTC website returned access denied... Failed...", CreationStatus.Failed);
+                status.AddLog("Oops, PTC website returned access denied... Failed...", CreationStatus.Failed, LogType.Critical);
                 terminateWorker(false);
             }
             else if (pageSource.Contains("There is a problem with your email address.") || pageSource.Contains("Unexpected Error"))
             {
                 GlobalSettings.creationPendingList.Add(status);
-                status.AddLog("Oops, Unexpected error from PTC website... Added this too check list...", CreationStatus.Pending);
+                status.AddLog("Oops, Unexpected error from PTC website... Added this too check list...", CreationStatus.Pending, LogType.Warning);
                 terminateWorker(false);
             }
             else
             {
                 GlobalSettings.creationPendingList.Add(status);
-                status.AddLog("Unknow state. Proxy issue. Added this to check list...", CreationStatus.Pending);
+                status.AddLog("Unknow state. Proxy issue. Added this to check list...", CreationStatus.Pending, LogType.Warning);
                 terminateWorker(false);
             }
 
@@ -329,7 +347,7 @@ namespace PTC_Creator.Models.Creation
                 }
                 catch { }
             }
-            status.AddLog("Account saved in database...");
+            status.AddLog("Account saved in database...", CreationStatus.Created, LogType.Success);
         }
 
         private void SaveToFile(StatusModel _save)
@@ -356,7 +374,7 @@ namespace PTC_Creator.Models.Creation
                 }
                 catch { Thread.Sleep(1000); }
             }
-            status.AddLog("Account saved in file...");
+            status.AddLog("Account saved in file...", CreationStatus.Created, LogType.Success);
         }
 
 

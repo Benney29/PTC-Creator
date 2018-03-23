@@ -47,6 +47,16 @@ namespace PTC_Creator.Forms
             SaveInDBCheckBox.Checked = GlobalSettings.creatorSettings.saveDB;
             StatusDataGrid.DataSource = new BindingSource(GlobalSettings.creationStatus, null);
             createOlv.VirtualMode = true;
+
+            log.AspectGetter = delegate (object x)
+            {
+                StatusModel m = (StatusModel)x;
+                if (m._log == null)
+                {
+                    return String.Empty;
+                }
+                return m._log.message;
+            };
         }
 
         private void UsernameTextBox_KeyPress(object sender, KeyPressEventArgs e)
@@ -196,27 +206,46 @@ namespace PTC_Creator.Forms
 
         private void createOlv_FormatCell(object sender, BrightIdeasSoftware.FormatCellEventArgs e)
         {
-            if (e.Column.Text != "Status" || !(e.CellValue is CreationStatus))
-            {
-                return;
-            }
+            StatusModel m = (StatusModel)e.Model;
 
-            switch ((CreationStatus)e.CellValue)
+            if (m._log != null && e.Column == log)
             {
-                case CreationStatus.Processing:
-                case CreationStatus.Pending:
-                    e.SubItem.ForeColor = Color.White;
-                    break;
-                case CreationStatus.Created:
-                    e.SubItem.ForeColor = Color.Green;
-                    break;
-                case CreationStatus.Failed:
-                    e.SubItem.ForeColor = Color.Red;
-                    break;
+                switch (m._log.type)
+                {
+                    case LogType.Info:
+                        e.SubItem.ForeColor = Color.FromArgb(((int)(((byte)(62)))), ((int)(((byte)(120)))), ((int)(((byte)(138)))));
+                        break;
+                    case LogType.Warning:
+                        e.SubItem.ForeColor = Color.Yellow;
+                        break;
+                    case LogType.Critical:
+                        e.SubItem.ForeColor = Color.Red;
+                        break;
+                    case LogType.Success:
+                        e.SubItem.ForeColor = Color.Green;
+                        break;
+                }
             }
+            else if (e.Column == status)
+            {
+                switch ((CreationStatus)e.CellValue)
+                {
+                    case CreationStatus.Processing:
+                    case CreationStatus.Pending:
+                        e.SubItem.ForeColor = Color.White;
+                        break;
+                    case CreationStatus.Created:
+                        e.SubItem.ForeColor = Color.Green;
+                        break;
+                    case CreationStatus.Failed:
+                        e.SubItem.ForeColor = Color.Red;
+                        break;
+                }
+            }
+                        
         }
 
-        private void showLogToolStripMenuItem_Click(object sender, EventArgs e)
+        private async void showLogToolStripMenuItem_Click(object sender, EventArgs e)
         {
             LogForm m = new LogForm((StatusModel)createOlv.SelectedObject);
             m.Show();

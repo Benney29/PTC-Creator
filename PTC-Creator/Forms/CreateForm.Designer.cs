@@ -60,16 +60,16 @@
             this.email = ((BrightIdeasSoftware.OLVColumn)(new BrightIdeasSoftware.OLVColumn()));
             this.status = ((BrightIdeasSoftware.OLVColumn)(new BrightIdeasSoftware.OLVColumn()));
             this.log = ((BrightIdeasSoftware.OLVColumn)(new BrightIdeasSoftware.OLVColumn()));
+            this.StatusDataGrid = new System.Windows.Forms.DataGridView();
             this.createOlvContextMenu = new System.Windows.Forms.ContextMenuStrip(this.components);
             this.showLogToolStripMenuItem = new System.Windows.Forms.ToolStripMenuItem();
             this.updateStatusToolStripMenuItem = new System.Windows.Forms.ToolStripMenuItem();
-            this.StatusDataGrid = new System.Windows.Forms.DataGridView();
             this.StartButtonPanel.SuspendLayout();
             this.ConfigPanel.SuspendLayout();
             this.ContentPanel.SuspendLayout();
             ((System.ComponentModel.ISupportInitialize)(this.createOlv)).BeginInit();
-            this.createOlvContextMenu.SuspendLayout();
             ((System.ComponentModel.ISupportInitialize)(this.StatusDataGrid)).BeginInit();
+            this.createOlvContextMenu.SuspendLayout();
             this.SuspendLayout();
             // 
             // StartButtonPanel
@@ -421,6 +421,25 @@
             this.log.Text = "Log";
             this.log.Width = 169;
             // 
+            // StatusDataGrid
+            // 
+            this.StatusDataGrid.AllowUserToAddRows = false;
+            this.StatusDataGrid.AllowUserToDeleteRows = false;
+            this.StatusDataGrid.AllowUserToOrderColumns = true;
+            this.StatusDataGrid.AutoSizeColumnsMode = System.Windows.Forms.DataGridViewAutoSizeColumnsMode.AllCells;
+            this.StatusDataGrid.BackgroundColor = System.Drawing.Color.FromArgb(((int)(((byte)(41)))), ((int)(((byte)(44)))), ((int)(((byte)(51)))));
+            this.StatusDataGrid.BorderStyle = System.Windows.Forms.BorderStyle.None;
+            this.StatusDataGrid.CellBorderStyle = System.Windows.Forms.DataGridViewCellBorderStyle.Sunken;
+            this.StatusDataGrid.ColumnHeadersHeightSizeMode = System.Windows.Forms.DataGridViewColumnHeadersHeightSizeMode.AutoSize;
+            this.StatusDataGrid.Dock = System.Windows.Forms.DockStyle.Fill;
+            this.StatusDataGrid.EditMode = System.Windows.Forms.DataGridViewEditMode.EditProgrammatically;
+            this.StatusDataGrid.GridColor = System.Drawing.Color.FromArgb(((int)(((byte)(62)))), ((int)(((byte)(120)))), ((int)(((byte)(138)))));
+            this.StatusDataGrid.Location = new System.Drawing.Point(0, 0);
+            this.StatusDataGrid.Name = "StatusDataGrid";
+            this.StatusDataGrid.Size = new System.Drawing.Size(739, 623);
+            this.StatusDataGrid.TabIndex = 2;
+            this.StatusDataGrid.VirtualMode = true;
+            // 
             // createOlvContextMenu
             // 
             this.createOlvContextMenu.Items.AddRange(new System.Windows.Forms.ToolStripItem[] {
@@ -442,25 +461,6 @@
             this.updateStatusToolStripMenuItem.Size = new System.Drawing.Size(147, 22);
             this.updateStatusToolStripMenuItem.Text = "Update Status";
             this.updateStatusToolStripMenuItem.Click += new System.EventHandler(this.updateStatusToolStripMenuItem_Click);
-            // 
-            // StatusDataGrid
-            // 
-            this.StatusDataGrid.AllowUserToAddRows = false;
-            this.StatusDataGrid.AllowUserToDeleteRows = false;
-            this.StatusDataGrid.AllowUserToOrderColumns = true;
-            this.StatusDataGrid.AutoSizeColumnsMode = System.Windows.Forms.DataGridViewAutoSizeColumnsMode.AllCells;
-            this.StatusDataGrid.BackgroundColor = System.Drawing.Color.FromArgb(((int)(((byte)(41)))), ((int)(((byte)(44)))), ((int)(((byte)(51)))));
-            this.StatusDataGrid.BorderStyle = System.Windows.Forms.BorderStyle.None;
-            this.StatusDataGrid.CellBorderStyle = System.Windows.Forms.DataGridViewCellBorderStyle.Sunken;
-            this.StatusDataGrid.ColumnHeadersHeightSizeMode = System.Windows.Forms.DataGridViewColumnHeadersHeightSizeMode.AutoSize;
-            this.StatusDataGrid.Dock = System.Windows.Forms.DockStyle.Fill;
-            this.StatusDataGrid.EditMode = System.Windows.Forms.DataGridViewEditMode.EditProgrammatically;
-            this.StatusDataGrid.GridColor = System.Drawing.Color.FromArgb(((int)(((byte)(62)))), ((int)(((byte)(120)))), ((int)(((byte)(138)))));
-            this.StatusDataGrid.Location = new System.Drawing.Point(0, 0);
-            this.StatusDataGrid.Name = "StatusDataGrid";
-            this.StatusDataGrid.Size = new System.Drawing.Size(739, 623);
-            this.StatusDataGrid.TabIndex = 2;
-            this.StatusDataGrid.VirtualMode = true;
             // 
             // CreateForm
             // 
@@ -484,8 +484,8 @@
             this.ConfigPanel.PerformLayout();
             this.ContentPanel.ResumeLayout(false);
             ((System.ComponentModel.ISupportInitialize)(this.createOlv)).EndInit();
-            this.createOlvContextMenu.ResumeLayout(false);
             ((System.ComponentModel.ISupportInitialize)(this.StatusDataGrid)).EndInit();
+            this.createOlvContextMenu.ResumeLayout(false);
             this.ResumeLayout(false);
 
         }
@@ -519,12 +519,12 @@
         private BrightIdeasSoftware.OLVColumn status;
         private BrightIdeasSoftware.OLVColumn log;
         private System.Windows.Forms.Button StopButton;
-        private BrightIdeasSoftware.FastObjectListView createOlv;
         private System.Windows.Forms.TextBox ThreadCreationSpeedTextBox;
         private System.Windows.Forms.Label ThreadCreationSpeedLabel;
         private System.Windows.Forms.Label ThreadCreationSpeedTipLabel;
         private System.Windows.Forms.ContextMenuStrip createOlvContextMenu;
         private System.Windows.Forms.ToolStripMenuItem showLogToolStripMenuItem;
         private System.Windows.Forms.ToolStripMenuItem updateStatusToolStripMenuItem;
+        internal BrightIdeasSoftware.FastObjectListView createOlv;
     }
 }

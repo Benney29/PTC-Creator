@@ -282,26 +282,25 @@ namespace PTC_Creator.Models
         private List<LogModel> log = new List<LogModel>();
         public string dob { get; set; }
         public string email { get; set; }
-
-        public string _log
+        public LogModel _log
         {
             get
             {
                 if (log.Count > 0)
                 {
-                    return log[log.Count - 1].message;
+                    return log[log.Count - 1];
                 }
-                return "";
+                return null;
             }
         }
 
-        public void AddLog(string message, CreationStatus creationStatus = CreationStatus.None)
+        public void AddLog(string message, CreationStatus creationStatus, LogType type)
         {
             if (creationStatus != CreationStatus.None)
             {
                 status = creationStatus;
             }
-            log.Add(new LogModel(message));
+            log.Add(new LogModel(message, type));
         }
 
         public List<LogModel> GetLog()
@@ -322,11 +321,13 @@ namespace PTC_Creator.Models
     {
         public DateTime time { get; set; }
         public string message { get; set; }
+        public LogType type { get; set; }
 
-        public LogModel(string _message)
+        public LogModel(string _message, LogType _type)
         {
             time = DateTime.Now;
             message = _message;
+            type = _type;
         }
     }
     
@@ -338,6 +339,14 @@ namespace PTC_Creator.Models
         Pending,
         Created,
         Failed
+    }
+
+    public enum LogType
+    {
+        Info,
+        Warning,
+        Critical,
+        Success
     }
     
     #endregion

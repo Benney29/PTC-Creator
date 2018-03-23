@@ -19,33 +19,33 @@ namespace PTC_Creator.Models.Creation
             status = _status;
         }
 
-        public async void Check()
+        public void Check()
         {
             if (GlobalSettings.worker_stop)
             {
-                status.AddLog("Stopped.", CreationStatus.Pending);
+                status.AddLog("Stopped.", CreationStatus.Pending, LogType.Critical);
                 terminateWorker(false, true, true);
             }
-            status.AddLog("Start verify account statusm, getting first page...");
+            status.AddLog("Start verify account statusm, getting first page...", CreationStatus.Processing, LogType.Info);
             string pageSource = GetFirstPage();
-            status.AddLog("Page received, looking for lt, execution, and eventid...");
+            status.AddLog("Page received, looking for lt, execution, and eventid...", CreationStatus.Processing, LogType.Info);
 
             string ltToken = GetltToken(pageSource);
             string execution = GetExecution(pageSource);
             string eventId = GetEventID(pageSource);
-            status.AddLog("lt, execution, and eventid received, starting verify");
+            status.AddLog("lt, execution, and eventid received, starting verify", CreationStatus.Processing, LogType.Info);
 
             pageSource = SubmitLoginData(ltToken, execution, eventId);
-            status.AddLog("Login data submitted, checking account state...");
+            status.AddLog("Login data submitted, checking account state...", CreationStatus.Processing, LogType.Info);
 
             if (CheckAccountState(pageSource))
             {
-                status.AddLog("Account created", CreationStatus.Created);
+                status.AddLog("Account created", CreationStatus.Created, LogType.Success);
                 terminateWorker(true);
             }
             else
             {
-                status.AddLog("Account failed to create...", CreationStatus.Failed);
+                status.AddLog("Account failed to create...", CreationStatus.Failed, LogType.Critical);
                 terminateWorker(false, true, false);
             }
         }
@@ -66,8 +66,7 @@ namespace PTC_Creator.Models.Creation
 
             if (pageSource == "")
             {
-                status.ChangeStatus(CreationStatus.Pending);
-                status.AddLog("Failed to receive first page...");
+                status.AddLog("Failed to receive first page...", CreationStatus.Pending, LogType.Warning);
                 terminateWorker(false);
             }
 
@@ -80,7 +79,7 @@ namespace PTC_Creator.Models.Creation
             string token = re.Match(pageSource).Value.Replace("lt value=", "");
             if (token == "")
             {
-                status.AddLog("No lt token found...", CreationStatus.Pending);
+                status.AddLog("No lt token found...", CreationStatus.Pending, LogType.Warning);
                 terminateWorker(false);
             }
             return token;
@@ -92,7 +91,7 @@ namespace PTC_Creator.Models.Creation
             string token = re.Match(pageSource).Value.Replace("execution value=", "");
             if (token == "")
             {
-                status.AddLog("No execution token found...", CreationStatus.Pending);
+                status.AddLog("No execution token found...", CreationStatus.Pending, LogType.Warning);
                 terminateWorker(false);
             }
             return token;
@@ -104,7 +103,7 @@ namespace PTC_Creator.Models.Creation
             string token = re.Match(pageSource).Value.Replace("_eventId value=", "");
             if (token == "")
             {
-                status.AddLog("No event id token found...", CreationStatus.Pending);
+                status.AddLog("No event id token found...", CreationStatus.Pending, LogType.Warning);
                 terminateWorker(false);
             }
             return token;
@@ -143,7 +142,7 @@ namespace PTC_Creator.Models.Creation
 
             if (pageSource == "")
             {
-                status.AddLog("Failed to submit login data, proxy issue...", CreationStatus.Pending);
+                status.AddLog("Failed to submit login data, proxy issue...", CreationStatus.Pending, LogType.Warning);
                 terminateWorker(false);
             }
             return pageSource;
