@@ -154,6 +154,10 @@ namespace PTC_Creator.Forms
 
         private async void testSelectedToolStripMenuItem_Click(object sender, EventArgs e)
         {
+            if (proxyOlv.SelectedObjects.Count == 0)
+            {
+                MessageBox.Show("Please select proxy to test or Test All proxies");
+            }
             await Task.Run(() => TestProxies(proxyOlv.SelectedObjects.Cast<Proxy>().Where(_ => !_.rotating).ToList()));
             MessageBox.Show("Usable: " + proxyOlv.SelectedObjects.Cast<Proxy>().Count(_ => _.usable) + Environment.NewLine +
                 "Not usable: " + proxyOlv.SelectedObjects.Cast<Proxy>().Count(_ => !_.usable));
