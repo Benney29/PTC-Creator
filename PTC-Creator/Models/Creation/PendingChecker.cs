@@ -13,15 +13,19 @@ namespace PTC_Creator.Models.Creation
     {
         WorkerModel worker;
         StatusModel status;
-        
         public PendingChecker(WorkerModel _worker, StatusModel _status)
         {
             worker = _worker;
             status = _status;
         }
 
-        public void Check()
+        public async void Check()
         {
+            if (GlobalSettings.worker_stop)
+            {
+                status.AddLog("Stopped.", CreationStatus.Pending);
+                terminateWorker(false, true, true);
+            }
             status.AddLog("Start verify account statusm, getting first page...");
             string pageSource = GetFirstPage();
             status.AddLog("Page received, looking for lt, execution, and eventid...");
@@ -52,8 +56,11 @@ namespace PTC_Creator.Models.Creation
             string pageSource = "";
             try
             {
-                pageSource = worker.client.GetAsync("/sso/login?locale=en&service=https://club.pokemon.com/us/pokemon-trainer-club/caslogin").Result
-                    .Content.ReadAsStringAsync().Result.Replace("\r\n", "").Replace("\t", "").Replace("\"", "").Replace("\n", "");
+                using (HttpResponseMessage response = worker.client.GetAsync("/sso/login?locale=en&service=https://club.pokemon.com/us/pokemon-trainer-club/caslogin").Result)
+                {
+                    pageSource = response.Content.ReadAsStringAsync().Result;
+                    pageSource = pageSource.Replace("\r\n", "").Replace("\t", "").Replace("\"", "").Replace("\n", "");
+                }
             }
             catch { }
 
@@ -126,8 +133,11 @@ namespace PTC_Creator.Models.Creation
 
             try
             {
-                pageSource = worker.client.PostAsync("/sso/login?locale=en&service=https://club.pokemon.com/us/pokemon-trainer-club/caslogin", content).Result
-                    .Content.ReadAsStringAsync().Result.Replace("\r\n", "").Replace("\t", "").Replace("\"", "").Replace("\n", "");
+                using (HttpResponseMessage response = worker.client.PostAsync("/sso/login?locale=en&service=https://club.pokemon.com/us/pokemon-trainer-club/caslogin", content).Result)
+                {
+                    pageSource = response.Content.ReadAsStringAsync().Result;
+                    pageSource = pageSource.Replace("\r\n", "").Replace("\t", "").Replace("\"", "").Replace("\n", "");
+                }
             }
             catch { }
 

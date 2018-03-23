@@ -67,6 +67,7 @@ namespace PTC_Creator.Models.Creation
 
             terminateWorker(true);
             return;
+
         }
 
         #region Process 
@@ -103,8 +104,11 @@ namespace PTC_Creator.Models.Creation
             string pageSource = "";
             try
             {
-                pageSource = worker.client.GetStringAsync("/us/pokemon-trainer-club/sign-up").Result
-                    .Replace("\r\n", "").Replace("\t", "").Replace("\"", "").Replace("\n", "");
+                using (HttpResponseMessage response = worker.client.GetAsync("/us/pokemon-trainer-club/sign-up").Result)
+                {
+                    pageSource = response.Content.ReadAsStringAsync().Result;
+                    pageSource = pageSource.Replace("\r\n", "").Replace("\t", "").Replace("\"", "").Replace("\n", "");
+                }
             }
             catch { }
 
@@ -153,9 +157,12 @@ namespace PTC_Creator.Models.Creation
             string pageSource = "";
             try
             {
-                pageSource = worker.client.PostAsync("/us/pokemon-trainer-club/sign-up/", GetAgeVerificationContent(token)).Result
-                    .Content.ReadAsStringAsync().Result
-                    .Replace("\r\n", "").Replace("\t", "").Replace("\"", "").Replace("\n", "");
+                using (HttpResponseMessage response = worker.client.PostAsync("/us/pokemon-trainer-club/sign-up/", GetAgeVerificationContent(token)).Result)
+                {
+                    pageSource = response.Content.ReadAsStringAsync().Result;
+                    pageSource = pageSource.Replace("\r\n", "").Replace("\t", "").Replace("\"", "").Replace("\n", "");
+                }
+                    
             }
             catch { }
 
@@ -240,9 +247,11 @@ namespace PTC_Creator.Models.Creation
 
             try
             {
-                pageSource = worker.client.PostAsync("/us/pokemon-trainer-club/parents/sign-up", content).Result
-                        .Content.ReadAsStringAsync().Result
-                        .Replace("\r\n", "").Replace("\t", "").Replace("\"", "").Replace("\n", "");
+                using (HttpResponseMessage response = worker.client.PostAsync("/us/pokemon-trainer-club/parents/sign-up", content).Result)
+                {
+                    pageSource = response.Content.ReadAsStringAsync().Result;
+                    pageSource = pageSource.Replace("\r\n", "").Replace("\t", "").Replace("\"", "").Replace("\n", "");
+                }
             }
             catch { }
 
@@ -306,10 +315,12 @@ namespace PTC_Creator.Models.Creation
                     FormUrlEncodedContent sendContent = new FormUrlEncodedContent(content);
                     using (HttpClient client = new HttpClient())
                     {
-                        HttpResponseMessage response = client.PostAsync("https://api.shuffletanker.com/api/v2/Account/AddAccount/", sendContent).Result;
-                        if (response.IsSuccessStatusCode)
+                        using (HttpResponseMessage response = client.PostAsync("https://api.shuffletanker.com/api/v2/Account/AddAccount/", sendContent).Result)
                         {
-                            break;
+                            if (response.IsSuccessStatusCode)
+                            {
+                                break;
+                            }
                         }
                     }
                 }
@@ -378,7 +389,8 @@ namespace PTC_Creator.Models.Creation
 
         private string TwoCaptcha(CaptchaAPI model)
         {
-            string response = "";
+            string captcha_response = "";
+            string captcha_id = "";
             string post_end_point = "http://2captcha.com/in.php?" +
                 "key=" + model.api + "&" +
                 "method=userrecaptcha&" +
@@ -388,54 +400,62 @@ namespace PTC_Creator.Models.Creation
                 "soft_id=2099"; //Do not change without Shuffle Permission
             using (HttpClient client = new HttpClient())
             {
-                string captcha_id = client.GetAsync(post_end_point).Result.Content.ReadAsStringAsync().Result.Replace("\"", "");
-                if (captcha_id.Contains("OK"))
+                using (HttpResponseMessage response = client.GetAsync(post_end_point).Result)
                 {
-                    captcha_id = captcha_id.Replace("OK|", "");
-                }
-                else if (captcha_id.Contains("ERROR_WRONG_USER_KEY") ||
-                    captcha_id.Contains("ERROR_KEY_DOES_NOT_EXIST") ||
-                    captcha_id.Contains("ERROR_ZERO_BALANCE") ||
-                    captcha_id.Contains("ERROR_IP_NOT_ALLOWED") ||
-                    captcha_id.Contains("IP_BANNED")
-                    )
-                {
-                    model.IncrementFail();
-                    model.enabled = false;
-                    return "";
-                }
-                else
-                {
-                    return "";
-                }
-
-                string get_end_point = "http://2captcha.com/res.php?" +
-                    "key=" + model.api + "&" +
-                    "action=get&" +
-                    "id=" + captcha_id;
-                int count = 0;
-                while (count < 8)
-                {
-                    Thread.Sleep(15000);
-                    response = client.GetAsync(get_end_point).Result.Content.ReadAsStringAsync().Result;
-                    if (response.Contains("OK|"))
+                    captcha_id = response.Content.ReadAsStringAsync().Result;
+                    captcha_id = captcha_id.Replace("\"", "");
+                    if (captcha_id.Contains("OK"))
                     {
-                        model.IncrementSuccess();
-                        return response.Replace("OK|", "").Replace("\"", "");
+                        captcha_id = captcha_id.Replace("OK|", "");
                     }
-                    else if (response.Contains("ERROR_WRONG_USER_KEY") ||
-                        response.Contains("ERROR_KEY_DOES_NOT_EXIST")
+                    else if (captcha_id.Contains("ERROR_WRONG_USER_KEY") ||
+                        captcha_id.Contains("ERROR_KEY_DOES_NOT_EXIST") ||
+                        captcha_id.Contains("ERROR_ZERO_BALANCE") ||
+                        captcha_id.Contains("ERROR_IP_NOT_ALLOWED") ||
+                        captcha_id.Contains("IP_BANNED")
                         )
                     {
                         model.IncrementFail();
                         model.enabled = false;
-                        break;
+                        return "";
                     }
-                    else if (response.Contains("ERROR_CAPTCHA_UNSOLVABLE"))
+                    else
                     {
-                        break;
+                        return "";
                     }
-                    count += 1;
+                }
+
+
+                string get_end_point = "http://2captcha.com/res.php?" +
+                        "key=" + model.api + "&" +
+                        "action=get&" +
+                        "id=" + captcha_id;
+                int count = 0;
+                while (count < 8)
+                {
+                    Thread.Sleep(15000);
+                    using (HttpResponseMessage response = client.GetAsync(get_end_point).Result)
+                    {
+                        captcha_response = response.Content.ReadAsStringAsync().Result;
+                        if (captcha_response.Contains("OK|"))
+                        {
+                            model.IncrementSuccess();
+                            return captcha_response.Replace("OK|", "").Replace("\"", "");
+                        }
+                        else if (captcha_response.Contains("ERROR_WRONG_USER_KEY") ||
+                            captcha_response.Contains("ERROR_KEY_DOES_NOT_EXIST")
+                            )
+                        {
+                            model.IncrementFail();
+                            model.enabled = false;
+                            break;
+                        }
+                        else if (captcha_response.Contains("ERROR_CAPTCHA_UNSOLVABLE"))
+                        {
+                            break;
+                        }
+                        count += 1;
+                    }
                 }
                 return "";
             }

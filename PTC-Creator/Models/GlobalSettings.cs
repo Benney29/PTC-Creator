@@ -302,7 +302,6 @@ namespace PTC_Creator.Models
                 status = creationStatus;
             }
             log.Add(new LogModel(message));
-            GlobalSettings.createForm.UpdateStatus(this);
         }
 
         public void ChangeStatus(CreationStatus s)

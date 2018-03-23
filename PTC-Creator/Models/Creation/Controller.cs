@@ -25,7 +25,7 @@ namespace PTC_Creator.Models.Creation
         public void Start()
         {
             GlobalSettings.worker_stop = false;
-            
+
             GlobalSettings.creationStatus.Clear();
             GlobalSettings.workers.Clear();
 
@@ -68,7 +68,7 @@ namespace PTC_Creator.Models.Creation
 
                     CheckPending();
 
-                    while (threadList.Count > GlobalSettings.creatorSettings.threadAmount)
+                    while (threadList.Count >= GlobalSettings.creatorSettings.threadAmount)
                     {
                         Thread.Sleep(5000);
                         threadList = threadList.Where(__ => __.IsAlive).ToList();
@@ -90,6 +90,7 @@ namespace PTC_Creator.Models.Creation
                             Thread.Sleep(10000);
                         }
                     }
+
                     _.ChangeStatus(CreationStatus.Processing);
                     Thread t = new Thread(new Creator(worker, _).Start);
                     t.Start();
@@ -115,7 +116,7 @@ namespace PTC_Creator.Models.Creation
                 }
                 WorkerModel worker = null;
                 //found pending account
-                while (threadList.Count > GlobalSettings.creatorSettings.threadAmount)
+                while (threadList.Count >= GlobalSettings.creatorSettings.threadAmount)
                 {
                     Thread.Sleep(5000);
                     threadList = threadList.Where(__ => __.IsAlive).ToList();
