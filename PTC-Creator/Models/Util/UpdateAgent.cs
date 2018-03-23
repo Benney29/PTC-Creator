@@ -114,6 +114,7 @@ namespace PTC_Creator.Models.Util
             string[] oldfiles = Directory.GetFiles(destFolder);
             foreach (string old in oldfiles)
             {
+                if (old.Contains(".txt")) continue;
                 File.Move(old, old + ".old");
             }
 
