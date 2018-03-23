@@ -147,7 +147,8 @@ namespace PTC_Creator.Forms
 
         private async void testAllToolStripMenuItem_Click(object sender, EventArgs e)
         {
-            await Task.Run(() =>TestProxies(GlobalSettings.proxyList.Where(_ => !_.rotating).ToList()));
+            List<Proxy> testProxy = GlobalSettings.proxyList.Where(_ => !_.rotating).ToList();
+            await Task.Run(() => TestProxies(testProxy));
             MessageBox.Show("Usable: " + GlobalSettings.proxyList.Count(_ => _.usable) + Environment.NewLine +
                 "Not usable: " + GlobalSettings.proxyList.Count(_ => !_.usable));
         }
@@ -158,7 +159,8 @@ namespace PTC_Creator.Forms
             {
                 MessageBox.Show("Please select proxy to test or Test All proxies");
             }
-            await Task.Run(() => TestProxies(proxyOlv.SelectedObjects.Cast<Proxy>().Where(_ => !_.rotating).ToList()));
+            List<Proxy> testProxy = proxyOlv.SelectedObjects.Cast<Proxy>().Where(_ => !_.rotating).ToList();
+            await Task.Run(() => TestProxies(testProxy));
             MessageBox.Show("Usable: " + proxyOlv.SelectedObjects.Cast<Proxy>().Count(_ => _.usable) + Environment.NewLine +
                 "Not usable: " + proxyOlv.SelectedObjects.Cast<Proxy>().Count(_ => !_.usable));
         }
