@@ -304,6 +304,11 @@ namespace PTC_Creator.Models
             log.Add(new LogModel(message));
         }
 
+        public List<LogModel> GetLog()
+        {
+            return log;
+        }
+
         public void ChangeStatus(CreationStatus s)
         {
             status = s;

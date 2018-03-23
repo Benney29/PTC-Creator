@@ -216,5 +216,23 @@ namespace PTC_Creator.Forms
             }
         }
 
+        private void showLogToolStripMenuItem_Click(object sender, EventArgs e)
+        {
+            LogForm m = new LogForm((StatusModel)createOlv.SelectedObject);
+            m.Show();
+        }
+
+        private void updateStatusToolStripMenuItem_Click(object sender, EventArgs e)
+        {
+            UpdateStatus(createOlv.SelectedObjects.Cast<StatusModel>().ToList());
+        }
+
+        private void createOlv_CellRightClick(object sender, BrightIdeasSoftware.CellRightClickEventArgs e)
+        {
+            if (e.RowIndex >= 0)
+            {
+                createOlvContextMenu.Show(createOlv, createOlv.PointToClient(Cursor.Position));
+            }
+        }
     }
 }

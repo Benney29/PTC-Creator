@@ -191,6 +191,7 @@ namespace PTC_Creator.Models.Creation
                     switch (_.provider)
                     {
                         case CaptchaProvider.AntiCaptcha:
+                            status.AddLog("Getting captcha response from " + _.provider.ToString() + "...");
                             response = AntiCaptcha(_);
                             if (response != "")
                             {
@@ -199,6 +200,7 @@ namespace PTC_Creator.Models.Creation
                             }
                             break;
                         case CaptchaProvider.ImageTyperz:
+                            status.AddLog("Getting captcha response from " + _.provider.ToString() + "...");
                             response = ImageTyperz(_);
                             if (response != "")
                             {
@@ -207,6 +209,7 @@ namespace PTC_Creator.Models.Creation
                             }
                             break;
                         case CaptchaProvider.TwoCaptcha:
+                            status.AddLog("Getting captcha response from " + _.provider.ToString() + "...");
                             response = TwoCaptcha(_);
                             if (response != "")
                             {

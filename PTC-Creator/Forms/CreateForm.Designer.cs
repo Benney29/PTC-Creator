@@ -28,6 +28,7 @@
         /// </summary>
         private void InitializeComponent()
         {
+            this.components = new System.ComponentModel.Container();
             System.ComponentModel.ComponentResourceManager resources = new System.ComponentModel.ComponentResourceManager(typeof(CreateForm));
             this.StartButtonPanel = new System.Windows.Forms.Panel();
             this.StopButton = new System.Windows.Forms.Button();
@@ -59,11 +60,15 @@
             this.email = ((BrightIdeasSoftware.OLVColumn)(new BrightIdeasSoftware.OLVColumn()));
             this.status = ((BrightIdeasSoftware.OLVColumn)(new BrightIdeasSoftware.OLVColumn()));
             this.log = ((BrightIdeasSoftware.OLVColumn)(new BrightIdeasSoftware.OLVColumn()));
+            this.createOlvContextMenu = new System.Windows.Forms.ContextMenuStrip(this.components);
+            this.showLogToolStripMenuItem = new System.Windows.Forms.ToolStripMenuItem();
+            this.updateStatusToolStripMenuItem = new System.Windows.Forms.ToolStripMenuItem();
             this.StatusDataGrid = new System.Windows.Forms.DataGridView();
             this.StartButtonPanel.SuspendLayout();
             this.ConfigPanel.SuspendLayout();
             this.ContentPanel.SuspendLayout();
             ((System.ComponentModel.ISupportInitialize)(this.createOlv)).BeginInit();
+            this.createOlvContextMenu.SuspendLayout();
             ((System.ComponentModel.ISupportInitialize)(this.StatusDataGrid)).BeginInit();
             this.SuspendLayout();
             // 
@@ -377,6 +382,7 @@
             this.createOlv.UseCompatibleStateImageBehavior = false;
             this.createOlv.View = System.Windows.Forms.View.Details;
             this.createOlv.VirtualMode = true;
+            this.createOlv.CellRightClick += new System.EventHandler<BrightIdeasSoftware.CellRightClickEventArgs>(this.createOlv_CellRightClick);
             this.createOlv.FormatCell += new System.EventHandler<BrightIdeasSoftware.FormatCellEventArgs>(this.createOlv_FormatCell);
             // 
             // username
@@ -414,6 +420,28 @@
             this.log.AspectName = "_log";
             this.log.Text = "Log";
             this.log.Width = 169;
+            // 
+            // createOlvContextMenu
+            // 
+            this.createOlvContextMenu.Items.AddRange(new System.Windows.Forms.ToolStripItem[] {
+            this.showLogToolStripMenuItem,
+            this.updateStatusToolStripMenuItem});
+            this.createOlvContextMenu.Name = "createOlvContextMenu";
+            this.createOlvContextMenu.Size = new System.Drawing.Size(148, 48);
+            // 
+            // showLogToolStripMenuItem
+            // 
+            this.showLogToolStripMenuItem.Name = "showLogToolStripMenuItem";
+            this.showLogToolStripMenuItem.Size = new System.Drawing.Size(147, 22);
+            this.showLogToolStripMenuItem.Text = "Show Log";
+            this.showLogToolStripMenuItem.Click += new System.EventHandler(this.showLogToolStripMenuItem_Click);
+            // 
+            // updateStatusToolStripMenuItem
+            // 
+            this.updateStatusToolStripMenuItem.Name = "updateStatusToolStripMenuItem";
+            this.updateStatusToolStripMenuItem.Size = new System.Drawing.Size(147, 22);
+            this.updateStatusToolStripMenuItem.Text = "Update Status";
+            this.updateStatusToolStripMenuItem.Click += new System.EventHandler(this.updateStatusToolStripMenuItem_Click);
             // 
             // StatusDataGrid
             // 
@@ -456,6 +484,7 @@
             this.ConfigPanel.PerformLayout();
             this.ContentPanel.ResumeLayout(false);
             ((System.ComponentModel.ISupportInitialize)(this.createOlv)).EndInit();
+            this.createOlvContextMenu.ResumeLayout(false);
             ((System.ComponentModel.ISupportInitialize)(this.StatusDataGrid)).EndInit();
             this.ResumeLayout(false);
 
@@ -494,5 +523,8 @@
         private System.Windows.Forms.TextBox ThreadCreationSpeedTextBox;
         private System.Windows.Forms.Label ThreadCreationSpeedLabel;
         private System.Windows.Forms.Label ThreadCreationSpeedTipLabel;
+        private System.Windows.Forms.ContextMenuStrip createOlvContextMenu;
+        private System.Windows.Forms.ToolStripMenuItem showLogToolStripMenuItem;
+        private System.Windows.Forms.ToolStripMenuItem updateStatusToolStripMenuItem;
     }
 }
