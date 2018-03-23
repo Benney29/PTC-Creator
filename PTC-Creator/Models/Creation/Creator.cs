@@ -77,28 +77,29 @@ namespace PTC_Creator.Models.Creation
                     new KeyValuePair<string, string>("name", status.username)
                 });
 
+            HttpResponseMessage response = null;
             try
             {
-                using (HttpResponseMessage res = worker.client.PostAsync("https://club.pokemon.com/api/signup/verify-username", formContent).Result)
-                {
-                    string check = res.Content.ReadAsStringAsync().Result;
-                    if (res.StatusCode == HttpStatusCode.Forbidden || res.StatusCode == HttpStatusCode.ServiceUnavailable ||
-                        check.Contains("Request was throttled") || check.Contains("forbidden") || check.Contains("request could not be"))
-                    {
-                        status.AddLog("Failed to check username due to proxy banned...", CreationStatus.Waiting, LogType.Warning);
-                        throw new Exception();
-                    }
-                    else if (!check.Contains("true"))
-                    {
-                        status.AddLog("Failed to check username due to username used...", CreationStatus.Failed, LogType.Critical);
-                        throw new Exception();
-                    }
-                }
+                response = worker.client.PostAsync("https://club.pokemon.com/api/signup/verify-username", formContent).Result;
             }
-            catch (Exception ex)
+            catch
             {
-                status.AddLog("Username check failed.", CreationStatus.None, LogType.Warning);
+                status.AddLog("Username check failed.", CreationStatus.Waiting, LogType.Warning);
                 terminateWorker(false);
+            }
+
+            string check = response.Content.ReadAsStringAsync().Result;
+
+            if (response.StatusCode == HttpStatusCode.Forbidden || response.StatusCode == HttpStatusCode.ServiceUnavailable ||
+                        check.Contains("Request was throttled") || check.Contains("forbidden") || check.Contains("request could not be"))
+            {
+                status.AddLog("Failed to check username due to proxy banned...", CreationStatus.Waiting, LogType.Warning);
+                terminateWorker(false);
+            }
+            else if (!check.Contains("true"))
+            {
+                status.AddLog("Failed to check username due to username used...", CreationStatus.Failed, LogType.Critical);
+                terminateWorker(false, true);
             }
         }
 
